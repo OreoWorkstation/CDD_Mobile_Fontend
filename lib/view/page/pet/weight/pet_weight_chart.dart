@@ -17,20 +17,24 @@ class _PextWeightChartState extends State<PetWeightChart>{
   var date = DateTime.now();
   //var start_date = DateTime.now().subtract(new Duration(days: 7));
   bool showAvg = false;
-  int minx, maxx, miny, maxy;
-
+  double minx, maxx, miny, maxy;
+  List<FlSpot> spot_list = [FlSpot(0, 0), FlSpot(2, 0.5), FlSpot(4, 2), FlSpot(6, 2),FlSpot(8, 4),FlSpot(10, 6),FlSpot(12, 5)];
   @override
   Widget build(BuildContext context) {
-    if(widget.type == 'week'){
-      minx = 0;
-      maxx = 12;
-    }else if(widget.type == 'month'){
-      minx = 0;
-      maxx = 30;
-    }else{
-      minx = 0;
-      maxx = 365;
-    }
+//    if(widget.type == 'week'){
+//      minx = 0;
+//      maxx = 12;
+//    }else if(widget.type == 'month'){
+//      minx = 0;
+//      maxx = 30;
+//    }else{
+//      minx = 0;
+//      maxx = 365;
+//    }
+//    miny = 0;
+//    maxy = 10;
+    minx = 0;
+    maxx = 12;
     miny = 0;
     maxy = 10;
     //print(date);
@@ -46,7 +50,8 @@ class _PextWeightChartState extends State<PetWeightChart>{
                 color: const Color(0xff232d37)),
             child: Padding(
               padding: const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: showAvg ? AverageLineChart(minx: minx,maxx: maxx,miny: miny,maxy: maxy) : MainLineChart(minx: minx,maxx: maxx,miny: miny,maxy: maxy),
+              child: showAvg ? AverageLineChart(minx: minx,maxx: maxx,miny: miny,maxy: maxy, avg: 3) :
+              MainLineChart(minx: minx,maxx: maxx,miny: miny,maxy: maxy, spots: spot_list),
             ),
           ),
         ),
@@ -77,8 +82,9 @@ class _PextWeightChartState extends State<PetWeightChart>{
 }
 
 class MainLineChart extends StatelessWidget {
-  MainLineChart({@required this.minx, @required this.maxx, @required this.miny, @required this.maxy});
-  int minx, maxx, miny, maxy;
+  MainLineChart({@required this.minx, @required this.maxx, @required this.miny, @required this.maxy, @required this.spots});
+  double minx, maxx, miny, maxy;
+  List<FlSpot> spots;
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -146,6 +152,10 @@ class MainLineChart extends StatelessWidget {
                     return '30k';
                   case 5:
                     return '50k';
+                  case 7:
+                    return '70k';
+                  case 9:
+                    return '90k';
                 }
                 return '';
               },
@@ -161,15 +171,7 @@ class MainLineChart extends StatelessWidget {
           maxY: 10,
           lineBarsData: [
             LineChartBarData(      //表格内的点位置
-              spots: const [
-                FlSpot(1, 3),
-                FlSpot(2.6, 5),
-                FlSpot(3, 5),
-                FlSpot(4, 3.1),
-                FlSpot(5, 4),
-                FlSpot(6, 3),
-                FlSpot(7, 4),
-              ],
+              spots: spots,
               isCurved: true,   //折线还是曲线
               colors: gradientColors,
               barWidth: 5,      //线条宽度
@@ -189,8 +191,9 @@ class MainLineChart extends StatelessWidget {
 }
 
 class AverageLineChart extends StatelessWidget {
-  AverageLineChart({@required this.minx, @required this.maxx, @required this.miny, @required this.maxy});
-  int minx, maxx, miny, maxy;
+  AverageLineChart({@required this.minx, @required this.maxx, @required this.miny, @required this.maxy, @required this.avg});
+  double minx, maxx, miny, maxy;
+  double avg;
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -226,12 +229,20 @@ class AverageLineChart extends StatelessWidget {
               TextStyle(color: const Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 16),
               getTitles: (value) {
                 switch (value.toInt()) {
+                  case 0:
+                    return 'Mon';
                   case 2:
-                    return 'MAR';
-                  case 5:
-                    return 'JUN';
+                    return 'Tues';
+                  case 4:
+                    return 'Wed';
+                  case 6:
+                    return 'Thur';
                   case 8:
-                    return 'SEP';
+                    return 'Fri';
+                  case 10:
+                    return 'Sat';
+                  case 12:
+                    return 'Sun';
                 }
                 return '';
               },
@@ -252,6 +263,10 @@ class AverageLineChart extends StatelessWidget {
                     return '30k';
                   case 5:
                     return '50k';
+                  case 7:
+                    return '70k';
+                  case 9:
+                    return '90k';
                 }
                 return '';
               },
@@ -267,14 +282,9 @@ class AverageLineChart extends StatelessWidget {
           maxY: 10,
           lineBarsData: [
             LineChartBarData(
-              spots: const [
-                FlSpot(0, 3.44),
-                FlSpot(2.6, 3.44),
-                FlSpot(4.9, 3.44),
-                FlSpot(6.8, 3.44),
-                FlSpot(8, 3.44),
-                FlSpot(9.5, 3.44),
-                FlSpot(11, 3.44),
+              spots: [
+                FlSpot(minx, avg),
+                FlSpot(maxx, avg),
               ],
               isCurved: true,
               colors: [

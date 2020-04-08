@@ -9,7 +9,6 @@ import 'weight/weight_page.dart';
 class PetOverviewPage extends StatefulWidget {
   final String name;
   PetOverviewPage({Key key, this.name}) : super(key: key);
-
   @override
   _PetOverviewPageState createState() => _PetOverviewPageState();
 }

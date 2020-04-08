@@ -28,7 +28,6 @@ class _AddPetPageState extends State<AddPetPage> {
 
   @override
   Widget build(BuildContext context) {
-    var w = MediaQuery.of(context).size.width; //360
     var h = MediaQuery.of(context).size.height;  //780
     return new Scaffold(
       appBar: new AppBar(
