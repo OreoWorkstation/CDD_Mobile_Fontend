@@ -204,7 +204,7 @@ class _PetPageState extends State<PetPage> {
             });
       } else {
         Navigator.pushNamed(context, "add_pet_page");
-        widget.pet_num++;
+        widget.pet_num ++;
       }
     });
   }

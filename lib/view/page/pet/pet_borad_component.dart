@@ -86,7 +86,12 @@ class _PetBoardState extends State<PetBoard> {
               child: Center(
                 child: ClipOval(
                   child: Image.network(
-                      "https://c-ssl.duitang.com/uploads/item/201808/15/20180815112431_keyzi.jpeg"),
+                      // "https://c-ssl.duitang.com/uploads/item/201808/15/20180815112431_keyzi.jpeg"
+                      "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2079072528,671755176&fm=26&gp=0.jpg",
+                    height: h/5.5,
+                    width: h/5.5,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               )),
           Expanded(
@@ -116,14 +121,14 @@ class _PetBoardState extends State<PetBoard> {
               flex: 1,
               child: Center(
                   child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text("1 years 2 months",
-                        style: TextStyle(
-                          fontSize: h / 52,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )),
-                  )))
+                alignment: Alignment.topCenter,
+                child: Text("1 years 2 months",
+                    style: TextStyle(
+                      fontSize: h / 52,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+              )))
         ],
       ),
     );
