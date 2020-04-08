@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'user_page.dart';
+void main() {
+  runApp(Help());
+}
 
-class Edituser extends StatelessWidget {
+class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      title: "帮助",
+      home: Scaffold(
         backgroundColor: Colors.grey,
         appBar: new AppBar(
           title: new Text(
-            '编辑个人信息',
+            '帮助',
             style: new TextStyle(color: Colors.deepPurpleAccent),
           ),
           backgroundColor: Colors.transparent,
@@ -22,14 +27,9 @@ class Edituser extends StatelessWidget {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-
-            ],
-          ),
+          child: Text('nothing'),
         ),
+      ),
     );
   }
 }

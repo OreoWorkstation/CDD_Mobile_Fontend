@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'user_page.dart';
+void main() {
+  runApp(Systemsetting());
+}
 
-class Edituser extends StatelessWidget {
+class Systemsetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      title: "系统设置",
+      home: Scaffold(
         backgroundColor: Colors.grey,
         appBar: new AppBar(
           title: new Text(
-            '编辑个人信息',
+            '系统设置',
             style: new TextStyle(color: Colors.deepPurpleAccent),
           ),
           backgroundColor: Colors.transparent,
@@ -17,19 +22,14 @@ class Edituser extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.grey,Colors.white],
+              colors: [Colors.grey, Colors.white],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-
-            ],
-          ),
+          child: Text('not design'),
         ),
+      ),
     );
   }
 }
