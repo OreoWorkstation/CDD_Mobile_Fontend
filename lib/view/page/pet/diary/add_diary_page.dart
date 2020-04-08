@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AddDiaryPage extends StatefulWidget {
-  const AddDiaryPage({Key key}) : super(key: key);
+  AddDiaryPage({Key key, this.title, this.content}) : super(key: key);
+  String title;
+  String content;
   @override
   _AddDiaryPageState createState() => _AddDiaryPageState();
 }
@@ -13,7 +15,7 @@ class _AddDiaryPageState extends State<AddDiaryPage> {
   String _title;
   String _content;
   void _forSubmitted() {
-    if(_diary_formKey.currentState.validate()){
+    if (_diary_formKey.currentState.validate()) {
       var _form = _diary_formKey.currentState;
       if (_form.validate()) {
         _form.save();
@@ -23,6 +25,7 @@ class _AddDiaryPageState extends State<AddDiaryPage> {
       Navigator.pop(context);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,17 +75,22 @@ class _AddDiaryPageState extends State<AddDiaryPage> {
                 ),
                 sizedBoxSpace,
                 TextFormField(
-                  textCapitalization: TextCapitalization.words,
-                  cursorColor: Theme.of(context).cursorColor,
-                  decoration: InputDecoration(
-                    filled: true,
-                    icon: Icon(Icons.assignment),
-                    hintText: "${date.year}-${date.month}-${date.day}",
-                    labelText: "日记标题",
-                  ),
-                  onSaved: (val) {
-                    _title = val;
-                  },
+                    textCapitalization: TextCapitalization.words,
+                    cursorColor: Theme.of(context).cursorColor,
+                    decoration: InputDecoration(
+                      filled: true,
+                      icon: Icon(Icons.assignment),
+                      hintText: "${date.year}-${date.month}-${date.day}",
+                      labelText: "日记标题",
+                    ),
+                    onSaved: (val) {
+                      _title = val;
+                    },
+                    controller: widget.title == null ? null :               //若没有传参数 无
+                          TextEditingController.fromValue(TextEditingValue(        //传了参数    设置默认值
+                            text:
+                                '${this._title == null ? "${widget.title}" : this._title}', //判断keyword是否为空
+                          ))
                 ),
                 sizedBoxSpace,
                 TextFormField(
@@ -96,6 +104,11 @@ class _AddDiaryPageState extends State<AddDiaryPage> {
                   onSaved: (val) {
                     _content = val;
                   },
+                    controller: widget.content == null ? null :                  //若没有传参数 无
+                    TextEditingController.fromValue(TextEditingValue(            //传了参数    设置默认值
+                      text:
+                      '${this._content == null ? "${widget.content}" : this._content}',
+                    ))
                 ),
               ],
             ),

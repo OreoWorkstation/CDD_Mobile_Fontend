@@ -1,3 +1,4 @@
+import 'package:cdd_mobile_frontend/view/page/pet/diary/add_diary_page.dart';
 import 'package:flutter/material.dart';
 
 class ShowDiaryPage extends StatelessWidget {
@@ -15,19 +16,9 @@ class ShowDiaryPage extends StatelessWidget {
             icon: Icon(Icons.edit),
             onPressed: () {
               print("press edit button");
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text("提示"),
-                  content: Text("这是编辑日记按钮"),
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('确认'),
-                    ),
-                  ],
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddDiaryPage(title: "title传值", content: "content传值"),
                 ),
               );
             },
