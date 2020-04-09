@@ -1,3 +1,4 @@
+import 'package:cdd_mobile_frontend/view/page/pet/add_pet_page.dart';
 import 'package:cdd_mobile_frontend/view/page/pet/pet_borad_component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -203,7 +204,12 @@ class _PetPageState extends State<PetPage> {
               );
             });
       } else {
-        Navigator.pushNamed(context, "add_pet_page");
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            //builder: (context) => AddPetPage(name: "pet name", type: '狗', description: 'description content', birth: '2002-1-1',),
+            builder: (context) => AddPetPage(),
+          ),
+        );
         widget.pet_num ++;
       }
     });

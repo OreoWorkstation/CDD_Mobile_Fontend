@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'add_pet_page.dart';
+
 class PetBoard extends StatefulWidget {
   PetBoard({Key key, @required this.index}) : super(key: key);
   var board_colors = [
@@ -43,6 +45,24 @@ class _PetBoardState extends State<PetBoard> {
                         color: Colors.white,
                       ),
                     ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Material(
+                        //borderRadius: BorderRadius.circular(),
+                        color: Colors.transparent,
+                        shape: CircleBorder(),
+                        child: IconButton(
+                          icon: Icon(Icons.edit, color: Colors.white),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AddPetPage(name: "edit name", type: '狗', description: 'edit description content', birth: '2002-1-1',),
+                              ),
+                            );
+                          },
+                        ),
+                      )
                   ),
                   Expanded(
                       flex: 1,
