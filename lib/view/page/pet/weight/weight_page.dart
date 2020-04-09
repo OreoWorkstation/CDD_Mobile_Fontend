@@ -60,7 +60,9 @@ class Weight extends StatelessWidget {
                                 new RaisedButton(
                                   child:new Text('确定'),
                                     color:Colors.limeAccent,
-                                    onPressed: (){}
+                                    onPressed: (){
+
+                                    }
                                 ),
                               ],
                             );
@@ -76,11 +78,15 @@ class Weight extends StatelessWidget {
                     child: new ListView.builder(
                       itemCount: items.length,
                       itemBuilder: (BuildContext context,int index) {
-                        return new ListTile(
+                        return new GestureDetector(
+                          onTap: (){
+                            print("${items[index]}");
+                          },
+                          child:new ListTile(
                           title: new Text('${items[index]}'),
                           //subtitle: new Text('999'),
                           //trailing: Icon(Icons.keyboard_arrow_right),
-                        );
+                        ),);
                       },
                     ),
                   ),

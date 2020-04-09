@@ -63,6 +63,49 @@ class _DiaryPageState extends State<DiaryPage> {
 }
 
 class DiaryList extends StatelessWidget {
+  /*const DiaryList({Key key}) : super(key: key);*/
+  var items=new List<String>.generate(100, (i) => "Items $i");
+  @override
+  Widget build(BuildContext context) {
+    return new Flexible(
+      child: new ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (BuildContext context,int index) {
+          return new GestureDetector(
+            onTap: () {
+              print("tab item...");
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ShowDiaryPage(),
+              ));
+            },
+            child: Card(
+              color: Colors.white,
+              elevation: 20,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '${items[index]}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      ),
+    );
+  }
+}
+
+/*class DiaryList extends StatelessWidget {
   const DiaryList({Key key}) : super(key: key);
 
   @override
@@ -227,4 +270,4 @@ class DiaryList extends StatelessWidget {
       ),
     );
   }
-}
+}*/
