@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cdd_mobile_frontend/view/init_page.dart';
 import 'package:cdd_mobile_frontend/view/page/pet/add_pet_page.dart';
 import 'package:cdd_mobile_frontend/view/page/tab_navigator.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Cat Dog Diary",
       routes:{
-        "homepage":         (context) => TabNavigator(),
+        "homepage":         (context) => CddInitPage(),
         "add_pet_page":     (context) => AddPetPage(),
       },
       initialRoute: "homepage",
