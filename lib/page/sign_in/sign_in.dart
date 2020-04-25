@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../common/util/util.dart';
+
 class SignInPage extends StatefulWidget {
   const SignInPage({Key key}) : super(key: key);
 
@@ -92,8 +94,8 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildLoginForm() {
     return Container(
-      width: cddSetHeight(334.0),
-      height: cddSetHeight(397.0),
+      width: cddSetHeight(300.0),
+      height: cddSetHeight(350.0),
       margin: EdgeInsets.only(top: cddSetHeight(44.0)),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -177,7 +179,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildRegisterItem() {
     return Container(
-      margin: EdgeInsets.only(bottom: cddSetHeight(32.0)),
+      margin: EdgeInsets.only(bottom: cddSetHeight(35.0)),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: cddSetWidth(59)),
         child: Row(

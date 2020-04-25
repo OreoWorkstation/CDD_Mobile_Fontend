@@ -76,8 +76,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildRegisterForm() {
     return Container(
-      width: cddSetHeight(334.0),
-      height: cddSetHeight(438.0),
+      width: cddSetHeight(300.0),
+      height: cddSetHeight(380.0),
       margin: EdgeInsets.only(top: cddSetHeight(44.0)),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -128,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
               hintText: "重复密码",
               isPassword: true,
             ),
-            SizedBox(height: cddSetHeight(47.0)),
+            SizedBox(height: cddSetHeight(40.0)),
             // 取消按钮，注册按钮
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,15 +136,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 btnFlatButtonWidget(
                   onPressed: () => _handleNavSignIn(),
                   bgColor: AppColor.secondaryElement,
-                  width: 100.0,
-                  height: 48.0,
+                  width: 130.0,
+                  height: 42.0,
                   title: "取消",
                   fontSize: 19.0,
                 ),
                 btnFlatButtonWidget(
                   onPressed: () => _handleRegister(),
-                  width: 100.0,
-                  height: 48.0,
+                  width: 130.0,
+                  height: 42.0,
                   title: "注册",
                   fontSize: 19.0,
                 ),
