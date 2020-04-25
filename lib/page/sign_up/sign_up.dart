@@ -59,8 +59,8 @@ class _SignUpPageState extends State<SignUpPage> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: cddSetHeight(0)),
-          width: cddSetHeight(130.0),
-          height: cddSetHeight(130.0),
+          width: cddSetWidth(130.0),
+          height: cddSetWidth(130.0),
           child: Image.asset(
             "assets/images/logo.png",
             fit: BoxFit.cover,
@@ -76,8 +76,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildRegisterForm() {
     return Container(
-      width: cddSetHeight(300.0),
-      height: cddSetHeight(380.0),
+      width: cddSetWidth(350.0),
+      height: cddSetHeight(400.0),
       margin: EdgeInsets.only(top: cddSetHeight(44.0)),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
         boxShadow: [
           BoxShadow(
             offset: Offset(
-              cddSetHeight(13.0),
+              cddSetWidth(13.0),
               cddSetHeight(5.0),
             ),
             color: Colors.black.withOpacity(0.16),
@@ -130,25 +130,28 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             SizedBox(height: cddSetHeight(40.0)),
             // 取消按钮，注册按钮
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                btnFlatButtonWidget(
-                  onPressed: () => _handleNavSignIn(),
-                  bgColor: AppColor.secondaryElement,
-                  width: 130.0,
-                  height: 42.0,
-                  title: "取消",
-                  fontSize: 19.0,
-                ),
-                btnFlatButtonWidget(
-                  onPressed: () => _handleRegister(),
-                  width: 130.0,
-                  height: 42.0,
-                  title: "注册",
-                  fontSize: 19.0,
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: cddSetWidth(12.0)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  btnFlatButtonWidget(
+                    onPressed: () => _handleNavSignIn(),
+                    bgColor: AppColor.secondaryElement,
+                    width: 130.0,
+                    height: 48.0,
+                    title: "取消",
+                    fontSize: 19.0,
+                  ),
+                  btnFlatButtonWidget(
+                    onPressed: () => _handleRegister(),
+                    width: 130.0,
+                    height: 48.0,
+                    title: "注册",
+                    fontSize: 19.0,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

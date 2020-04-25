@@ -5,9 +5,9 @@ import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../common/util/util.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key key}) : super(key: key);
@@ -45,6 +45,11 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+    print(MediaQuery.of(context).size.height);
+    print(ScreenUtil().scaleWidth);
+    print(ScreenUtil().scaleHeight);
+    print(ScreenUtil.pixelRatio);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: appBarWidget(),
@@ -78,8 +83,8 @@ class _SignInPageState extends State<SignInPage> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: cddSetHeight(0)),
-          width: cddSetHeight(130.0),
-          height: cddSetHeight(130.0),
+          width: cddSetWidth(130.0),
+          height: cddSetWidth(130.0),
           child: Image.asset(
             "assets/images/logo.png",
             fit: BoxFit.cover,
@@ -94,8 +99,8 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildLoginForm() {
     return Container(
-      width: cddSetHeight(300.0),
-      height: cddSetHeight(350.0),
+      width: cddSetWidth(350.0),
+      height: cddSetHeight(380.0),
       margin: EdgeInsets.only(top: cddSetHeight(44.0)),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -103,7 +108,7 @@ class _SignInPageState extends State<SignInPage> {
         boxShadow: [
           BoxShadow(
             offset: Offset(
-              cddSetHeight(13.0),
+              cddSetWidth(13.0),
               cddSetHeight(5.0),
             ),
             color: Colors.black.withOpacity(0.16),
