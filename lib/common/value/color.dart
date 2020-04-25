@@ -20,4 +20,12 @@ class AppColor {
 
   /// 第三种控件-背景色 浅灰色
   static const Color thirdElement = Color.fromARGB(255, 246, 246, 246);
+
+  // ****************************
+
+  /// 底部导航栏控件颜色-未选中
+  static const Color tabElementInactive = Color.fromARGB(255, 0, 0, 0);
+
+  /// 底部导航栏控件颜色-选中
+  static const Color tabElementActive = Color.fromARGB(255, 28, 189, 151);
 }

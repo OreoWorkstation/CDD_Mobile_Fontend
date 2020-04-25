@@ -17,6 +17,15 @@ class StorageUtil {
     }
   }
 
+  Future<bool> setString(String key, String val) {
+    return _prefs.setString(key, val);
+  }
+
+  String getString(String key) {
+    String val = _prefs.getString(key);
+    return val == null ? "" : val;
+  }
+
   Future<bool> setJSON(String key, dynamic jsonVal) {
     String jsonString = jsonEncode(jsonVal);
     return _prefs.setString(key, jsonString);

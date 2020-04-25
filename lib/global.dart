@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'common/value/value.dart';
 
 class Global {
+  /// 用户Token
+  static String accessToken = "";
+
   /// APP是否第一次打开
   static bool isFirstOpen = false;
 
@@ -17,6 +20,7 @@ class Global {
 
     // 工具初始化
     await StorageUtil.init();
+    HttpUtil();
 
     // APP是否第一次打开
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
@@ -30,5 +34,11 @@ class Global {
           SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
+  }
+
+  // 持久化用户Token
+  static Future<bool> saveToken(String token) {
+    accessToken = token;
+    return StorageUtil().setString(STORAGE_ACCESS_TOKEN, token);
   }
 }

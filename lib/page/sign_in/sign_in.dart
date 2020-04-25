@@ -1,13 +1,15 @@
+import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
+import 'package:cdd_mobile_frontend/global.dart';
+import 'package:cdd_mobile_frontend/page/application/application.dart';
 import 'package:cdd_mobile_frontend/page/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key key}) : super(key: key);
@@ -40,16 +42,23 @@ class _SignInPageState extends State<SignInPage> {
       password: _passwordController.value.text,
     );
 
-    print(params.account + " " + params.password);
+    var res = await UserAPI.login(params: params);
+    if (res.statusCode == 200) {
+      if (res.data['code'] == 0) {
+        Global.saveToken(res.data['data'].toString());
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => ApplicationPage(),
+        ));
+      } else {
+        print(res.data['msg']);
+      }
+    } else {
+      print("服务器错误....");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
-    print(ScreenUtil().scaleWidth);
-    print(ScreenUtil().scaleHeight);
-    print(ScreenUtil.pixelRatio);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: appBarWidget(),
