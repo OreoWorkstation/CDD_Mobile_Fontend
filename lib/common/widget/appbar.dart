@@ -7,9 +7,10 @@ Widget appBarWidget({
   Widget title,
   Widget leading,
   List<Widget> actions,
+  double height = 0,
 }) {
   return PreferredSize(
-    preferredSize: Size.fromHeight(0),
+    preferredSize: Size.fromHeight(height),
     child: AppBar(
       backgroundColor: bgColor,
       brightness: brightness,

@@ -8,7 +8,6 @@ import 'package:cdd_mobile_frontend/page/application/application.dart';
 import 'package:cdd_mobile_frontend/page/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignInPage extends StatefulWidget {
@@ -43,17 +42,13 @@ class _SignInPageState extends State<SignInPage> {
     );
 
     var res = await UserAPI.login(params: params);
-    if (res.statusCode == 200) {
-      if (res.data['code'] == 0) {
-        Global.saveToken(res.data['data'].toString());
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => ApplicationPage(),
-        ));
-      } else {
-        print(res.data['msg']);
-      }
+    if (res.error == true) {
+      print(res.errorMessage);
     } else {
-      print("服务器错误....");
+      Global.saveToken(res.data.toString());
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => ApplicationPage(),
+      ));
     }
   }
 

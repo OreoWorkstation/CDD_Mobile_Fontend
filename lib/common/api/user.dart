@@ -6,16 +6,21 @@ import 'package:flutter/material.dart';
 /// 用户相关API
 class UserAPI {
   /// 登录
-  static Future<Response> login({
+  static Future<APIResponse<int>> login({
     // @required BuildContext context,
     UserLoginRequestEntity params,
-  }) async {
-    var response = await HttpUtil().post(
-      "/login",
-      // context: context,
-      params: params,
-    );
-    return response;
+  }) {
+    return HttpUtil().post("/login", params: params).then((response) {
+      if (response.statusCode == 200) {
+        if (response.data['code'] == 0)
+          return APIResponse<int>(data: response.data['data']);
+        else
+          return APIResponse<int>(error: true, errorMessage: "账号密码不匹配");
+      }
+      return APIResponse<int>(error: true, errorMessage: "An error occured");
+    }).catchError((_) {
+      return APIResponse<int>(error: true, errorMessage: "An error occured");
+    });
   }
 
   /// 注册
@@ -28,5 +33,24 @@ class UserAPI {
       params: params,
     );
     return response;
+  }
+
+  /// 获取用户信息
+  static Future<APIResponse<UserInfoEntity>> getUserInfo(int userId) {
+    return HttpUtil().get("/user/$userId").then((response) {
+      if (response.statusCode == 200) {
+        if (response.data['code'] == 0)
+          return APIResponse<UserInfoEntity>(
+              data: UserInfoEntity.fromJson(response.data['data']));
+        else
+          return APIResponse<UserInfoEntity>(
+              error: true, errorMessage: "An error occured");
+      }
+      return APIResponse<UserInfoEntity>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) {
+      return APIResponse<UserInfoEntity>(
+          error: true, errorMessage: "An error occured");
+    });
   }
 }

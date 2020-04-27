@@ -48,13 +48,13 @@ class UserInfoEntity {
         email: json["email"],
         phone: json["phone"],
         address: json["address"],
-        birthday: json["birthday"],
+        birthday: DateTime.parse(json["birthday"]),
         petNumber: json["petNumber"],
         instantNumber: json["instantNumber"],
         followNumber: json["followNumber"],
         fansNumber: json["fansNumber"],
-        createTime: json["createTime"],
-        updateTime: json["updateTime"],
+        createTime: DateTime.parse(json["createTime"]),
+        updateTime: DateTime.parse(json["updateTime"]),
       );
 
   Map<String, dynamic> toJson() => {

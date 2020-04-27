@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class AppColor {
   /// 主背景 白色
   static const Color primaryBackground = Color.fromARGB(255, 255, 255, 255);
@@ -28,4 +30,34 @@ class AppColor {
 
   /// 底部导航栏控件颜色-选中
   static const Color tabElementActive = Color.fromARGB(255, 28, 189, 151);
+
+  // ****************************
+
+  /// 宠物列表卡片背景色
+  static const List<LinearGradient> petCardColors = [
+    LinearGradient(
+      colors: [
+        Color.fromARGB(255, 236, 111, 102),
+        Color.fromARGB(255, 243, 161, 131),
+      ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    ),
+    LinearGradient(
+      colors: [
+        Color.fromARGB(255, 142, 45, 226),
+        Color.fromARGB(255, 74, 0, 224),
+      ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    ),
+    LinearGradient(
+      colors: [
+        Color.fromARGB(255, 75, 108, 183),
+        Color.fromARGB(255, 24, 40, 72),
+      ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    ),
+  ];
 }

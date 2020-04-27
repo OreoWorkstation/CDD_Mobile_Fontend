@@ -23,7 +23,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
   // 底部导航项目
   final List<BottomNavigationBarItem> _bottomTabs = <BottomNavigationBarItem>[
     BottomNavigationBarItem(icon: Icon(Iconfont.shouye), title: Text("首页")),
-    BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("百科")),
+    BottomNavigationBarItem(icon: Icon(Icons.local_library), title: Text("百科")),
     BottomNavigationBarItem(icon: Icon(Iconfont.shequ), title: Text("社区")),
     BottomNavigationBarItem(
         icon: Icon(Iconfont.gerenzhongxin), title: Text("个人中心")),

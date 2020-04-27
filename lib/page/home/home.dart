@@ -4,6 +4,7 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
+import 'package:cdd_mobile_frontend/page/home/pet/pet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<PetEntity> _pets;
+  APIResponse<List<PetEntity>> _apiResponse;
 
   bool _isLoading = false;
 
@@ -24,21 +25,22 @@ class _HomePageState extends State<HomePage> {
     print("Press add pet");
   }
 
-  @override
-  void initState() {
+  // 从服务器获取宠物列表
+  _fetchPets() async {
     setState(() {
       _isLoading = true;
     });
-    super.initState();
-    _loadAllData();
-  }
-
-  _loadAllData() async {
-    _pets = await PetAPI.pets(userId: int.parse(Global.accessToken));
+    _apiResponse =
+        await PetAPI.getAllPets(userId: int.parse(Global.accessToken));
     setState(() {
       _isLoading = false;
     });
-    print(_pets);
+  }
+
+  @override
+  void initState() {
+    _fetchPets();
+    super.initState();
   }
 
   @override
@@ -47,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
-          height: cddSetHeight(300.0),
+          height: cddSetHeight(250.0),
           child: Image.asset(
             "assets/images/pet_header.png",
             fit: BoxFit.cover,
@@ -59,9 +61,9 @@ class _HomePageState extends State<HomePage> {
           body: Column(
             children: <Widget>[
               _buildAddPet(),
-              SizedBox(height: cddSetHeight(10)),
+              SizedBox(height: cddSetHeight(20)),
               _buildPetList(),
-              SizedBox(height: cddSetHeight(10)),
+              // SizedBox(height: cddSetHeight(10)),
             ],
           ),
         ),
@@ -69,13 +71,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // 添加宠物
+  // 构建添加宠物
   Widget _buildAddPet() {
     return Padding(
       padding: EdgeInsets.only(
         left: cddSetWidth(43.0),
         right: cddSetWidth(43.0),
-        top: cddSetHeight(300 - MediaQuery.of(context).padding.top),
+        top: cddSetHeight(250 - MediaQuery.of(context).padding.top),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,25 +103,136 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // 宠物列表
+  // 构建宠物列表
   Widget _buildPetList() {
-    return _isLoading
-        ? Center(child: CircularProgressIndicator())
-        : Expanded(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Swiper(
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: Colors.blueGrey,
-                  );
-                },
-                itemCount: 4,
-                viewportFraction: 0.5,
-                scale: 0.9,
-                loop: false,
+    return Builder(builder: (_) {
+      if (_isLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
+      if (_apiResponse.error) {
+        return Center(child: Text(_apiResponse.errorMessage));
+      }
+      if (_apiResponse.data.length == 0) {
+        return Center(
+          child: Text("No pet"),
+        );
+      }
+      return SizedBox(
+        height: cddSetHeight(320),
+        child: Swiper(
+          onTap: (index) async {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => PetPage(
+                  petId: _apiResponse.data[index].id,
+                ),
               ),
+            );
+            _fetchPets();
+          },
+          itemBuilder: (context, index) {
+            return _buildPetCard(index);
+          },
+          itemCount: _apiResponse.data.length,
+          viewportFraction: 0.5,
+          scale: 0.6,
+          loop: false,
+          pagination: SwiperPagination(
+            // alignment: Alignment.bottomCenter,
+            margin: EdgeInsets.only(bottom: cddSetHeight(5)),
+            builder: SwiperPagination.dots,
+          ),
+        ),
+      );
+    });
+  }
+
+  // 构建宠物卡片
+  Widget _buildPetCard(int index) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: Radii.k10pxRadius,
+        gradient: AppColor.petCardColors[index % AppColor.petCardColors.length],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              left: cddSetWidth(10.0),
+              top: cddSetHeight(10.0),
             ),
-          );
+            child: _apiResponse.data[index].species == 'cat'
+                ? Icon(
+                    Iconfont.cat,
+                    size: cddSetFontSize(40.0),
+                    color: Colors.white,
+                  )
+                : Icon(
+                    Iconfont.dog4,
+                    size: cddSetFontSize(40.0),
+                    color: Colors.white,
+                  ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: cddSetHeight(15.0)),
+                height: cddSetWidth(100),
+                width: cddSetWidth(100),
+                child: ClipOval(
+                  child: Image.network(
+                    _apiResponse.data[index].avatar,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: cddSetHeight(15)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                _apiResponse.data[index].nickname,
+                style: TextStyle(
+                  fontSize: cddSetFontSize(16),
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: cddSetHeight(15)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "${cddGetAge(_apiResponse.data[index].birthday)} years old",
+                style: TextStyle(
+                  fontSize: cddSetFontSize(14),
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: cddSetHeight(10)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                _apiResponse.data[index].introduction,
+                style: TextStyle(
+                  fontSize: cddSetFontSize(14),
+                  color: Colors.black.withOpacity(0.7),
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

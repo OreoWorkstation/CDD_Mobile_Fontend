@@ -1,7 +1,6 @@
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class HttpUtil {
   static HttpUtil _instance = HttpUtil._internal();

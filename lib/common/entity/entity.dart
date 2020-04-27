@@ -1,5 +1,6 @@
 library entity;
 
+export 'api_response.dart';
 export 'cost.dart';
 export 'diary.dart';
 export 'login.dart';
