@@ -3,17 +3,6 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 
 class PetAPI {
   /// 获取宠物列表
-  static Future<List<PetEntity>> pets({
-    int userId,
-  }) async {
-    var response = await HttpUtil().get("/pet", params: {
-      "user_id": userId,
-    });
-    var data = response.data['data'] as List;
-    return data.map((item) => PetEntity.fromJson(item)).toList();
-  }
-
-  /// 获取宠物列表
   static Future<APIResponse<List<PetEntity>>> getAllPets({
     int userId,
   }) {
@@ -47,6 +36,21 @@ class PetAPI {
     }).catchError((_) {
       return APIResponse<PetEntity>(
           error: true, errorMessage: "An error occured");
+    });
+  }
+
+  /// 添加宠物
+  static Future<APIResponse<bool>> insertPet({
+    PetEntity pet,
+  }) {
+    print(pet.toJson());
+    return HttpUtil().post("/pet", params: pet.toJson()).then((response) {
+      if (response.statusCode == 200) {
+        return APIResponse<bool>(data: true);
+      }
+      return APIResponse<bool>(error: true, errorMessage: "An error occured");
+    }).catchError((_) {
+      return APIResponse<bool>(error: true, errorMessage: "An error occured");
     });
   }
 }

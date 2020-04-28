@@ -15,6 +15,9 @@ class AppColor {
   /// 主控件-文本 白色
   static const Color primaryElementText = Color.fromARGB(255, 255, 255, 255);
 
+  /// 主控件-按钮背景 红色
+  static const Color primaryElementRed = Color.fromARGB(255, 255, 45, 85);
+
   // *****************************
 
   /// 第二种控件-背景色 灰色
@@ -22,6 +25,9 @@ class AppColor {
 
   /// 第三种控件-背景色 浅灰色
   static const Color thirdElement = Color.fromARGB(255, 246, 246, 246);
+
+  /// 第二种文本颜色 浅灰色
+  static const Color secondaryTextColor = Color.fromARGB(255, 60, 60, 67);
 
   // ****************************
 
@@ -51,13 +57,19 @@ class AppColor {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     ),
-    LinearGradient(
-      colors: [
-        Color.fromARGB(255, 75, 108, 183),
-        Color.fromARGB(255, 24, 40, 72),
-      ],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-    ),
   ];
+
+  // ****************************
+
+  /// 宠物体重背景色
+  static const Color weightColor = Color.fromARGB(255, 68, 217, 168);
+
+  /// 宠物日记背景色
+  static const Color diaryColor = Color.fromARGB(255, 63, 100, 245);
+
+  /// 宠物消费背景色
+  static const Color costColor = Color.fromARGB(255, 197, 109, 241);
+
+  /// 宠物相片背景色
+  static const Color photoColor = Color.fromARGB(255, 250, 59, 148);
 }

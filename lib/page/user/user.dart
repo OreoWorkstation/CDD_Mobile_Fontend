@@ -2,7 +2,9 @@ import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
+import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
+import 'package:cdd_mobile_frontend/page/user/user_edit.dart';
 import 'package:flutter/material.dart';
 
 class UserPage extends StatefulWidget {
@@ -33,6 +35,20 @@ class _UserPageState extends State<UserPage> {
     });
   }
 
+  // 处理编辑用户信息
+  _handleEditUserInfo() async {
+    print("press edit");
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => UserEditPage(apiResponse: _apiResponse),
+    ));
+    _fetchUserInfo();
+  }
+
+  // 处理退出登录按钮
+  _handleLogout() {
+    print("press log out button");
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isLoading
@@ -48,10 +64,13 @@ class _UserPageState extends State<UserPage> {
                   flexibleSpace: _buildUserHeader(),
                   actions: <Widget>[
                     IconButton(
-                      onPressed: () {},
+                      onPressed: _handleEditUserInfo,
                       icon: Icon(Iconfont.bianji1),
                     ),
                   ],
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(_buildSliverList()),
                 ),
               ],
             ),
@@ -106,6 +125,17 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  // 用户界面Body
+  List<Widget> _buildSliverList() {
+    return [
+      _buildSliverListItem(Icons.settings, "系统设置", () {}),
+      _buildSliverListItem(Icons.help, "帮助", () {}),
+      _buildSliverListItem(Icons.info_outline, "关于我们", () {}),
+      _buildLogoutButton(),
+    ];
+  }
+
+  // 用户界面头部：宠物，动态，关注，粉丝
   Widget _buildUserState() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: cddSetWidth(50)),
@@ -121,6 +151,7 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  // 封装用户界面头部
   Widget _buildUserStateItem(String title, int value, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -135,6 +166,37 @@ class _UserPageState extends State<UserPage> {
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
         ],
+      ),
+    );
+  }
+
+  // Body List Item
+  Widget _buildSliverListItem(
+      IconData prefixIcon, String title, VoidCallback onTap) {
+    return ListTile(
+      onTap: onTap,
+      title: Text(title,
+          style: TextStyle(fontSize: cddSetFontSize(18), color: Colors.black)),
+      leading: Icon(prefixIcon, color: Colors.black),
+      trailing: Icon(Icons.arrow_forward_ios, color: Colors.black),
+    );
+  }
+
+  // 退出登录按钮
+  _buildLogoutButton() {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: cddSetWidth(77),
+        right: cddSetWidth(77),
+        top: cddSetHeight(20),
+      ),
+      child: btnFlatButtonWidget(
+        onPressed: _handleLogout,
+        width: 221,
+        height: 48,
+        bgColor: AppColor.primaryElementRed,
+        title: "退出登录",
+        fontSize: 19,
       ),
     );
   }

@@ -15,7 +15,7 @@ class PetEntity {
   DateTime updateTime;
 
   PetEntity({
-    this.id,
+    this.id = 0,
     this.userId,
     this.nickname,
     this.gender,
@@ -23,10 +23,10 @@ class PetEntity {
     this.avatar,
     this.introduction,
     this.birthday,
-    this.weight,
-    this.totalCost,
-    this.photoNumber,
-    this.diaryNumber,
+    this.weight = 0.0,
+    this.totalCost = 0.0,
+    this.photoNumber = 0,
+    this.diaryNumber = 0,
     this.createTime,
     this.updateTime,
   });
@@ -56,12 +56,12 @@ class PetEntity {
         "species": species,
         "avatar": avatar,
         "introduction": introduction,
-        "birthday": birthday,
+        "birthday": birthday.toIso8601String(),
         "weight": weight,
         "totalCost": totalCost,
         "photoNumber": photoNumber,
         "diaryNumber": diaryNumber,
-        "createTime": createTime,
-        "updateTime": updateTime,
+        "createTime": createTime == null ? "" : createTime.toIso8601String(),
+        "updateTime": updateTime == null ? "" : updateTime.toIso8601String(),
       };
 }

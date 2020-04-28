@@ -2,7 +2,11 @@ import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
+import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
+import 'package:cdd_mobile_frontend/page/cost/cost.dart';
+import 'package:cdd_mobile_frontend/page/photo/photo.dart';
+import 'package:cdd_mobile_frontend/page/weight/weight.dart';
 import 'package:flutter/material.dart';
 
 class PetPage extends StatefulWidget {
@@ -35,6 +39,12 @@ class _PetPageState extends State<PetPage> {
     });
   }
 
+  // 处理编辑宠物信息
+  _handleEditPet() {}
+
+  // 处理删除宠物
+  _handleDeletePet(context) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +59,7 @@ class _PetPageState extends State<PetPage> {
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-              print("press action");
-            },
+            onPressed: () => _openBottomSheet(context),
             icon: Icon(Icons.more_horiz, color: Colors.black),
           ),
         ],
@@ -75,6 +83,32 @@ class _PetPageState extends State<PetPage> {
     );
   }
 
+  // 打开底部弹窗
+  _openBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return commonBottomSheetWidget(
+          context: context,
+          editOnTap: _handleEditPet(),
+          deleteOnTap: () {
+            Navigator.of(context).pop();
+            showDialog(
+              context: context,
+              builder: (context) {
+                return DeleteConfirmDialog("确认删除宠物吗?", () {
+                  Navigator.pop(context);
+                });
+              },
+            );
+            // Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
   // 构建宠物界面头部信息
   Widget _buildPetHeader() {
     return Row(
@@ -84,7 +118,11 @@ class _PetPageState extends State<PetPage> {
           width: cddSetWidth(46),
           height: cddSetWidth(46),
           child: ClipOval(
-            child: Image.network(_apiResponse.data.avatar, fit: BoxFit.cover),
+            child: _apiResponse.data.avatar == ""
+                ? _apiResponse.data.species == 'cat'
+                    ? Image.asset("assets/images/cat.jpg", fit: BoxFit.cover)
+                    : Image.asset("assets/images/dog.png", fit: BoxFit.cover)
+                : Image.network(_apiResponse.data.avatar, fit: BoxFit.cover),
           ),
         ),
         SizedBox(width: cddSetWidth(21)),
@@ -93,7 +131,9 @@ class _PetPageState extends State<PetPage> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         SizedBox(width: cddSetWidth(16)),
-        Icon(Iconfont.nv3, color: Color.fromARGB(255, 241, 158, 194)),
+        _apiResponse.data.gender == 0
+            ? Icon(Iconfont.nan2, color: Colors.blue)
+            : Icon(Iconfont.nv3, color: Color.fromARGB(255, 241, 158, 194)),
       ],
     );
   }
@@ -149,14 +189,19 @@ class _PetPageState extends State<PetPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             _buildPetValueItem(
-              Color.fromARGB(255, 68, 217, 168),
+              AppColor.weightColor,
               Iconfont.weight,
               "体重值",
               "${_apiResponse.data.weight} Kg",
-              () {},
+              () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WeightPage(),
+                ));
+                _fetchPetInfo();
+              },
             ),
             _buildPetValueItem(
-              Color.fromARGB(255, 63, 100, 245),
+              AppColor.diaryColor,
               Iconfont.riji,
               "日记",
               "${_apiResponse.data.diaryNumber}",
@@ -169,18 +214,28 @@ class _PetPageState extends State<PetPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             _buildPetValueItem(
-              Color.fromARGB(255, 197, 109, 241),
+              AppColor.costColor,
               Iconfont.zhangdan,
               "账单",
               "￥${_apiResponse.data.totalCost}",
-              () {},
+              () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CostPage(),
+                ));
+                _fetchPetInfo();
+              },
             ),
             _buildPetValueItem(
-              Color.fromARGB(255, 250, 59, 148),
+              AppColor.photoColor,
               Iconfont.xiangce,
               "相册",
               "${_apiResponse.data.photoNumber}",
-              () {},
+              () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PhotoPage(),
+                ));
+                _fetchPetInfo();
+              },
             ),
           ],
         ),

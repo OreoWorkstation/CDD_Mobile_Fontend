@@ -4,7 +4,8 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
-import 'package:cdd_mobile_frontend/page/home/pet/pet.dart';
+import 'package:cdd_mobile_frontend/page/pet/pet.dart';
+import 'package:cdd_mobile_frontend/page/pet/pet_add_first.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -21,8 +22,12 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = false;
 
   // 处理添加宠物按钮
-  _handleAddPetButton() {
+  _handleAddPetButton() async {
     print("Press add pet");
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PetAddFirstPage(),
+    ));
+    _fetchPets();
   }
 
   // 从服务器获取宠物列表
@@ -152,7 +157,8 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: Radii.k10pxRadius,
-        gradient: AppColor.petCardColors[index % AppColor.petCardColors.length],
+        gradient: AppColor
+            .petCardColors[_apiResponse.data[index].species == 'cat' ? 0 : 1],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,10 +188,16 @@ class _HomePageState extends State<HomePage> {
                 height: cddSetWidth(100),
                 width: cddSetWidth(100),
                 child: ClipOval(
-                  child: Image.network(
-                    _apiResponse.data[index].avatar,
-                    fit: BoxFit.cover,
-                  ),
+                  child: _apiResponse.data[index].avatar == ""
+                      ? _apiResponse.data[index].species == 'cat'
+                          ? Image.asset("assets/images/cat.jpg",
+                              fit: BoxFit.cover)
+                          : Image.asset("assets/images/dog.png",
+                              fit: BoxFit.cover)
+                      : Image.network(
+                          _apiResponse.data[index].avatar,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ],
