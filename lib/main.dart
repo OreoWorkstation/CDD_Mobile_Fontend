@@ -1,5 +1,7 @@
 import 'package:cdd_mobile_frontend/global.dart';
+import 'package:cdd_mobile_frontend/page/application/application.dart';
 import 'package:cdd_mobile_frontend/page/index/index.dart';
+import 'package:cdd_mobile_frontend/page/weight/weight.dart';
 import 'package:flutter/material.dart';
 
 void main() => Global.init().then((e) => runApp(MyApp()));
@@ -13,6 +15,10 @@ class MyApp extends StatelessWidget {
       title: "Cat Dog Diary",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      routes: {
+        "/application": (context) => ApplicationPage(),
+        "/weight": (context) => WeightPage(),
+      },
       home: IndexPage(),
     );
   }

@@ -46,9 +46,7 @@ class _SignInPageState extends State<SignInPage> {
       print(res.errorMessage);
     } else {
       Global.saveToken(res.data.toString());
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ApplicationPage(),
-      ));
+      Navigator.of(context).pushReplacementNamed("/application");
     }
   }
 

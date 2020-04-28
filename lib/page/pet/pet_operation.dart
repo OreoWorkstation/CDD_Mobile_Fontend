@@ -1,5 +1,4 @@
 import 'package:cdd_mobile_frontend/common/api/api.dart';
-import 'package:cdd_mobile_frontend/common/entity/api_response.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
@@ -9,44 +8,96 @@ import 'package:cdd_mobile_frontend/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
-class PetAddSecondPage extends StatefulWidget {
-  final petSpecies;
-  PetAddSecondPage({Key key, @required this.petSpecies}) : super(key: key);
+class PetOperation extends StatefulWidget {
+  final int petId;
+  final String species;
+  final String avatar;
+  final String nickname;
+  final String introduction;
+  final int gender;
+  final DateTime birthday;
+  final int operation; // 0: 添加, 1: 更新
+
+  const PetOperation({
+    Key key,
+    @required this.species,
+    this.avatar,
+    this.nickname,
+    this.introduction,
+    this.gender,
+    this.birthday,
+    @required this.operation,
+    this.petId,
+  }) : super(key: key);
 
   @override
-  _PetAddSecondPageState createState() => _PetAddSecondPageState();
+  _PetOperationState createState() => _PetOperationState();
 }
 
-class _PetAddSecondPageState extends State<PetAddSecondPage> {
+class _PetOperationState extends State<PetOperation> {
   APIResponse<bool> _apiResponse;
 
-  int _genderValue = 0;
   TextEditingController _nicknameController = TextEditingController();
   TextEditingController _introductionController = TextEditingController();
-  DateTime _dt = DateTime.now();
 
-  // 处理添加宠物
-  _handleAddPet() async {
-    _apiResponse = await PetAPI.insertPet(
-      pet: PetEntity(
-        userId: int.parse(Global.accessToken),
-        nickname: _nicknameController.text,
-        gender: _genderValue,
-        species: widget.petSpecies,
-        birthday: _dt,
-        introduction: _introductionController.text,
-      ),
-    );
-    if (_apiResponse.data == true) {
-      print("Add success");
-      Navigator.of(context).pop();
+  int _gender = 0;
+
+  DateTime _birthday = DateTime.now();
+
+  String _avatar = "";
+
+  @override
+  void initState() {
+    _gender = widget.gender ?? 0;
+    _birthday = widget.birthday ?? DateTime.now();
+    _nicknameController.text = widget.nickname;
+    _introductionController.text = widget.introduction;
+    _avatar = widget.avatar ?? "";
+    super.initState();
+  }
+
+  _handleFinishButton() async {
+    if (widget.operation == 0) {
+      _apiResponse = await PetAPI.insertPet(
+        pet: PetEntity(
+          userId: int.parse(Global.accessToken),
+          nickname: _nicknameController.text,
+          gender: _gender,
+          species: widget.species,
+          birthday: _birthday,
+          introduction: _introductionController.text,
+        ),
+      );
+      if (_apiResponse.data == true) {
+        Navigator.of(context).popUntil(ModalRoute.withName("/application"));
+      } else {
+        print(_apiResponse.errorMessage);
+      }
     } else {
-      print(_apiResponse.errorMessage);
+      _apiResponse = await PetAPI.updatePet(
+        pet: PetEntity(
+          id: widget.petId,
+          userId: int.parse(Global.accessToken),
+          avatar: _avatar,
+          nickname: _nicknameController.text,
+          gender: _gender,
+          species: widget.species,
+          birthday: _birthday,
+          introduction: _introductionController.text,
+        ),
+      );
+      if (_apiResponse.data == true) {
+        print("Update success");
+        Navigator.of(context).pop();
+      } else {
+        print(_apiResponse.errorMessage);
+      }
     }
   }
 
-  // 处理更改头像
-  _handleChangeAvatar() {}
+  _handleChangeAvatar() {
+    print("press change avatar button");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +105,8 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         brightness: Brightness.light,
-        title: Text("添加宠物", style: TextStyle(color: Colors.black)),
+        title: Text(widget.operation == 0 ? "添加宠物" : "编辑",
+            style: TextStyle(color: Colors.black)),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
@@ -64,7 +116,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
         actions: <Widget>[
-          textBtnFlatButtonWidget(onPressed: _handleAddPet, title: "完成"),
+          textBtnFlatButtonWidget(onPressed: _handleFinishButton, title: "完成"),
         ],
       ),
       body: SingleChildScrollView(
@@ -91,7 +143,6 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
     );
   }
 
-  // 选择头像
   _buildAvatar() {
     return Center(
       child: Column(
@@ -100,12 +151,17 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
             width: cddSetWidth(70),
             height: cddSetWidth(70),
             child: ClipOval(
-              child: Image.asset(
-                widget.petSpecies == "cat"
-                    ? "assets/images/cat.jpg"
-                    : "assets/images/dog.png",
-                fit: BoxFit.cover,
-              ),
+              child: _avatar == ""
+                  ? Image.asset(
+                      widget.species == "cat"
+                          ? "assets/images/cat.jpg"
+                          : "assets/images/dog.png",
+                      fit: BoxFit.cover,
+                    )
+                  : Image.network(
+                      _avatar,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           SizedBox(height: cddSetHeight(5)),
@@ -118,7 +174,6 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
     );
   }
 
-  // 构建昵称项
   _buildNickName() {
     return _buildFormListItem(
         "昵称",
@@ -138,7 +193,6 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
         ));
   }
 
-  // 构建性别项
   _buildGender() {
     return _buildFormListItem(
       "性别",
@@ -148,10 +202,10 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
             child: RadioListTile(
               value: 0,
               title: Text("男"),
-              groupValue: _genderValue,
+              groupValue: _gender,
               onChanged: (value) {
                 setState(() {
-                  _genderValue = value;
+                  _gender = value;
                 });
               },
             ),
@@ -160,10 +214,10 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
             child: RadioListTile(
               value: 1,
               title: Text("女"),
-              groupValue: _genderValue,
+              groupValue: _gender,
               onChanged: (value) {
                 setState(() {
-                  _genderValue = value;
+                  _gender = value;
                 });
               },
             ),
@@ -173,23 +227,21 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
     );
   }
 
-  // 构建出生日期项
   _buildBirthday() {
     return _buildFormListItem(
       "出生日期",
       cddDatePickerWidget(
         context: context,
-        dt: _dt,
+        dt: _birthday,
         onConfirm: (Picker picker, List value) {
           setState(() {
-            _dt = (picker.adapter as DateTimePickerAdapter).value;
+            _birthday = (picker.adapter as DateTimePickerAdapter).value;
           });
         },
       ),
     );
   }
 
-  //构建介绍项
   _buildIntroduction() {
     return _buildFormListItem(
         "介绍",
@@ -209,7 +261,6 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
         ));
   }
 
-  // 封装表单列表项格式
   _buildFormListItem(String title, Widget operation) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,

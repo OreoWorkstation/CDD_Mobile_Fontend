@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true;
     });
     _apiResponse =
-        await PetAPI.getAllPets(userId: int.parse(Global.accessToken));
+        await PetAPI.getPetList(userId: int.parse(Global.accessToken));
     setState(() {
       _isLoading = false;
     });

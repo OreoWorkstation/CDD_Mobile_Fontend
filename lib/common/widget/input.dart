@@ -38,3 +38,23 @@ Widget inputTextEditWidget({
     ),
   );
 }
+
+Widget buildFormListItem({@required String title, @required Widget operation}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Text(
+        title,
+        style: TextStyle(
+          color: AppColor.primaryText.withOpacity(0.8),
+          fontSize: cddSetFontSize(17),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      SizedBox(width: cddSetWidth(60)),
+      Expanded(child: operation),
+      // operation,
+    ],
+  );
+}

@@ -59,7 +59,7 @@ class DeleteConfirmDialog extends Dialog {
                       fontSize: 13,
                     ),
                     btnFlatButtonWidget(
-                      onPressed: () {},
+                      onPressed: handleDelete,
                       bgColor: AppColor.primaryElementRed,
                       width: 84,
                       height: 40,

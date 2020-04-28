@@ -131,8 +131,8 @@ class HttpUtil {
     if (_authorization != null) {
       requestOptions = requestOptions.merge(headers: _authorization);
     }
-    var response =
-        await dio.delete(path, data: params, options: requestOptions);
+    var response = await dio.delete(path,
+        queryParameters: params, options: requestOptions);
     return response;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
+import 'package:cdd_mobile_frontend/page/pet/pet_operation.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
@@ -40,10 +41,37 @@ class _PetPageState extends State<PetPage> {
   }
 
   // 处理编辑宠物信息
-  _handleEditPet() {}
+  _handleEditPet(BuildContext context) async {
+    await Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => PetOperation(
+        operation: 1,
+        petId: _apiResponse.data.id,
+        species: _apiResponse.data.species,
+        avatar: _apiResponse.data.avatar,
+        birthday: _apiResponse.data.birthday,
+        nickname: _apiResponse.data.nickname,
+        introduction: _apiResponse.data.introduction,
+        gender: _apiResponse.data.gender,
+      ),
+    ));
+    _fetchPetInfo();
+  }
 
   // 处理删除宠物
-  _handleDeletePet(context) {}
+  _handleDeletePet(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DeleteConfirmDialog(
+          "确认删除宠物吗?",
+          () async {
+            await PetAPI.deletePet(petId: widget.petId);
+            Navigator.popUntil(context, ModalRoute.withName("/application"));
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,19 +119,8 @@ class _PetPageState extends State<PetPage> {
       builder: (context) {
         return commonBottomSheetWidget(
           context: context,
-          editOnTap: _handleEditPet(),
-          deleteOnTap: () {
-            Navigator.of(context).pop();
-            showDialog(
-              context: context,
-              builder: (context) {
-                return DeleteConfirmDialog("确认删除宠物吗?", () {
-                  Navigator.pop(context);
-                });
-              },
-            );
-            // Navigator.of(context).pop();
-          },
+          editOnTap: () => _handleEditPet(context),
+          deleteOnTap: () => _handleDeletePet(context),
         );
       },
     );
@@ -195,7 +212,7 @@ class _PetPageState extends State<PetPage> {
               "${_apiResponse.data.weight} Kg",
               () async {
                 await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WeightPage(),
+                  builder: (context) => WeightPage(petId: widget.petId),
                 ));
                 _fetchPetInfo();
               },
@@ -220,7 +237,7 @@ class _PetPageState extends State<PetPage> {
               "￥${_apiResponse.data.totalCost}",
               () async {
                 await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CostPage(),
+                  builder: (context) => CostPage(petId: widget.petId),
                 ));
                 _fetchPetInfo();
               },

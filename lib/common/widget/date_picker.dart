@@ -8,38 +8,41 @@ Widget cddDatePickerWidget({
   @required BuildContext context,
   @required DateTime dt,
   @required PickerConfirmCallback onConfirm,
+  bool canTap = true,
 }) {
   return GestureDetector(
     onTap: () {
-      Picker(
-        cancelText: "取消",
-        confirmText: "确认",
-        adapter: DateTimePickerAdapter(
-          type: PickerDateTimeType.kYMD,
-          isNumberMonth: true,
-          yearSuffix: "年",
-          monthSuffix: "月",
-          daySuffix: "日",
-          value: dt,
-        ),
-        cancelTextStyle: TextStyle(
-          color: AppColor.primaryElement,
-          fontSize: Picker.DefaultTextSize,
-        ),
-        confirmTextStyle: TextStyle(
-          color: AppColor.primaryElement,
-          fontSize: Picker.DefaultTextSize,
-        ),
-        selectedTextStyle: TextStyle(color: AppColor.primaryElement),
-        title: Text("请选择日期"),
-        onConfirm: onConfirm,
-      ).showModal(context);
+      if (canTap)
+        Picker(
+          cancelText: "取消",
+          confirmText: "确认",
+          adapter: DateTimePickerAdapter(
+            type: PickerDateTimeType.kYMD,
+            isNumberMonth: true,
+            yearSuffix: "年",
+            monthSuffix: "月",
+            daySuffix: "日",
+            value: dt,
+          ),
+          cancelTextStyle: TextStyle(
+            color: AppColor.primaryElement,
+            fontSize: Picker.DefaultTextSize,
+          ),
+          confirmTextStyle: TextStyle(
+            color: AppColor.primaryElement,
+            fontSize: Picker.DefaultTextSize,
+          ),
+          selectedTextStyle: TextStyle(color: AppColor.primaryElement),
+          title: Text("请选择日期"),
+          onConfirm: onConfirm,
+        ).showModal(context);
     },
     child: Text(
       cddFormatBirthday(dt),
       style: TextStyle(
-        color: AppColor.secondaryTextColor.withOpacity(0.6),
-        fontSize: 17,
+        color: AppColor.primaryText,
+        fontWeight: FontWeight.w500,
+        fontSize: cddSetFontSize(18),
       ),
     ),
   );

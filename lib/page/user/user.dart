@@ -37,7 +37,6 @@ class _UserPageState extends State<UserPage> {
 
   // 处理编辑用户信息
   _handleEditUserInfo() async {
-    print("press edit");
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => UserEditPage(apiResponse: _apiResponse),
     ));
