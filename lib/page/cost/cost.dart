@@ -2,6 +2,7 @@ import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
+import 'package:cdd_mobile_frontend/common/widget/chart.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/cost/cost_operation.dart';
@@ -115,11 +116,16 @@ class _CostPageState extends State<CostPage> {
 
   // 构建曲线图
   _buildChart() {
+    List<LineSales> dataLine = _apiResponse.data.length == 0
+        ? []
+        : _apiResponse.data.map((item) {
+            return LineSales(item.createTime, item.costValue);
+          }).toList();
     return Container(
       margin: EdgeInsets.only(top: cddSetHeight(10), bottom: cddSetHeight(10)),
       width: double.infinity,
       height: cddSetHeight(210),
-      color: Colors.black,
+      child: cddLineChart(dataLine),
     );
   }
 

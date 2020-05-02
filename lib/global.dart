@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'common/value/value.dart';
 
@@ -21,6 +22,9 @@ class Global {
     // 工具初始化
     await StorageUtil.init();
     HttpUtil();
+
+    // 初始化语言
+    initializeDateFormatting();
 
     // APP是否第一次打开
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);

@@ -1,5 +1,6 @@
 import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
+import 'package:cdd_mobile_frontend/page/diary/diary.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_operation.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
@@ -222,7 +223,11 @@ class _PetPageState extends State<PetPage> {
               Iconfont.riji,
               "日记",
               "${_apiResponse.data.diaryNumber}",
-              () {},
+              () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DiaryPage(petId: widget.petId),
+                ));
+              },
             ),
           ],
         ),

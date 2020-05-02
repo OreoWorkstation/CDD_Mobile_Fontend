@@ -27,13 +27,8 @@ String cddGetBirthdayWithoutYear(DateTime dt) {
 }
 
 /// xxxx-xx-xx 为了转成DateDate
-String cddFormatBirthdayToRestore(DateTime dt) {
-  String ans = "${dt.year}-";
-  if (dt.month < 10) ans = ans + "0";
-  ans = ans + "${dt.month}-";
-  if (dt.day < 10) ans = ans + "0";
-  ans = ans + "${dt.day}";
-  return ans;
+DateTime cddFormatDatetime(DateTime dt) {
+  return DateTime(dt.year, dt.month, dt.day);
 }
 
 /// xxxx年x月-x日
@@ -46,4 +41,47 @@ String cddGetDifferenceInDay(DateTime dt) {
   var now = DateTime.now();
   var difference = now.difference(dt);
   return "${difference.inDays.toString()}天";
+}
+
+Map<int, String> _number2Chinese = {
+  1: "一",
+  2: "二",
+  3: "三",
+  4: "四",
+  5: "五",
+  6: "六",
+  7: "七",
+  8: "八",
+  9: "九",
+  10: "十",
+  11: "十一",
+  12: "十二",
+};
+
+/// 获取中文星期：星期一
+String cddGetChineseWeekday(DateTime dt) {
+  String res = "星期";
+  for (int i = 1; i <= 7; ++i) {
+    if (dt.weekday == i) {
+      if (i == 7)
+        res += "日";
+      else
+        res += _number2Chinese[dt.weekday];
+      break;
+    }
+  }
+  return res;
+}
+
+/// 获取中文月份：一月
+String cddGetChineseMonth(DateTime dt) {
+  String res = "";
+  for (int i = 1; i <= 12; ++i) {
+    if (dt.month == i) {
+      res += _number2Chinese[dt.month];
+      break;
+    }
+  }
+  res += "月";
+  return res;
 }
