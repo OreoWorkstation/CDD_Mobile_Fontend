@@ -23,8 +23,5 @@ class _IndexPageState extends State<IndexPage> {
     );
 
     return Global.isFirstOpen == true ? WelcomePage() : SignInPage();
-    // return Scaffold(
-    //   body: Global.isFirstOpen == true ? WelcomePage() : SignInPage(),
-    // );
   }
 }

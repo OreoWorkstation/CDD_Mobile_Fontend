@@ -23,6 +23,12 @@ dependencies:
   # Provider
   provider: ^4.0.5+1
 
+  # Toast
+  oktoast: ^2.3.2
+
+  # 刷新
+  pull_to_refresh: ^1.5.8
+
   # 屏幕适配
   flutter_screenutil: ^1.1.0
 

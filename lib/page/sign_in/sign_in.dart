@@ -4,7 +4,6 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
-import 'package:cdd_mobile_frontend/page/application/application.dart';
 import 'package:cdd_mobile_frontend/page/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
