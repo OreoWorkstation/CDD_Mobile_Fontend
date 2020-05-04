@@ -5,9 +5,13 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/page/sign_up/sign_up.dart';
+import 'package:cdd_mobile_frontend/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key key}) : super(key: key);
@@ -34,31 +38,27 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   // 执行登录操作
-  _handleSignIn() async {
-    UserLoginRequestEntity params = UserLoginRequestEntity(
-      account: _accountController.value.text,
-      password: _passwordController.value.text,
-    );
-
-    var res = await UserAPI.login(params: params);
-    if (res.error == true) {
-      print(res.errorMessage);
+  _handleSignIn(UserProvider userProvider) async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    bool isSuccess = await userProvider.signIn(
+        _accountController.text, _passwordController.text);
+    if (isSuccess) {
+      Navigator.of(context).pushNamed("/application");
     } else {
-      Global.saveToken(res.data.toString());
-      Navigator.of(context).pushReplacementNamed("/application");
+      userProvider.showErrorMessage(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       appBar: appBarWidget(),
-      body: GestureDetector(
-        onTap: () {
-          // 点击空白处关闭键盘
-          FocusScope.of(context).requestFocus(blankNode);
-        },
+      body: LoadingOverlay(
+        isLoading: userProvider.isBusy,
+        opacity: 0.5,
+        color: Colors.transparent,
+        progressIndicator: CircularProgressIndicator(),
         child: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height -
@@ -68,7 +68,7 @@ class _SignInPageState extends State<SignInPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 _buildLogo(),
-                _buildLoginForm(),
+                _buildLoginForm(userProvider),
                 Spacer(),
                 _buildRegisterItem(),
               ],
@@ -98,7 +98,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildLoginForm() {
+  Widget _buildLoginForm(UserProvider userProvider) {
     return Container(
       width: cddSetWidth(350.0),
       height: cddSetHeight(380.0),
@@ -169,7 +169,7 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 btnFlatButtonWidget(
-                  onPressed: () => _handleSignIn(),
+                  onPressed: () => _handleSignIn(userProvider),
                   width: 240.0,
                   height: 48.0,
                   title: "登录",

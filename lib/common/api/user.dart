@@ -15,7 +15,8 @@ class UserAPI {
         if (response.data['code'] == 0)
           return APIResponse<int>(data: response.data['data']);
         else
-          return APIResponse<int>(error: true, errorMessage: "账号密码不匹配");
+          return APIResponse<int>(
+              error: true, errorMessage: response.data['msg']);
       }
       return APIResponse<int>(error: true, errorMessage: "An error occured");
     }).catchError((_) {
