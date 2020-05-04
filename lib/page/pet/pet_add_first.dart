@@ -1,3 +1,4 @@
+import 'package:cdd_mobile_frontend/page/pet/pet_add_second.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_operation.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
@@ -23,50 +24,65 @@ class PetAddFirstPage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: cddSetWidth(23)),
+        padding: EdgeInsets.symmetric(
+          horizontal: cddSetWidth(23),
+          vertical: cddSetHeight(60),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: cddSetHeight(60)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "选择宠物类别",
-                  style: TextStyle(
-                    fontSize: cddSetFontSize(17),
-                    color: Colors.black,
-                  ),
-                )
-              ],
-            ),
+            _buildHeader(),
             SizedBox(height: cddSetHeight(32)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _buildPetOptionCart(context, "assets/images/cat.jpg", "猫"),
-                _buildPetOptionCart(context, "assets/images/dog.png", "狗"),
-              ],
-            ),
+            _buildPetOption(context),
           ],
         ),
       ),
     );
   }
 
+  // 头部文字布局
+  Widget _buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          "选择宠物类别",
+          style: TextStyle(
+            fontSize: cddSetFontSize(17),
+            color: Colors.black,
+          ),
+        )
+      ],
+    );
+  }
+
+  // 宠物选项布局
+  Widget _buildPetOption(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        _buildPetOptionCart(context, "assets/images/cat.jpg", 0),
+        _buildPetOptionCart(context, "assets/images/dog.png", 1),
+      ],
+    );
+  }
+
   Widget _buildPetOptionCart(
-      BuildContext context, String imagePath, String title) {
+    BuildContext context,
+    String imagePath,
+    int species,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => PetOperation(
-                operation: 0,
-                species: title == "猫" ? "cat" : "dog",
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) =>
+                    PetAddSecondPage(species: species == 0 ? "cat" : "dog"),
               ),
-            ));
+            );
           },
           child: Container(
             width: cddSetWidth(150),
@@ -82,9 +98,10 @@ class PetAddFirstPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: cddSetHeight(10)),
-        Text(title,
-            style:
-                TextStyle(fontSize: cddSetFontSize(17), color: Colors.black)),
+        Text(
+          species == 0 ? "猫" : "狗",
+          style: TextStyle(fontSize: cddSetFontSize(17), color: Colors.black),
+        ),
       ],
     );
   }

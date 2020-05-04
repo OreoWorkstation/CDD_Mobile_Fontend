@@ -32,9 +32,11 @@ class _SignInPageState extends State<SignInPage> {
   _handleNavSignUp() async {
     _accountController.clear();
     _passwordController.clear();
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => SignUpPage(),
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SignUpPage(),
+      ),
+    );
   }
 
   // 执行登录操作
@@ -43,7 +45,7 @@ class _SignInPageState extends State<SignInPage> {
     bool isSuccess = await userProvider.signIn(
         _accountController.text, _passwordController.text);
     if (isSuccess) {
-      Navigator.of(context).pushNamed("/application");
+      Navigator.of(context).pushReplacementNamed("/application");
     } else {
       userProvider.showErrorMessage(context);
     }

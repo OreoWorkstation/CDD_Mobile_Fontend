@@ -106,7 +106,7 @@ class _PetOperationState extends State<PetOperation> {
       Navigator.of(context).pop();
     } else {
       var path = await MultipartFile.fromFile(image.path);
-      var response = await FileAPI.upload(imagePath: path);
+      var response = await FileAPI.uploadImage(imagePath: path);
       Navigator.of(context).pop();
       setState(() {
         _avatar = response.data;
@@ -120,7 +120,7 @@ class _PetOperationState extends State<PetOperation> {
       Navigator.of(context).pop();
     } else {
       var path = await MultipartFile.fromFile(image.path);
-      var response = await FileAPI.upload(imagePath: path);
+      var response = await FileAPI.uploadImage(imagePath: path);
       Navigator.of(context).pop();
       setState(() {
         _avatar = response.data;

@@ -4,11 +4,41 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
+import 'package:cdd_mobile_frontend/page/home/home_body.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_add_first.dart';
+import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: cddSetHeight(250.0),
+          child: Image.asset(
+            "assets/images/pet_header.png",
+            fit: BoxFit.cover,
+          ),
+        ),
+        HomeBody(),
+      ],
+    );
+  }
+}
+
+/*
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
@@ -248,3 +278,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+*/

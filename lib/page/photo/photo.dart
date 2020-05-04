@@ -47,7 +47,7 @@ class _PhotoPageState extends State<PhotoPage> {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     // print(image.path);
     var path = await MultipartFile.fromFile(image.path);
-    _apiResponse = await FileAPI.upload(
+    _apiResponse = await FileAPI.uploadImage(
       imagePath: path,
     );
     // Navigator.of(context).pop();
@@ -59,7 +59,7 @@ class _PhotoPageState extends State<PhotoPage> {
   _handleGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var path = await MultipartFile.fromFile(image.path);
-    _apiResponse = await FileAPI.upload(imagePath: path);
+    _apiResponse = await FileAPI.uploadImage(imagePath: path);
 
     setState(() {
       _imagePath.add(_apiResponse.data);

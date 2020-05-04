@@ -22,6 +22,7 @@ class ViewStateModel with ChangeNotifier {
   ViewState get viewState => _viewState;
 
   set viewState(ViewState viewState) {
+    _viewStateError = null;
     _viewState = viewState;
     notifyListeners();
   }

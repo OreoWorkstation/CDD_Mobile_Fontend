@@ -12,15 +12,16 @@ class PetProvider extends ViewStateModel {
   PetEntity get pet => _pet;
 
   PetProvider() {
-    listAllPets();
+    fetchAllPets();
   }
 
   /// 获取宠物列表
-  Future<bool> listAllPets() async {
+  Future<bool> fetchAllPets() async {
     setBusy();
     try {
-      var response =
-          await PetAPI.getPetList(userId: int.parse(Global.accessToken));
+      var response = await PetAPI.getPetList(
+        userId: int.parse(Global.accessToken), // userId为全局变量，保存在Token中
+      );
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;
@@ -71,10 +72,11 @@ class PetProvider extends ViewStateModel {
   }
 
   /// 删除宠物
-  Future<bool> deletePet(int petIndex, int petId) async {
+  Future<bool> deletePet(int petIndex) async {
+    print(petIndex);
     setBusy();
     try {
-      var response = await PetAPI.deletePet(petId: petId);
+      var response = await PetAPI.deletePet(petId: petList[petIndex].id);
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;

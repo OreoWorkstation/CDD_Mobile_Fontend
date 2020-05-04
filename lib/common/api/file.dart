@@ -3,7 +3,8 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:dio/dio.dart';
 
 class FileAPI {
-  static Future<APIResponse<String>> upload({
+  // 上传图片
+  static Future<APIResponse<String>> uploadImage({
     MultipartFile imagePath,
   }) {
     return HttpUtil().postForm("/upload", params: {
