@@ -190,9 +190,9 @@ class _HomePageState extends State<HomePage> {
                 child: ClipOval(
                   child: _apiResponse.data[index].avatar == ""
                       ? _apiResponse.data[index].species == 'cat'
-                          ? Image.asset("assets/images/cat.jpg",
+                          ? Image.asset("assets/images/cat_avatar.jpg",
                               fit: BoxFit.cover)
-                          : Image.asset("assets/images/dog.png",
+                          : Image.asset("assets/images/dog_avatar.jpg",
                               fit: BoxFit.cover)
                       : Image.network(
                           _apiResponse.data[index].avatar,

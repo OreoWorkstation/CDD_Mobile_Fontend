@@ -135,4 +135,30 @@ class HttpUtil {
         queryParameters: params, options: requestOptions);
     return response;
   }
+
+  /// restful post form 表单提交操作
+  Future postForm(
+    String path, {
+    // @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    // requestOptions = requestOptions.merge(extra: {
+    //   "context": context,
+    // });
+    Map<String, dynamic> _authorization = getAuthorizationHeader();
+    if (_authorization != null) {
+      requestOptions = requestOptions.merge(headers: _authorization);
+    }
+    var response = await dio.post(path,
+        data: FormData.fromMap(params),
+        options: requestOptions,
+        cancelToken: cancelToken, onSendProgress: (received, total) {
+      if (total != -1) {
+        print((received / total * 100).toStringAsFixed(0) + "%");
+      }
+    });
+    return response;
+  }
 }

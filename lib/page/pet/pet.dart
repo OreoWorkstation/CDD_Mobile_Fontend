@@ -138,8 +138,10 @@ class _PetPageState extends State<PetPage> {
           child: ClipOval(
             child: _apiResponse.data.avatar == ""
                 ? _apiResponse.data.species == 'cat'
-                    ? Image.asset("assets/images/cat.jpg", fit: BoxFit.cover)
-                    : Image.asset("assets/images/dog.png", fit: BoxFit.cover)
+                    ? Image.asset("assets/images/cat_avatar.jpg",
+                        fit: BoxFit.cover)
+                    : Image.asset("assets/images/dog_avatar.jpg",
+                        fit: BoxFit.cover)
                 : Image.network(_apiResponse.data.avatar, fit: BoxFit.cover),
           ),
         ),

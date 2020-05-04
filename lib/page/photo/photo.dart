@@ -1,7 +1,14 @@
+import 'dart:io';
+
+import 'package:cdd_mobile_frontend/common/api/api.dart';
+import 'package:cdd_mobile_frontend/common/entity/entity.dart';
+import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/page/photo/photo_detail.dart';
 import 'package:cdd_mobile_frontend/page/photo/photo_gallery.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PhotoPage extends StatefulWidget {
   PhotoPage({Key key}) : super(key: key);
@@ -33,6 +40,32 @@ class _PhotoPageState extends State<PhotoPage> {
     "https://images.unsplash.com/photo-1548546738-8509cb246ed3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
     "https://images.unsplash.com/photo-1516366434321-728a48e6b7bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
   ];
+
+  APIResponse<String> _apiResponse;
+
+  _handleCamera(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    // print(image.path);
+    var path = await MultipartFile.fromFile(image.path);
+    _apiResponse = await FileAPI.upload(
+      imagePath: path,
+    );
+    // Navigator.of(context).pop();
+    setState(() {
+      _imagePath.add(_apiResponse.data);
+    });
+  }
+
+  _handleGallery() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var path = await MultipartFile.fromFile(image.path);
+    _apiResponse = await FileAPI.upload(imagePath: path);
+
+    setState(() {
+      _imagePath.add(_apiResponse.data);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +81,7 @@ class _PhotoPageState extends State<PhotoPage> {
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () => _openBottomSheet(context),
             icon: Icon(
               Icons.add_circle_outline,
               color: Colors.black,
@@ -60,6 +93,76 @@ class _PhotoPageState extends State<PhotoPage> {
     );
   }
 
+  // 打开底部选项：拍摄 / 本地相册
+  _openBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return Container(
+          height: cddSetHeight(250),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: cddSetHeight(10), bottom: cddSetHeight(10)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  "选择要执行的操作",
+                  style: TextStyle(
+                    fontSize: cddSetFontSize(17),
+                    color: AppColor.secondaryTextColor.withOpacity(0.7),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "拍摄",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: cddSetFontSize(17),
+                    ),
+                  ),
+                  onTap: () => _handleCamera(context),
+                ),
+                ListTile(
+                  title: Text("相册",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: cddSetFontSize(17),
+                      )),
+                  onTap: () => _handleGallery(),
+                ),
+                ListTile(
+                  title: Text("取消",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColor.secondaryTextColor,
+                        fontSize: cddSetFontSize(17),
+                      )),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 相册布局
   Widget _buildPhotoGridView() {
     return GridView.count(
       crossAxisCount: 3,
@@ -70,6 +173,7 @@ class _PhotoPageState extends State<PhotoPage> {
     );
   }
 
+  // 每个相片的样式
   List<Widget> _buildGridTileList() {
     List<Widget> widgetList = [];
     for (int i = 0; i < _imagePath.length; ++i) {

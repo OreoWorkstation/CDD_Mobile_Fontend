@@ -30,6 +30,7 @@ class _PhtotoGalleryPageState extends State<PhtotoGalleryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
           _buildPhoto(context),

@@ -5,8 +5,10 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PetOperation extends StatefulWidget {
   final int petId;
@@ -46,6 +48,8 @@ class _PetOperationState extends State<PetOperation> {
 
   String _avatar = "";
 
+  bool _isFile = false;
+
   @override
   void initState() {
     _gender = widget.gender ?? 0;
@@ -63,6 +67,7 @@ class _PetOperationState extends State<PetOperation> {
           userId: int.parse(Global.accessToken),
           nickname: _nicknameController.text,
           gender: _gender,
+          avatar: _avatar,
           species: widget.species,
           birthday: _birthday,
           introduction: _introductionController.text,
@@ -95,8 +100,114 @@ class _PetOperationState extends State<PetOperation> {
     }
   }
 
-  _handleChangeAvatar() {
-    print("press change avatar button");
+  _handleCamera(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (image == null) {
+      Navigator.of(context).pop();
+    } else {
+      var path = await MultipartFile.fromFile(image.path);
+      var response = await FileAPI.upload(imagePath: path);
+      Navigator.of(context).pop();
+      setState(() {
+        _avatar = response.data;
+      });
+    }
+  }
+
+  _handleGallery(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      Navigator.of(context).pop();
+    } else {
+      var path = await MultipartFile.fromFile(image.path);
+      var response = await FileAPI.upload(imagePath: path);
+      Navigator.of(context).pop();
+      setState(() {
+        _avatar = response.data;
+      });
+    }
+  }
+
+  _handleDefault(context) {
+    Navigator.of(context).pop();
+    setState(() {
+      _avatar = "";
+    });
+  }
+
+  _handleChangeAvatar(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: cddSetHeight(350),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: cddSetHeight(10), bottom: cddSetHeight(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(
+                    "选择要执行的操作",
+                    style: TextStyle(
+                      fontSize: cddSetFontSize(17),
+                      color: AppColor.secondaryTextColor.withOpacity(0.7),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      "拍摄",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: cddSetFontSize(17),
+                      ),
+                    ),
+                    onTap: () => _handleCamera(context),
+                  ),
+                  ListTile(
+                    title: Text("相册",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: cddSetFontSize(17),
+                        )),
+                    onTap: () => _handleGallery(context),
+                  ),
+                  ListTile(
+                    title: Text("默认头像",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: cddSetFontSize(17),
+                        )),
+                    onTap: () => _handleDefault(context),
+                  ),
+                  ListTile(
+                    title: Text("取消",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: AppColor.secondaryTextColor,
+                          fontSize: cddSetFontSize(17),
+                        )),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -127,7 +238,7 @@ class _PetOperationState extends State<PetOperation> {
               top: cddSetHeight(40)),
           child: Column(
             children: <Widget>[
-              _buildAvatar(),
+              _buildAvatar(context),
               Divider(),
               _buildNickName(),
               Divider(),
@@ -143,7 +254,7 @@ class _PetOperationState extends State<PetOperation> {
     );
   }
 
-  _buildAvatar() {
+  _buildAvatar(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -154,8 +265,8 @@ class _PetOperationState extends State<PetOperation> {
               child: _avatar == ""
                   ? Image.asset(
                       widget.species == "cat"
-                          ? "assets/images/cat.jpg"
-                          : "assets/images/dog.png",
+                          ? "assets/images/cat_avatar.jpg"
+                          : "assets/images/dog_avatar.jpg",
                       fit: BoxFit.cover,
                     )
                   : Image.network(
@@ -166,7 +277,7 @@ class _PetOperationState extends State<PetOperation> {
           ),
           SizedBox(height: cddSetHeight(5)),
           textBtnFlatButtonWidget(
-              onPressed: _handleChangeAvatar,
+              onPressed: () => _handleChangeAvatar(context),
               title: "点击更换",
               textColor: AppColor.secondaryTextColor.withOpacity(0.6)),
         ],
