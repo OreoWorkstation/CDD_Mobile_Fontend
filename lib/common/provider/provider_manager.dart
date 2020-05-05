@@ -20,9 +20,9 @@ List<SingleChildWidget> providers = [
   // ChangeNotifierProvider(
   //   create: (context) => PhotoProvider(),
   // ),
-  // ChangeNotifierProvider(
-  //   create: (context) => WeightProvider(),
-  // ),
+  ChangeNotifierProvider(
+    create: (context) => WeightProvider(),
+  ),
   // ChangeNotifierProvider(
   //   create: (context) => CostProvider(),
   // ),

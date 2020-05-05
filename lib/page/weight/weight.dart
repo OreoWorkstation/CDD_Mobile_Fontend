@@ -6,7 +6,10 @@ import 'package:cdd_mobile_frontend/common/widget/chart.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/weight/weight_operation.dart';
+import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
+import 'package:cdd_mobile_frontend/provider/weight_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 List itemColors = [
   Color.fromARGB(255, 50, 245, 141),
@@ -16,6 +19,243 @@ List itemColors = [
   Color.fromARGB(255, 235, 240, 105),
 ];
 
+class WeightPage extends StatefulWidget {
+  final int petId;
+  final int petIndex;
+  WeightPage({Key key, @required this.petId, @required this.petIndex})
+      : super(key: key);
+
+  @override
+  _WeightPageState createState() => _WeightPageState();
+}
+
+class _WeightPageState extends State<WeightPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => Provider.of<WeightProvider>(context, listen: false)
+        .fetchWeightList(widget.petId));
+  }
+
+  // 处理添加体重信息
+  _handleAddWeight(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => WeightOperation(
+          operation: 0,
+          petId: widget.petId,
+        ),
+      ),
+    );
+  }
+
+  // 处理删除体重信息
+  Future<bool> _handleDeleteWeight(
+    BuildContext context,
+    int index,
+  ) async {
+    bool isDismiss = false;
+    isDismiss = await showDialog(
+      context: context,
+      builder: (context) {
+        return Consumer2<PetProvider, WeightProvider>(
+          builder: (context, petProvider, weightProvider, child) {
+            return DeleteConfirmDialog(
+              "确定删除该体重信息吗?",
+              () async {
+                await weightProvider.deleteWeight(weightIndex: index);
+                await petProvider.fetchPetList();
+                Navigator.of(context).pop(true);
+              },
+            );
+          },
+        );
+      },
+    );
+    return isDismiss;
+  }
+
+  // 处理点击体重项（查看体重信息）
+  _handleTapWeight(BuildContext context, int index) async {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => WeightOperation(
+          operation: 1,
+          petId: widget.petId,
+          weightIndex: index,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
+        title: Text("体重", style: TextStyle(color: Colors.black)),
+        centerTitle: true,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+        ),
+      ),
+      body: Consumer<WeightProvider>(
+        builder: (context, weightProvider, child) => Builder(
+          builder: (_) {
+            if (weightProvider == null || weightProvider.isBusy) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: cddSetWidth(23)),
+              child: Column(
+                children: <Widget>[
+                  // 曲线图表
+                  _buildChart(weightProvider.weightList),
+                  // 体重列表
+                  _buildWeightList(context, weightProvider),
+                  // 添加按钮
+                  _buildBottomButton(context),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  // 曲线图表布局
+  Widget _buildChart(List<WeightEntity> weightList) {
+    List<LineSales> dataLine = weightList.length == 0
+        ? []
+        : weightList.map((item) {
+            return LineSales(item.createTime, item.weightValue);
+          }).toList();
+    return Container(
+      margin: EdgeInsets.only(top: cddSetHeight(10), bottom: cddSetHeight(10)),
+      width: double.infinity,
+      height: cddSetHeight(210),
+      child: cddLineChart(dataLine),
+    );
+  }
+
+  // 体重列表布局
+  Widget _buildWeightList(BuildContext context, WeightProvider weightProvider) {
+    var weightList = weightProvider.weightList;
+    return Expanded(
+      child: Container(
+        child: weightList.length == 0
+            ? Text("none")
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  return _buildWeightListItem(context, index, weightProvider);
+                },
+                itemCount: weightList.length,
+              ),
+      ),
+    );
+  }
+
+  // 体重列表项布局
+  Widget _buildWeightListItem(
+    BuildContext context,
+    int index,
+    WeightProvider weightProvider,
+  ) {
+    var weight = weightProvider.weightList[index];
+    return GestureDetector(
+      onTap: () => _handleTapWeight(context, index),
+      child: Dismissible(
+        key: Key(weightProvider.weightList.toString()),
+        direction: DismissDirection.endToStart,
+        confirmDismiss: (direction) async {
+          return _handleDeleteWeight(context, index);
+        },
+        onDismissed: (directrion) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "删除成功!",
+                style: TextStyle(
+                  color: AppColor.primaryElement,
+                  fontSize: cddSetFontSize(17),
+                ),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 2,
+            ),
+          );
+          // _fetchWeightList();
+        },
+        background: Container(color: itemColors[index]),
+        child: Container(
+          width: double.infinity,
+          height: cddSetHeight(60),
+          margin: EdgeInsets.symmetric(vertical: cddSetHeight(10)),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 5),
+                blurRadius: 3,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: cddSetWidth(11),
+                height: double.infinity,
+                color: itemColors[index % itemColors.length],
+              ),
+              SizedBox(width: cddSetWidth(12)),
+              Icon(Iconfont.weight, color: AppColor.secondaryElement),
+              SizedBox(width: cddSetWidth(19)),
+              Text(
+                cddFormatBirthday(weight.createTime),
+                style: TextStyle(
+                    fontSize: cddSetFontSize(16),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+              Spacer(),
+              Text(
+                "${weight.weightValue} Kg",
+                style: TextStyle(
+                  fontSize: cddSetFontSize(16),
+                  color: Color.fromARGB(255, 75, 3, 242),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(width: cddSetWidth(20)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 底部按钮布局
+  _buildBottomButton(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: cddSetHeight(10), bottom: cddSetHeight(10)),
+      child: btnFlatButtonWidget(
+        onPressed: () => _handleAddWeight(context),
+        bgColor: AppColor.weightColor,
+        width: cddSetWidth(250),
+        height: cddSetHeight(48),
+        title: "添加",
+        fontSize: cddSetFontSize(14),
+      ),
+    );
+  }
+}
+/*
 class WeightPage extends StatefulWidget {
   final petId;
   WeightPage({Key key, this.petId}) : super(key: key);
@@ -237,3 +477,5 @@ class _WeightPageState extends State<WeightPage> {
     );
   }
 }
+
+*/

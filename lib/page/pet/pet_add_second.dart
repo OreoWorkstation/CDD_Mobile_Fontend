@@ -94,10 +94,11 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
   _buildFinishButton(BuildContext context) {
     return Consumer2<PetProvider, ChooseAvatarProvider>(
       builder: (context, petProvider, chooseAvatarProvider, child) {
+        print("添加完成按钮");
         return textBtnFlatButtonWidget(
           onPressed: () async {
             await petProvider.addPet(
-              species: widget.species == 0 ? "cat" : "dog",
+              species: widget.species,
               avatar: chooseAvatarProvider.avatarNetworkPath,
               nickname: _nicknameController.text,
               gender: _gender,

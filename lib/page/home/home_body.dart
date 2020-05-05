@@ -5,6 +5,7 @@ import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_add_first.dart';
 import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
+import 'package:cdd_mobile_frontend/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
@@ -47,32 +48,37 @@ class _HomeBodyState extends State<HomeBody> {
         right: cddSetWidth(43.0),
         top: cddSetHeight(250 - MediaQuery.of(context).padding.top),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            "宠物",
-            style: TextStyle(
-              fontSize: cddSetFontSize(20.0),
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          IconButton(
-            color: Colors.black,
-            icon: Icon(
-              Iconfont.tianjia,
-              size: cddSetFontSize(28.0),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => PetAddFirstPage(),
+      child: Consumer2<UserProvider, PetProvider>(
+        builder: (context, userProvider, petProvider, child) {
+          print("添加按钮");
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "宠物",
+                style: TextStyle(
+                  fontSize: cddSetFontSize(20.0),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+              IconButton(
+                color: Colors.black,
+                icon: Icon(
+                  Iconfont.tianjia,
+                  size: cddSetFontSize(28.0),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PetAddFirstPage(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -100,7 +106,6 @@ class _HomeBodyState extends State<HomeBody> {
               onTap: (index) {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PetPage(
-                    pet: petProvider.petList[index],
                     index: index,
                   ),
                 ));

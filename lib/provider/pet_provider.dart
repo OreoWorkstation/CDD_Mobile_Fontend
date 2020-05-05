@@ -12,11 +12,11 @@ class PetProvider extends ViewStateModel {
   PetEntity get pet => _pet;
 
   PetProvider() {
-    fetchAllPets();
+    fetchPetList();
   }
 
   /// 获取宠物列表
-  Future<bool> fetchAllPets() async {
+  Future<bool> fetchPetList() async {
     setBusy();
     try {
       var response = await PetAPI.getPetList(
@@ -73,22 +73,10 @@ class PetProvider extends ViewStateModel {
 
   /// 删除宠物
   Future<bool> deletePet(int petIndex) async {
-    print(petIndex);
-    setBusy();
-    try {
-      var response = await PetAPI.deletePet(petId: petList[petIndex].id);
-      if (response.error == true) {
-        setError(null, null, message: response.errorMessage);
-        return false;
-      } else {
-        _petList.removeAt(petIndex);
-        setIdle();
-        return true;
-      }
-    } catch (e, s) {
-      setError(e, s, message: "内部错误");
-      return false;
-    }
+    await PetAPI.deletePet(petId: petList[petIndex].id);
+    _petList.removeAt(petIndex);
+    notifyListeners();
+    return true;
   }
 
   /// 更新宠物信息

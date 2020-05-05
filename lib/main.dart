@@ -2,7 +2,6 @@ import 'package:cdd_mobile_frontend/common/provider/provider_manager.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/page/application/application.dart';
 import 'package:cdd_mobile_frontend/page/index/index.dart';
-import 'package:cdd_mobile_frontend/page/weight/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,6 @@ class MyApp extends StatelessWidget {
           ),
           routes: {
             "/application": (context) => ApplicationPage(),
-            "/weight": (context) => WeightPage(),
           },
           home: IndexPage(),
         ),
