@@ -1,4 +1,3 @@
-import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
@@ -6,69 +5,62 @@ import 'package:cdd_mobile_frontend/common/widget/chart.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/weight/weight_operation.dart';
-import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
-import 'package:cdd_mobile_frontend/provider/weight_provider.dart';
+import 'package:cdd_mobile_frontend/provider/weight/weight_delete_provider.dart';
+import 'package:cdd_mobile_frontend/provider/weight/weight_list_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-List itemColors = [
-  Color.fromARGB(255, 50, 245, 141),
-  Color.fromARGB(255, 255, 175, 137),
-  Color.fromARGB(255, 147, 118, 246),
-  Color.fromARGB(255, 240, 92, 106),
-  Color.fromARGB(255, 235, 240, 105),
-];
-
 class WeightPage extends StatefulWidget {
-  final int petId;
-  final int petIndex;
-  WeightPage({Key key, @required this.petId, @required this.petIndex})
-      : super(key: key);
+  WeightPage({Key key}) : super(key: key);
 
   @override
   _WeightPageState createState() => _WeightPageState();
 }
 
 class _WeightPageState extends State<WeightPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => Provider.of<WeightProvider>(context, listen: false)
-        .fetchWeightList(widget.petId));
-  }
-
   // 处理添加体重信息
-  _handleAddWeight(BuildContext context) {
-    Navigator.of(context).push(
+  _handleAddWeight(
+    BuildContext context,
+    WeightListProvider weightListProvider,
+  ) async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => WeightOperation(
           operation: 0,
-          petId: widget.petId,
+          weight: WeightEntity(petId: weightListProvider.petId),
         ),
       ),
     );
+    weightListProvider.fetchWeightListWithoutPetId();
   }
 
   // 处理删除体重信息
   Future<bool> _handleDeleteWeight(
     BuildContext context,
-    int index,
+    int weightId,
   ) async {
     bool isDismiss = false;
     isDismiss = await showDialog(
       context: context,
       builder: (context) {
-        return Consumer2<PetProvider, WeightProvider>(
-          builder: (context, petProvider, weightProvider, child) {
-            return DeleteConfirmDialog(
-              "确定删除该体重信息吗?",
-              () async {
-                await weightProvider.deleteWeight(weightIndex: index);
-                await petProvider.fetchPetList();
-                Navigator.of(context).pop(true);
-              },
-            );
-          },
+        return ChangeNotifierProvider(
+          create: (_) => WeightDeleteProvider(),
+          child: Consumer<WeightDeleteProvider>(
+            builder: (_, weightDeleteProvider, __) {
+              return LoadingOverlay(
+                isLoading: weightDeleteProvider.isBusy,
+                color: Colors.transparent,
+                child: DeleteConfirmDialog(
+                  "确定删除该体重信息吗?",
+                  () async {
+                    await weightDeleteProvider.deleteWeight(weightId: weightId);
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              );
+            },
+          ),
         );
       },
     );
@@ -76,16 +68,20 @@ class _WeightPageState extends State<WeightPage> {
   }
 
   // 处理点击体重项（查看体重信息）
-  _handleTapWeight(BuildContext context, int index) async {
-    Navigator.of(context).push(
+  _handleTapWeight(
+    BuildContext context,
+    WeightEntity weight,
+    WeightListProvider weightListProvider,
+  ) async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => WeightOperation(
           operation: 1,
-          petId: widget.petId,
-          weightIndex: index,
+          weight: weight,
         ),
       ),
     );
+    weightListProvider.fetchWeightListWithoutPetId();
   }
 
   @override
@@ -102,10 +98,11 @@ class _WeightPageState extends State<WeightPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
       ),
-      body: Consumer<WeightProvider>(
-        builder: (context, weightProvider, child) => Builder(
+      body: Consumer<WeightListProvider>(
+        builder: (context, weightListProvider, child) => Builder(
           builder: (_) {
-            if (weightProvider == null || weightProvider.isBusy) {
+            // 正在请求
+            if (weightListProvider == null || weightListProvider.isBusy) {
               return Center(child: CircularProgressIndicator());
             }
             return Padding(
@@ -113,11 +110,11 @@ class _WeightPageState extends State<WeightPage> {
               child: Column(
                 children: <Widget>[
                   // 曲线图表
-                  _buildChart(weightProvider.weightList),
+                  _buildChart(weightListProvider.weightList),
                   // 体重列表
-                  _buildWeightList(context, weightProvider),
+                  _buildWeightList(context, weightListProvider),
                   // 添加按钮
-                  _buildBottomButton(context),
+                  _buildBottomButton(context, weightListProvider),
                 ],
               ),
             );
@@ -143,15 +140,22 @@ class _WeightPageState extends State<WeightPage> {
   }
 
   // 体重列表布局
-  Widget _buildWeightList(BuildContext context, WeightProvider weightProvider) {
-    var weightList = weightProvider.weightList;
+  Widget _buildWeightList(
+    BuildContext context,
+    WeightListProvider weightListProvider,
+  ) {
+    var weightList = weightListProvider.weightList;
     return Expanded(
       child: Container(
         child: weightList.length == 0
             ? Text("none")
             : ListView.builder(
                 itemBuilder: (context, index) {
-                  return _buildWeightListItem(context, index, weightProvider);
+                  return _buildWeightListItem(
+                    context,
+                    index,
+                    weightListProvider,
+                  );
                 },
                 itemCount: weightList.length,
               ),
@@ -163,16 +167,18 @@ class _WeightPageState extends State<WeightPage> {
   Widget _buildWeightListItem(
     BuildContext context,
     int index,
-    WeightProvider weightProvider,
+    WeightListProvider weightListProvider,
   ) {
-    var weight = weightProvider.weightList[index];
+    var weight = weightListProvider.weightList[index];
     return GestureDetector(
-      onTap: () => _handleTapWeight(context, index),
+      // 点击体重项
+      onTap: () => _handleTapWeight(context, weight, weightListProvider),
+      // 删除体重项
       child: Dismissible(
-        key: Key(weightProvider.weightList.toString()),
+        key: Key(weightListProvider.weightList.toString()),
         direction: DismissDirection.endToStart,
         confirmDismiss: (direction) async {
-          return _handleDeleteWeight(context, index);
+          return _handleDeleteWeight(context, weight.id);
         },
         onDismissed: (directrion) {
           Scaffold.of(context).showSnackBar(
@@ -188,9 +194,9 @@ class _WeightPageState extends State<WeightPage> {
               elevation: 2,
             ),
           );
-          // _fetchWeightList();
+          weightListProvider.fetchWeightListWithoutPetId();
         },
-        background: Container(color: itemColors[index]),
+        background: Container(color: AppColor.listItemColors[index]),
         child: Container(
           width: double.infinity,
           height: cddSetHeight(60),
@@ -211,7 +217,8 @@ class _WeightPageState extends State<WeightPage> {
               Container(
                 width: cddSetWidth(11),
                 height: double.infinity,
-                color: itemColors[index % itemColors.length],
+                color: AppColor
+                    .listItemColors[index % AppColor.listItemColors.length],
               ),
               SizedBox(width: cddSetWidth(12)),
               Icon(Iconfont.weight, color: AppColor.secondaryElement),
@@ -241,11 +248,14 @@ class _WeightPageState extends State<WeightPage> {
   }
 
   // 底部按钮布局
-  _buildBottomButton(BuildContext context) {
+  _buildBottomButton(
+    BuildContext context,
+    WeightListProvider weightListProvider,
+  ) {
     return Container(
       margin: EdgeInsets.only(top: cddSetHeight(10), bottom: cddSetHeight(10)),
       child: btnFlatButtonWidget(
-        onPressed: () => _handleAddWeight(context),
+        onPressed: () => _handleAddWeight(context, weightListProvider),
         bgColor: AppColor.weightColor,
         width: cddSetWidth(250),
         height: cddSetHeight(48),

@@ -1,5 +1,4 @@
 import 'package:cdd_mobile_frontend/page/pet/pet_add_second.dart';
-import 'package:cdd_mobile_frontend/page/pet/pet_operation.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +75,8 @@ class PetAddFirstPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushReplacement(
+          onTap: () async {
+            await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) =>
                     PetAddSecondPage(species: species == 0 ? "cat" : "dog"),

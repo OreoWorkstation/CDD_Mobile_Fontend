@@ -1,24 +1,23 @@
 import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
+import 'package:cdd_mobile_frontend/common/provider/provider_manager.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
-import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
-import 'package:cdd_mobile_frontend/provider/weight_provider.dart';
+import 'package:cdd_mobile_frontend/provider/weight/weight_operation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 class WeightOperation extends StatefulWidget {
   final int operation; // 0: 添加体重，1：编辑体重
-  final int weightIndex;
-  final int petId;
+  final WeightEntity weight;
   WeightOperation({
     Key key,
     @required this.operation,
-    this.weightIndex,
-    @required this.petId,
+    @required this.weight,
   }) : super(key: key);
 
   @override
@@ -28,82 +27,87 @@ class WeightOperation extends StatefulWidget {
 class _WeightOperationState extends State<WeightOperation> {
   // 体重值控制器
   TextEditingController _weightValueController = TextEditingController();
-
+  // 创建时间
   DateTime _createTime;
+  // 体重类
+  WeightEntity _weight;
 
   @override
   void initState() {
     super.initState();
+    _weight = widget.weight;
     if (widget.operation == 0) {
       _createTime = DateTime.now();
     } else {
-      var weight = Provider.of<WeightProvider>(context, listen: false)
-          .weightList[widget.weightIndex];
-      _createTime = weight.createTime;
-      _weightValueController.text = weight.weightValue.toString();
+      _createTime = _weight.createTime;
+      _weightValueController.text = _weight.weightValue.toString();
     }
   }
 
   // 处理完成按钮
-  _handleFinishButton() async {
-    var weightProvider = Provider.of<WeightProvider>(context, listen: false);
-    var petProvider = Provider.of<PetProvider>(context, listen: false);
+  _handleFinishButton(WeightOperationProvider provider) async {
     if (widget.operation == 0) {
       // 添加体重
-      await weightProvider.addWeight(
-        petId: widget.petId,
-        weightValue: double.parse(_weightValueController.text),
-        createTime: _createTime,
-      );
+      _weight.weightValue = double.parse(_weightValueController.text);
+      _weight.createTime = _createTime;
+      await provider.addWeight(weight: _weight);
     } else {
       // 更新体重
-      await weightProvider.updateWeight(
-        weightIndex: widget.weightIndex,
-        weightValue: double.parse(_weightValueController.text),
-        createTime: _createTime,
-      );
+      _weight.weightValue = double.parse(_weightValueController.text);
+      _weight.createTime = _createTime;
+      await provider.updateWeight(weight: _weight);
     }
-    await petProvider.fetchPetList();
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
-        title: Text(
-          widget.operation == 0 ? "添加体重" : "体重",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-        ),
-        actions: <Widget>[
-          textBtnFlatButtonWidget(
-            onPressed: _handleFinishButton,
-            title: "完成",
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(
-            left: cddSetWidth(45),
-            right: cddSetWidth(45),
-            top: cddSetHeight(50)),
-        child: Column(
-          children: <Widget>[
-            _buildWeightValueInput(),
-            SizedBox(height: cddSetHeight(10)),
-            _buildCreateTime(context),
-          ],
-        ),
+    return ChangeNotifierProvider(
+      create: (_) => WeightOperationProvider(),
+      child: Consumer<WeightOperationProvider>(
+        builder: (_, provider, __) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              brightness: Brightness.light,
+              title: Text(
+                widget.operation == 0 ? "添加体重" : "体重",
+                style: TextStyle(color: Colors.black),
+              ),
+              centerTitle: true,
+              elevation: 0,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+              ),
+              actions: <Widget>[
+                textBtnFlatButtonWidget(
+                  onPressed: () => _handleFinishButton(provider),
+                  title: "完成",
+                ),
+              ],
+            ),
+            body: LoadingOverlay(
+              isLoading: provider.isBusy,
+              color: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: cddSetWidth(45),
+                    right: cddSetWidth(45),
+                    top: cddSetHeight(50)),
+                child: Column(
+                  children: <Widget>[
+                    _buildWeightValueInput(),
+                    SizedBox(height: cddSetHeight(10)),
+                    _buildCreateTime(context),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

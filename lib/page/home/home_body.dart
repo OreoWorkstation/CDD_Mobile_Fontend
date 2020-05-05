@@ -4,7 +4,8 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_add_first.dart';
-import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
+import 'package:cdd_mobile_frontend/provider/pet/pet_list_provider.dart';
+import 'package:cdd_mobile_frontend/provider/pet/pet_provider.dart';
 import 'package:cdd_mobile_frontend/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -43,71 +44,79 @@ class _HomeBodyState extends State<HomeBody> {
         right: cddSetWidth(43.0),
         top: cddSetHeight(250 - MediaQuery.of(context).padding.top),
       ),
-      child: Consumer2<UserProvider, PetProvider>(
-        builder: (context, userProvider, petProvider, child) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "宠物",
-                style: TextStyle(
-                  fontSize: cddSetFontSize(20.0),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              IconButton(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            "宠物",
+            style: TextStyle(
+              fontSize: cddSetFontSize(20.0),
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          Consumer2<UserProvider, PetListProvider>(
+            builder: (_, userProvider, petListProvider, __) {
+              return IconButton(
                 color: Colors.black,
                 icon: Icon(
                   Iconfont.tianjia,
                   size: cddSetFontSize(28.0),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => PetAddFirstPage(),
                     ),
                   );
+                  petListProvider.fetchPetList();
                 },
-              ),
-            ],
-          );
-        },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
 
   // 宠物列表
   Widget _buildPetList(BuildContext context) {
-    return Consumer<PetProvider>(
-      builder: (_, petProvider, __) => Builder(
+    return Consumer<PetListProvider>(
+      builder: (_, petListProvider, __) => Builder(
         builder: (_) {
           // 正在请求数据
-          if (petProvider.isBusy) {
+          if (petListProvider.isBusy) {
             return Center(child: CircularProgressIndicator());
           }
           // 请求出错
-          if (petProvider.isError) {
+          if (petListProvider.isError) {
             return Container(child: Text("请求出错"));
           }
           // 该用户没有宠物
-          if (petProvider.petList.length == 0) {
+          if (petListProvider.petList.length == 0) {
             return Center(child: Text("No pet.."));
           }
           return SizedBox(
             height: cddSetHeight(320),
             child: Swiper(
-              onTap: (index) {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PetPage(
-                    id: petProvider.petList[index].id,
+              onTap: (index) async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (_) =>
+                          PetProvider(petListProvider.petList[index].id),
+                      child: PetPage(
+                        id: petListProvider.petList[index].id,
+                      ),
+                    ),
                   ),
-                ));
+                );
+                petListProvider.fetchPetList();
               },
               itemBuilder: (context, index) {
-                return _buildPetCard(petProvider.petList[index]);
+                return _buildPetCard(petListProvider.petList[index]);
               },
-              itemCount: petProvider.petList.length,
+              itemCount: petListProvider.petList.length,
               viewportFraction: 0.5,
               scale: 0.6,
               loop: false,

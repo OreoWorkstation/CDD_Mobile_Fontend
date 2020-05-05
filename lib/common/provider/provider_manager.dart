@@ -11,18 +11,18 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     create: (context) => UserProvider(),
   ),
-  ChangeNotifierProvider(
-    create: (context) => PetProvider(),
-  ),
+  // ChangeNotifierProvider(
+  //   create: (context) => PetProvider(),
+  // ),
   // ChangeNotifierProvider(
   //   create: (context) => DiaryProvider(),
   // ),
   // ChangeNotifierProvider(
   //   create: (context) => PhotoProvider(),
   // ),
-  ChangeNotifierProvider(
-    create: (context) => WeightProvider(),
-  ),
+  // ChangeNotifierProvider(
+  //   create: (context) => WeightProvider(),
+  // ),
   // ChangeNotifierProvider(
   //   create: (context) => CostProvider(),
   // ),

@@ -72,4 +72,15 @@ class AppColor {
 
   /// 宠物相片背景色
   static const Color photoColor = Color.fromARGB(255, 250, 59, 148);
+
+  // ****************************
+
+  /// 体重和账单列表项颜色
+  static const List listItemColors = [
+    Color.fromARGB(255, 50, 245, 141),
+    Color.fromARGB(255, 255, 175, 137),
+    Color.fromARGB(255, 147, 118, 246),
+    Color.fromARGB(255, 240, 92, 106),
+    Color.fromARGB(255, 235, 240, 105),
+  ];
 }

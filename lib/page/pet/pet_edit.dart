@@ -1,17 +1,19 @@
+import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/provider/choose_avatar_provider.dart';
-import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
+import 'package:cdd_mobile_frontend/provider/pet/pet_edit_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
 class PetEditPage extends StatefulWidget {
-  const PetEditPage({Key key, @required this.index}) : super(key: key);
-  final int index;
+  const PetEditPage({Key key, @required this.pet}) : super(key: key);
+  final PetEntity pet;
 
   @override
   _PetEditPageState createState() => _PetEditPageState();
@@ -26,19 +28,23 @@ class _PetEditPageState extends State<PetEditPage> {
   DateTime _birthday = DateTime.now();
   // 宠物性别，默认为男
   int _gender = 0;
-  // 宠物头像
-  String _defaultAvatar = "";
+  // 宠物原始头像
+  String _avatar = "";
+  // 宠物种类
+  String _species = "";
+  // 宠物实体类
+  PetEntity _pet;
 
   @override
   void initState() {
     super.initState();
-    var pet =
-        Provider.of<PetProvider>(context, listen: false).petList[widget.index];
-    _nicknameController.text = pet.nickname;
-    _introductionController.text = pet.introduction;
-    _birthday = pet.birthday;
-    _gender = pet.gender;
-    _defaultAvatar = pet.avatar;
+    _pet = widget.pet;
+    _nicknameController.text = _pet.nickname;
+    _introductionController.text = _pet.introduction;
+    _birthday = _pet.birthday;
+    _gender = _pet.gender;
+    _avatar = _pet.avatar;
+    _species = _pet.species;
   }
 
   @override
@@ -46,7 +52,7 @@ class _PetEditPageState extends State<PetEditPage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ChooseAvatarProvider(_defaultAvatar),
+          create: (context) => ChooseAvatarProvider(_avatar),
         ),
       ],
       child: Scaffold(
@@ -69,27 +75,35 @@ class _PetEditPageState extends State<PetEditPage> {
             _buildFinishButton(context),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: cddSetWidth(40),
-              right: cddSetWidth(40),
-              top: cddSetHeight(40),
-            ),
-            child: Column(
-              children: <Widget>[
-                _buildAvatar(context),
-                Divider(),
-                _buildNickname(),
-                Divider(),
-                _buildGender(),
-                Divider(),
-                _buildBirthday(),
-                Divider(),
-                _buildIntroduction(),
-              ],
-            ),
-          ),
+        body: Consumer<PetEditProvider>(
+          builder: (_, petEditProvider, __) {
+            return LoadingOverlay(
+              isLoading: petEditProvider.isBusy,
+              color: Colors.transparent,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: cddSetWidth(40),
+                    right: cddSetWidth(40),
+                    top: cddSetHeight(40),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      _buildAvatar(context),
+                      Divider(),
+                      _buildNickname(),
+                      Divider(),
+                      _buildGender(),
+                      Divider(),
+                      _buildBirthday(),
+                      Divider(),
+                      _buildIntroduction(),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -97,20 +111,22 @@ class _PetEditPageState extends State<PetEditPage> {
 
   // “完成”按钮
   _buildFinishButton(BuildContext context) {
-    return Consumer2<PetProvider, ChooseAvatarProvider>(
-      builder: (context, petProvider, chooseAvatarProvider, child) {
+    return Consumer<PetEditProvider>(
+      builder: (_, petEditProvider, __) {
         return textBtnFlatButtonWidget(
           onPressed: () async {
-            await petProvider.updatePet(
-              petIndex: widget.index,
-              avatar: chooseAvatarProvider.avatarNetworkPath,
-              nickname: _nicknameController.text,
-              gender: _gender,
-              birthday: _birthday,
-              intro: _introductionController.text,
-            );
-            // if (petProvider.isError) showToast("服务器错误");
-            Navigator.of(context).pop();
+            _pet.avatar = _avatar;
+            _pet.nickname = _nicknameController.text;
+            _pet.gender = _gender;
+            _pet.birthday = _birthday;
+            _pet.introduction = _introductionController.text;
+            bool _isSuccess = await petEditProvider.updatePet(pet: _pet);
+            if (_isSuccess) {
+              showToast("更新成功");
+              Navigator.of(context).pop();
+            } else {
+              showToast("请求失败");
+            }
           },
           title: "完成",
         );
@@ -120,10 +136,9 @@ class _PetEditPageState extends State<PetEditPage> {
 
   // 宠物头像布局，并有拍摄，相册，默认三种选项
   Widget _buildAvatar(BuildContext context) {
-    return Consumer2<PetProvider, ChooseAvatarProvider>(
-      builder: (context, petProvider, chooseAvatarProvider, child) {
-        var _networkAvatar = chooseAvatarProvider.avatarNetworkPath;
-        var _pet = petProvider.petList[widget.index];
+    return Consumer<ChooseAvatarProvider>(
+      builder: (_, chooseAvatarProvider, __) {
+        _avatar = chooseAvatarProvider.avatarNetworkPath;
         return Center(
           child: Column(
             children: <Widget>[
@@ -132,7 +147,7 @@ class _PetEditPageState extends State<PetEditPage> {
                 height: cddSetWidth(70),
                 child: ClipOval(
                   child: Image.network(
-                    _networkAvatar,
+                    _avatar,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -140,31 +155,11 @@ class _PetEditPageState extends State<PetEditPage> {
               SizedBox(height: cddSetHeight(5)),
               textBtnFlatButtonWidget(
                   onPressed: () {
-                    // 更改头像弹框
+                    // 打开更改头像弹框
                     showModalBottomSheet(
                       context: context,
-                      builder: (context) => LoadingOverlay(
-                        isLoading: chooseAvatarProvider.isBusy,
-                        color: Colors.transparent,
-                        child: chooseAvatarBottomSheetWidget(
-                          context: context,
-                          tapCamera: () async {
-                            await chooseAvatarProvider.getImageFromCamera();
-                            Navigator.of(context).pop();
-                          },
-                          tapGallery: () async {
-                            await chooseAvatarProvider.getImageFromGallery();
-                            Navigator.of(context).pop();
-                          },
-                          tapDefault: () async {
-                            chooseAvatarProvider.setDefault(
-                                _pet.species == 'cat'
-                                    ? CAT_AVATAR
-                                    : DOG_AVATAR);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
+                      builder: (context) =>
+                          _buildChooseAvatarBottomSheet(chooseAvatarProvider),
                     );
                   },
                   title: "点击更换",
@@ -173,6 +168,32 @@ class _PetEditPageState extends State<PetEditPage> {
           ),
         );
       },
+    );
+  }
+
+  // 更改头像弹框布局
+  Widget _buildChooseAvatarBottomSheet(
+    ChooseAvatarProvider chooseAvatarProvider,
+  ) {
+    return LoadingOverlay(
+      isLoading: chooseAvatarProvider.isBusy,
+      color: Colors.transparent,
+      child: chooseAvatarBottomSheetWidget(
+        context: context,
+        tapCamera: () async {
+          await chooseAvatarProvider.getImageFromCamera();
+          Navigator.of(context).pop();
+        },
+        tapGallery: () async {
+          await chooseAvatarProvider.getImageFromGallery();
+          Navigator.of(context).pop();
+        },
+        tapDefault: () async {
+          chooseAvatarProvider
+              .setDefault(_species == 'cat' ? CAT_AVATAR : DOG_AVATAR);
+          Navigator.of(context).pop();
+        },
+      ),
     );
   }
 

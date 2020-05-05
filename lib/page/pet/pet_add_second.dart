@@ -3,7 +3,7 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/provider/choose_avatar_provider.dart';
-import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
+import 'package:cdd_mobile_frontend/provider/pet/pet_add_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -41,7 +41,10 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ChooseAvatarProvider(_defaultAvatar),
+          create: (_) => ChooseAvatarProvider(_defaultAvatar),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PetAddProvider(),
         ),
       ],
       child: Scaffold(
@@ -64,27 +67,35 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
             _buildFinishButton(context),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: cddSetWidth(40),
-              right: cddSetWidth(40),
-              top: cddSetHeight(40),
-            ),
-            child: Column(
-              children: <Widget>[
-                _buildAvatar(context),
-                Divider(),
-                _buildNickname(),
-                Divider(),
-                _buildGender(),
-                Divider(),
-                _buildBirthday(),
-                Divider(),
-                _buildIntroduction(),
-              ],
-            ),
-          ),
+        body: Consumer<PetAddProvider>(
+          builder: (_, petAddProvider, __) {
+            return LoadingOverlay(
+              isLoading: petAddProvider.isBusy,
+              color: Colors.transparent,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: cddSetWidth(40),
+                    right: cddSetWidth(40),
+                    top: cddSetHeight(40),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      _buildAvatar(context),
+                      Divider(),
+                      _buildNickname(),
+                      Divider(),
+                      _buildGender(),
+                      Divider(),
+                      _buildBirthday(),
+                      Divider(),
+                      _buildIntroduction(),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -92,7 +103,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
 
   // “完成”按钮
   _buildFinishButton(BuildContext context) {
-    return Consumer2<PetProvider, ChooseAvatarProvider>(
+    return Consumer2<PetAddProvider, ChooseAvatarProvider>(
       builder: (context, petProvider, chooseAvatarProvider, child) {
         return textBtnFlatButtonWidget(
           onPressed: () async {
@@ -105,8 +116,10 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
               intro: _introductionController.text,
             );
             if (petProvider.isIdle) {
-              Navigator.of(context).pop();
-              petProvider.fetchPetList();
+              // Navigator.of(context).pop();
+              Navigator.of(context).popUntil(
+                ModalRoute.withName("/application"),
+              );
             } else if (petProvider.isError) {
               showToast("服务器错误");
             }

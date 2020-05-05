@@ -7,6 +7,7 @@ import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/page/home/home_body.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_add_first.dart';
+import 'package:cdd_mobile_frontend/provider/pet/pet_list_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -32,7 +33,10 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.cover,
           ),
         ),
-        HomeBody(),
+        ChangeNotifierProvider(
+          create: (_) => PetListProvider(),
+          child: HomeBody(),
+        ),
       ],
     );
   }
