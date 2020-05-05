@@ -5,11 +5,13 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
+import 'package:cdd_mobile_frontend/page/photo/photo.dart';
 import 'package:cdd_mobile_frontend/page/weight/weight.dart';
 import 'package:cdd_mobile_frontend/provider/cost/cost_list_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_delete_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_edit_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_provider.dart';
+import 'package:cdd_mobile_frontend/provider/photo/photo_list_provider.dart';
 import 'package:cdd_mobile_frontend/provider/user_provider.dart';
 import 'package:cdd_mobile_frontend/provider/weight/weight_list_provider.dart';
 import 'package:flutter/material.dart';
@@ -300,7 +302,17 @@ class _PetPageState extends State<PetPage> {
               Iconfont.xiangce,
               "相册",
               "${pet.photoNumber}",
-              () async {},
+              () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (_) => PhotoListProvider(pet.id),
+                      child: PhotoPage(),
+                    ),
+                  ),
+                );
+                petProvider.fetchPet();
+              },
             ),
           ],
         ),

@@ -3,7 +3,7 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
-import 'package:cdd_mobile_frontend/provider/choose_avatar_provider.dart';
+import 'package:cdd_mobile_frontend/provider/choose_image_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_edit_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -52,7 +52,7 @@ class _PetEditPageState extends State<PetEditPage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ChooseAvatarProvider(_avatar),
+          create: (context) => ChooseImageProvider(_avatar),
         ),
       ],
       child: Scaffold(
@@ -136,9 +136,9 @@ class _PetEditPageState extends State<PetEditPage> {
 
   // 宠物头像布局，并有拍摄，相册，默认三种选项
   Widget _buildAvatar(BuildContext context) {
-    return Consumer<ChooseAvatarProvider>(
-      builder: (_, chooseAvatarProvider, __) {
-        _avatar = chooseAvatarProvider.avatarNetworkPath;
+    return Consumer<ChooseImageProvider>(
+      builder: (_, chooseImageProvider, __) {
+        _avatar = chooseImageProvider.imageNetworkPath;
         return Center(
           child: Column(
             children: <Widget>[
@@ -159,7 +159,7 @@ class _PetEditPageState extends State<PetEditPage> {
                     showModalBottomSheet(
                       context: context,
                       builder: (context) =>
-                          _buildChooseAvatarBottomSheet(chooseAvatarProvider),
+                          _buildChooseAvatarBottomSheet(chooseImageProvider),
                     );
                   },
                   title: "点击更换",
@@ -173,23 +173,23 @@ class _PetEditPageState extends State<PetEditPage> {
 
   // 更改头像弹框布局
   Widget _buildChooseAvatarBottomSheet(
-    ChooseAvatarProvider chooseAvatarProvider,
+    ChooseImageProvider chooseImageProvider,
   ) {
     return LoadingOverlay(
-      isLoading: chooseAvatarProvider.isBusy,
+      isLoading: chooseImageProvider.isBusy,
       color: Colors.transparent,
       child: chooseAvatarBottomSheetWidget(
         context: context,
         tapCamera: () async {
-          await chooseAvatarProvider.getImageFromCamera();
+          await chooseImageProvider.getImageFromCamera();
           Navigator.of(context).pop();
         },
         tapGallery: () async {
-          await chooseAvatarProvider.getImageFromGallery();
+          await chooseImageProvider.getImageFromGallery();
           Navigator.of(context).pop();
         },
         tapDefault: () async {
-          chooseAvatarProvider
+          chooseImageProvider
               .setDefault(_species == 'cat' ? CAT_AVATAR : DOG_AVATAR);
           Navigator.of(context).pop();
         },

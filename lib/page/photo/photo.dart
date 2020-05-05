@@ -4,12 +4,165 @@ import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
+import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/photo/photo_detail.dart';
 import 'package:cdd_mobile_frontend/page/photo/photo_gallery.dart';
+import 'package:cdd_mobile_frontend/provider/choose_image_provider.dart';
+import 'package:cdd_mobile_frontend/provider/photo/photo_add_provider.dart';
+import 'package:cdd_mobile_frontend/provider/photo/photo_list_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
+class PhotoPage extends StatefulWidget {
+  PhotoPage({Key key}) : super(key: key);
+
+  @override
+  _PhotoPageState createState() => _PhotoPageState();
+}
+
+class _PhotoPageState extends State<PhotoPage> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ChooseImageProvider(""),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PhotoAddProvider(),
+        ),
+      ],
+      child: Consumer2<PhotoListProvider, PhotoAddProvider>(
+        builder: (_, photoListProvider, photoAddProvider, __) {
+          return Builder(
+            builder: (_) {
+              if (photoListProvider.isBusy) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
+                  title: Text("相册", style: TextStyle(color: Colors.black)),
+                  centerTitle: true,
+                  elevation: 0.0,
+                  leading: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                  ),
+                  actions: <Widget>[
+                    Consumer<ChooseImageProvider>(
+                      builder: (_, chooseImageProvider, __) {
+                        print("chooseimagexxxxxxxxxxxxxxxx");
+                        return IconButton(
+                          onPressed: () async {
+                            await showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  _buildBottomSheet(chooseImageProvider),
+                            );
+                            print(
+                                "image path: ${chooseImageProvider.imageNetworkPath}");
+                            if (chooseImageProvider.imageNetworkPath != "") {
+                              await photoAddProvider.addPhoto(
+                                photo: PhotoEntity(
+                                  petId: photoListProvider.petId,
+                                  photoPath:
+                                      chooseImageProvider.imageNetworkPath,
+                                ),
+                              );
+                              photoListProvider.fetchPhotoListWithoutPetId();
+                            }
+                          },
+                          icon: Icon(
+                            Icons.add_circle_outline,
+                            color: Colors.black,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                body: _buildPhotoGridView(photoListProvider, photoAddProvider),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  // 打开底部选项：拍摄 / 本地相册
+  _buildBottomSheet(
+    ChooseImageProvider chooseImageProvider,
+  ) {
+    return choosePhotoBottomSheetWidget(
+      context: context,
+      tapCamera: () async {
+        await chooseImageProvider.getImageFromCamera();
+        Navigator.of(context).pop();
+      },
+      tapGallery: () async {
+        await chooseImageProvider.getImageFromGallery();
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  // 页面布局
+  Widget _buildPhotoGridView(
+    PhotoListProvider photoListProvider,
+    PhotoAddProvider photoAddProvider,
+  ) {
+    return LoadingOverlay(
+      isLoading: photoListProvider.isBusy || photoAddProvider.isBusy,
+      color: Colors.transparent,
+      child: GridView.count(
+        crossAxisCount: 3,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        padding: EdgeInsets.all(8),
+        children:
+            _buildGridTileList(photoListProvider.photoList, photoListProvider),
+      ),
+    );
+  }
+
+  // 每个相片的样式
+  List<Widget> _buildGridTileList(
+      List<PhotoEntity> photoList, PhotoListProvider photoListProvider) {
+    List<Widget> widgetList = [];
+    for (int i = 0; i < photoList.length; ++i) {
+      widgetList.add(GestureDetector(
+        onTap: () async {
+          await Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PhtotoGalleryPage(
+              photoList: photoList,
+              index: i,
+            ),
+          ));
+          photoListProvider.fetchPhotoListWithoutPetId();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: Radii.k10pxRadius,
+            image: DecorationImage(
+              image: NetworkImage(photoList[i].photoPath),
+              fit: BoxFit.cover,
+            ),
+            shape: BoxShape.rectangle,
+          ),
+        ),
+      ));
+    }
+    return widgetList;
+  }
+}
+
+/*
 class PhotoPage extends StatefulWidget {
   PhotoPage({Key key}) : super(key: key);
 
@@ -204,3 +357,4 @@ class _PhotoPageState extends State<PhotoPage> {
     return widgetList;
   }
 }
+*/

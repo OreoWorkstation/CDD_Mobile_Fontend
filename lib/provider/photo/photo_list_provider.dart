@@ -2,28 +2,28 @@ import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/provider/view_state_model.dart';
 
-class CostListProvider extends ViewStateModel {
-  List<CostEntity> _costList;
+class PhotoListProvider extends ViewStateModel {
+  List<PhotoEntity> _photoList;
   int _petId;
 
-  List<CostEntity> get costList => _costList;
+  List<PhotoEntity> get photoList => _photoList;
   int get petId => _petId;
 
-  CostListProvider(int petId) {
+  PhotoListProvider(int petId) {
     _petId = petId;
-    fetchCostList(petId);
+    fetchPhotoList(petId);
   }
 
-  /// 获取消费列表
-  Future<bool> fetchCostList(int petId) async {
+  /// 获取相片列表
+  Future<bool> fetchPhotoList(int petId) async {
     setBusy();
     try {
-      var response = await CostAPI.getCostList(petId: petId);
+      var response = await PhotoAPI.getPhotoList(petId: petId);
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;
       } else {
-        _costList = response.data;
+        _photoList = response.data;
         setIdle();
         return true;
       }
@@ -33,16 +33,16 @@ class CostListProvider extends ViewStateModel {
     }
   }
 
-  /// 获取消费列表,不需要petId
-  Future<bool> fetchCostListWithoutPetId() async {
+  /// 获取相片列表,不需要petId
+  Future<bool> fetchPhotoListWithoutPetId() async {
     setBusy();
     try {
-      var response = await CostAPI.getCostList(petId: _petId);
+      var response = await PhotoAPI.getPhotoList(petId: _petId);
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;
       } else {
-        _costList = response.data;
+        _photoList = response.data;
         setIdle();
         return true;
       }

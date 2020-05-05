@@ -5,16 +5,16 @@ import 'package:cdd_mobile_frontend/common/provider/view_state_model.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ChooseAvatarProvider extends ViewStateModel {
-  String _avatarNetworkPath = "";
+class ChooseImageProvider extends ViewStateModel {
+  String _imageNetworkPath = "";
 
-  String get avatarNetworkPath => _avatarNetworkPath;
+  String get imageNetworkPath => _imageNetworkPath;
 
-  ChooseAvatarProvider(this._avatarNetworkPath);
+  ChooseImageProvider(this._imageNetworkPath);
 
   // 设置图片路径为空
   setDefault(String imagePath) {
-    _avatarNetworkPath = imagePath;
+    _imageNetworkPath = imagePath;
     notifyListeners();
   }
 
@@ -45,7 +45,7 @@ class ChooseAvatarProvider extends ViewStateModel {
         setError(null, null, message: response.errorMessage);
         return false;
       }
-      _avatarNetworkPath = response.data;
+      _imageNetworkPath = response.data;
       setIdle();
       return true;
     } catch (e, s) {

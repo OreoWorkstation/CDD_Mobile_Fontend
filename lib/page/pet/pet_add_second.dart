@@ -2,7 +2,7 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
-import 'package:cdd_mobile_frontend/provider/choose_avatar_provider.dart';
+import 'package:cdd_mobile_frontend/provider/choose_image_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_add_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -41,7 +41,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ChooseAvatarProvider(_defaultAvatar),
+          create: (_) => ChooseImageProvider(_defaultAvatar),
         ),
         ChangeNotifierProvider(
           create: (_) => PetAddProvider(),
@@ -103,13 +103,13 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
 
   // “完成”按钮
   _buildFinishButton(BuildContext context) {
-    return Consumer2<PetAddProvider, ChooseAvatarProvider>(
-      builder: (context, petProvider, chooseAvatarProvider, child) {
+    return Consumer2<PetAddProvider, ChooseImageProvider>(
+      builder: (context, petProvider, chooseImageProvider, child) {
         return textBtnFlatButtonWidget(
           onPressed: () async {
             await petProvider.addPet(
               species: widget.species,
-              avatar: chooseAvatarProvider.avatarNetworkPath,
+              avatar: chooseImageProvider.imageNetworkPath,
               nickname: _nicknameController.text,
               gender: _gender,
               birthday: _birthday,
@@ -132,9 +132,9 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
 
   // 宠物头像布局，并有拍摄，相册，默认三种选项
   Widget _buildAvatar(BuildContext context) {
-    return Consumer<ChooseAvatarProvider>(
-      builder: (context, chooseAvatarProvider, child) {
-        var _networkAvatar = chooseAvatarProvider.avatarNetworkPath;
+    return Consumer<ChooseImageProvider>(
+      builder: (context, chooseImageProvider, child) {
+        var _networkAvatar = chooseImageProvider.imageNetworkPath;
         return Center(
           child: Column(
             children: <Widget>[
@@ -155,20 +155,20 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => LoadingOverlay(
-                      isLoading: chooseAvatarProvider.isBusy,
+                      isLoading: chooseImageProvider.isBusy,
                       color: Colors.transparent,
                       child: chooseAvatarBottomSheetWidget(
                         context: context,
                         tapCamera: () async {
-                          await chooseAvatarProvider.getImageFromCamera();
+                          await chooseImageProvider.getImageFromCamera();
                           Navigator.of(context).pop();
                         },
                         tapGallery: () async {
-                          await chooseAvatarProvider.getImageFromGallery();
+                          await chooseImageProvider.getImageFromGallery();
                           Navigator.of(context).pop();
                         },
                         tapDefault: () async {
-                          chooseAvatarProvider.setDefault(_defaultAvatar);
+                          chooseImageProvider.setDefault(_defaultAvatar);
                           Navigator.of(context).pop();
                         },
                       ),

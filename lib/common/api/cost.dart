@@ -2,7 +2,7 @@ import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 
 class CostAPI {
-  // 获取消费列表
+  /// 获取消费列表
   static Future<APIResponse<List<CostEntity>>> getCostList({
     int petId,
   }) {
@@ -24,7 +24,7 @@ class CostAPI {
     });
   }
 
-  // 获取单个消费
+  /// 获取单个消费
   static Future<APIResponse<CostEntity>> getCostByCostId({
     int costId,
   }) {
@@ -41,7 +41,7 @@ class CostAPI {
     });
   }
 
-  // 添加消费
+  /// 添加消费
   static Future<APIResponse<bool>> insertCost({
     CostEntity cost,
   }) {
@@ -55,7 +55,7 @@ class CostAPI {
     });
   }
 
-  // 删除消费
+  /// 删除消费
   static Future<APIResponse<bool>> deleteCost({
     int costId,
   }) {
@@ -71,7 +71,7 @@ class CostAPI {
     });
   }
 
-  // 更新消费
+  /// 更新消费
   static Future<APIResponse<bool>> updateCost({
     CostEntity cost,
   }) {

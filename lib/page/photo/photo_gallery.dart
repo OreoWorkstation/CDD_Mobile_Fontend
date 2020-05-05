@@ -1,14 +1,19 @@
+import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
+import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
+import 'package:cdd_mobile_frontend/provider/photo/photo_delete_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:provider/provider.dart';
 
 class PhtotoGalleryPage extends StatefulWidget {
-  final List images;
+  final List<PhotoEntity> photoList;
   final int index;
   final String heroTag;
   PhtotoGalleryPage({
     Key key,
-    @required this.images,
+    @required this.photoList,
     this.index = 0,
     this.heroTag,
   }) : super(key: key);
@@ -19,10 +24,12 @@ class PhtotoGalleryPage extends StatefulWidget {
 class _PhtotoGalleryPageState extends State<PhtotoGalleryPage> {
   int _currentIndex = 0;
   PageController _pageController;
+  List<PhotoEntity> _photoList;
 
   @override
   void initState() {
     super.initState();
+    _photoList = widget.photoList;
     _currentIndex = widget.index;
     _pageController = PageController(initialPage: _currentIndex);
   }
@@ -51,12 +58,12 @@ class _PhtotoGalleryPageState extends State<PhtotoGalleryPage> {
       child: Container(
         child: PhotoViewGallery.builder(
           scrollPhysics: const BouncingScrollPhysics(),
-          itemCount: widget.images.length,
+          itemCount: _photoList.length,
           builder: (context, index) {
             return PhotoViewGalleryPageOptions(
               maxScale: 0.5,
               // minScale: 0.5,
-              imageProvider: NetworkImage(widget.images[index]),
+              imageProvider: NetworkImage(_photoList[index].photoPath),
 
               // heroAttributes: widget.heroTag.isNotEmpty
               //     ? PhotoViewHeroAttributes(tag: widget.heroTag)
@@ -100,11 +107,13 @@ class _PhtotoGalleryPageState extends State<PhtotoGalleryPage> {
       top: MediaQuery.of(context).padding.top + 10,
       width: MediaQuery.of(context).size.width,
       child: Center(
-        child: Text("${_currentIndex + 1} / ${widget.images.length}",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: cddSetFontSize(17),
-                fontWeight: FontWeight.bold)),
+        child: Text(
+          "${_currentIndex + 1} / ${_photoList.length}",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: cddSetFontSize(17),
+              fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -120,7 +129,29 @@ class _PhtotoGalleryPageState extends State<PhtotoGalleryPage> {
           size: cddSetFontSize(25),
           color: Colors.white,
         ),
-        onPressed: () {
+        onPressed: () async {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return ChangeNotifierProvider(
+                create: (_) => PhotoDeleteProvider(),
+                child: Consumer<PhotoDeleteProvider>(
+                  builder: (_, photoDeleteProvider, __) {
+                    return LoadingOverlay(
+                      isLoading: photoDeleteProvider.isBusy,
+                      color: Colors.transparent,
+                      child: DeleteConfirmDialog("确认删除该相片吗？", () async {
+                        await photoDeleteProvider.deletePhoto(
+                          photoId: _photoList[_currentIndex].id,
+                        );
+                        Navigator.of(context).pop();
+                      }),
+                    );
+                  },
+                ),
+              );
+            },
+          );
           Navigator.of(context).pop();
         },
       ),
