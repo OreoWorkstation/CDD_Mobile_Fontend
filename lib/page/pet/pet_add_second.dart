@@ -94,7 +94,6 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
   _buildFinishButton(BuildContext context) {
     return Consumer2<PetProvider, ChooseAvatarProvider>(
       builder: (context, petProvider, chooseAvatarProvider, child) {
-        print("添加完成按钮");
         return textBtnFlatButtonWidget(
           onPressed: () async {
             await petProvider.addPet(
@@ -105,9 +104,12 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
               birthday: _birthday,
               intro: _introductionController.text,
             );
-            if (petProvider.isIdle)
+            if (petProvider.isIdle) {
               Navigator.of(context).pop();
-            else if (petProvider.isError) showToast("服务器错误");
+              petProvider.fetchPetList();
+            } else if (petProvider.isError) {
+              showToast("服务器错误");
+            }
           },
           title: "完成",
         );
@@ -135,33 +137,34 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
               ),
               SizedBox(height: cddSetHeight(5)),
               textBtnFlatButtonWidget(
-                  onPressed: () {
-                    // 更改头像弹框
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => LoadingOverlay(
-                        isLoading: chooseAvatarProvider.isBusy,
-                        color: Colors.transparent,
-                        child: chooseAvatarBottomSheetWidget(
-                          context: context,
-                          tapCamera: () async {
-                            await chooseAvatarProvider.getImageFromCamera();
-                            Navigator.of(context).pop();
-                          },
-                          tapGallery: () async {
-                            await chooseAvatarProvider.getImageFromGallery();
-                            Navigator.of(context).pop();
-                          },
-                          tapDefault: () async {
-                            chooseAvatarProvider.setDefault(_defaultAvatar);
-                            Navigator.of(context).pop();
-                          },
-                        ),
+                onPressed: () {
+                  // 更改头像弹框
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => LoadingOverlay(
+                      isLoading: chooseAvatarProvider.isBusy,
+                      color: Colors.transparent,
+                      child: chooseAvatarBottomSheetWidget(
+                        context: context,
+                        tapCamera: () async {
+                          await chooseAvatarProvider.getImageFromCamera();
+                          Navigator.of(context).pop();
+                        },
+                        tapGallery: () async {
+                          await chooseAvatarProvider.getImageFromGallery();
+                          Navigator.of(context).pop();
+                        },
+                        tapDefault: () async {
+                          chooseAvatarProvider.setDefault(_defaultAvatar);
+                          Navigator.of(context).pop();
+                        },
                       ),
-                    );
-                  },
-                  title: "点击更换",
-                  textColor: AppColor.secondaryTextColor.withOpacity(0.6)),
+                    ),
+                  );
+                },
+                title: "点击更换",
+                textColor: AppColor.secondaryTextColor.withOpacity(0.6),
+              ),
             ],
           ),
         );

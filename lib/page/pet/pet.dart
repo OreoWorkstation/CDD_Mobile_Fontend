@@ -12,9 +12,9 @@ import 'package:provider/provider.dart';
 class PetPage extends StatefulWidget {
   PetPage({
     Key key,
-    @required this.index,
+    @required this.id,
   }) : super(key: key);
-  final int index;
+  final int id;
 
   @override
   _PetPageState createState() => _PetPageState();
@@ -58,7 +58,7 @@ class _PetPageState extends State<PetPage> {
                               return DeleteConfirmDialog(
                                 "确认删除宠物吗?",
                                 () async {
-                                  await petProvider.deletePet(widget.index);
+                                  await petProvider.deletePet(widget.id);
                                   Navigator.of(context).popUntil(
                                     ModalRoute.withName("/application"),
                                   );
@@ -102,7 +102,6 @@ class _PetPageState extends State<PetPage> {
   Widget _buildHeader() {
     return Consumer<PetProvider>(
       builder: (_, petProvider, __) {
-        if (widget.index >= petProvider.petList.length) return Container();
         var pet = petProvider.petList[widget.index];
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,

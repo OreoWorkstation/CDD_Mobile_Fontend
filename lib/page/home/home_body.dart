@@ -19,11 +19,6 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -50,7 +45,6 @@ class _HomeBodyState extends State<HomeBody> {
       ),
       child: Consumer2<UserProvider, PetProvider>(
         builder: (context, userProvider, petProvider, child) {
-          print("添加按钮");
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -86,7 +80,7 @@ class _HomeBodyState extends State<HomeBody> {
   // 宠物列表
   Widget _buildPetList(BuildContext context) {
     return Consumer<PetProvider>(
-      builder: (context, petProvider, child) => Builder(
+      builder: (_, petProvider, __) => Builder(
         builder: (_) {
           // 正在请求数据
           if (petProvider.isBusy) {
@@ -94,7 +88,7 @@ class _HomeBodyState extends State<HomeBody> {
           }
           // 请求出错
           if (petProvider.isError) {
-            return Center(child: Text("请求出错。。。"));
+            return Container(child: Text("请求出错"));
           }
           // 该用户没有宠物
           if (petProvider.petList.length == 0) {
@@ -106,7 +100,7 @@ class _HomeBodyState extends State<HomeBody> {
               onTap: (index) {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PetPage(
-                    index: index,
+                    id: petProvider.petList[index].id,
                   ),
                 ));
               },

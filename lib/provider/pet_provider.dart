@@ -36,6 +36,13 @@ class PetProvider extends ViewStateModel {
     }
   }
 
+  /// 获取单个宠物
+  Future<bool> getPetByPetId({@required int petId}) async {
+    var response = await PetAPI.getPetByPetId(petId: petId);
+    _pet = response.data;
+    notifyListeners();
+  }
+
   /// 添加宠物
   Future<bool> addPet({
     @required String species,
@@ -61,7 +68,7 @@ class PetProvider extends ViewStateModel {
         setError(null, null, message: response.errorMessage);
         return false;
       } else {
-        _petList.add(pet);
+        // _petList.add(pet);
         setIdle();
         return true;
       }
@@ -72,9 +79,8 @@ class PetProvider extends ViewStateModel {
   }
 
   /// 删除宠物
-  Future<bool> deletePet(int petIndex) async {
-    await PetAPI.deletePet(petId: petList[petIndex].id);
-    _petList.removeAt(petIndex);
+  Future<bool> deletePet(int petId) async {
+    await PetAPI.deletePet(petId: petId);
     notifyListeners();
     return true;
   }

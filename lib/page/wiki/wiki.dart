@@ -1,9 +1,60 @@
 import 'dart:io';
 
+import 'package:cdd_mobile_frontend/page/wiki/jump.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
+class WikiPage extends StatelessWidget {
+  const WikiPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: RaisedButton(
+          child: Text("Jump"),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => JumpPage(),
+            ));
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/*
+class WikiPage extends StatefulWidget {
+  WikiPage({Key key}) : super(key: key);
+
+  @override
+  _WikiPageState createState() => _WikiPageState();
+}
+
+class _WikiPageState extends State<WikiPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: RaisedButton(
+          child: Text("Jump"),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => JumpPage(),
+            ));
+          },
+        ),
+      ),
+    );
+  }
+}
+*/
+
+/*
 class WikiPage extends StatefulWidget {
   WikiPage({Key key}) : super(key: key);
 
@@ -102,3 +153,4 @@ class _WikiPageState extends State<WikiPage> {
   //   );
   // }
 }
+*/
