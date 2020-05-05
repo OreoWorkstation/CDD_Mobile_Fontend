@@ -1,4 +1,3 @@
-import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
@@ -6,16 +5,266 @@ import 'package:cdd_mobile_frontend/common/widget/chart.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/cost/cost_operation.dart';
+import 'package:cdd_mobile_frontend/provider/cost/cost_delete_provider.dart';
+import 'package:cdd_mobile_frontend/provider/cost/cost_list_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
-List itemColors = [
-  Color.fromARGB(255, 50, 245, 141),
-  Color.fromARGB(255, 255, 175, 137),
-  Color.fromARGB(255, 147, 118, 246),
-  Color.fromARGB(255, 240, 92, 106),
-  Color.fromARGB(255, 235, 240, 105),
-];
+class CostPage extends StatefulWidget {
+  CostPage({Key key}) : super(key: key);
 
+  @override
+  _CostPageState createState() => _CostPageState();
+}
+
+class _CostPageState extends State<CostPage> {
+  // 处理添加消费信息
+  _handleAddCost(
+    BuildContext context,
+    CostListProvider costListProvider,
+  ) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CostOperation(
+          operation: 0,
+          cost: CostEntity(petId: costListProvider.petId),
+        ),
+      ),
+    );
+    costListProvider.fetchCostListWithoutPetId();
+  }
+
+  // 处理删除消费信息
+  Future<bool> _handleDeleteCost(
+    BuildContext context,
+    int costId,
+  ) async {
+    bool isDismiss = false;
+    isDismiss = await showDialog(
+      context: context,
+      builder: (context) {
+        return ChangeNotifierProvider(
+          create: (_) => CostDeleteProvider(),
+          child: Consumer<CostDeleteProvider>(
+            builder: (_, costDeleteProvider, __) {
+              return LoadingOverlay(
+                isLoading: costDeleteProvider.isBusy,
+                color: Colors.transparent,
+                child: DeleteConfirmDialog(
+                  "确定删除该消费信息吗?",
+                  () async {
+                    await costDeleteProvider.deleteCost(costId: costId);
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+    return isDismiss;
+  }
+
+  // 处理点击消费项（查看并可以更新消费信息）
+  _handleTapCost(
+    BuildContext context,
+    CostEntity cost,
+    CostListProvider costListProvider,
+  ) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CostOperation(
+          operation: 1,
+          cost: cost,
+        ),
+      ),
+    );
+    costListProvider.fetchCostListWithoutPetId();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
+        title: Text("消费", style: TextStyle(color: Colors.black)),
+        centerTitle: true,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+        ),
+      ),
+      body: Consumer<CostListProvider>(
+        builder: (_, costListProvider, __) {
+          // 正在请求
+          if (costListProvider == null || costListProvider.isBusy) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: cddSetWidth(23)),
+            child: Column(
+              children: <Widget>[
+                // 曲线图表
+                _buildChart(costListProvider.costList),
+                // 消费列表
+                _buildCostList(context, costListProvider),
+                // 添加按钮
+                _buildBottomButton(context, costListProvider),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // 曲线图表布局
+  Widget _buildChart(List<CostEntity> costList) {
+    List<LineSales> dataLine = costList.length == 0
+        ? []
+        : costList.map((item) {
+            return LineSales(item.createTime, item.costValue);
+          }).toList();
+    return Container(
+      margin: EdgeInsets.only(top: cddSetHeight(10), bottom: cddSetHeight(10)),
+      width: double.infinity,
+      height: cddSetHeight(210),
+      child: cddLineChart(dataLine),
+    );
+  }
+
+  // 消费列表布局
+  Widget _buildCostList(
+    BuildContext context,
+    CostListProvider costListProvider,
+  ) {
+    var costList = costListProvider.costList;
+    return Expanded(
+      child: Container(
+        child: costList.length == 0
+            ? Center(child: Text("none"))
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  return _buildListItem(
+                    context,
+                    index,
+                    costListProvider,
+                  );
+                },
+                itemCount: costList.length,
+              ),
+      ),
+    );
+  }
+
+  // 消费列表项布局
+  Widget _buildListItem(
+    BuildContext context,
+    int index,
+    CostListProvider costListProvider,
+  ) {
+    var cost = costListProvider.costList[index];
+    return GestureDetector(
+      // 点击消费项
+      onTap: () => _handleTapCost(context, cost, costListProvider),
+      // 删除消费项
+      child: Dismissible(
+        key: Key(costListProvider.costList.toString()),
+        direction: DismissDirection.endToStart,
+        confirmDismiss: (direction) async {
+          return _handleDeleteCost(context, cost.id);
+        },
+        onDismissed: (directrion) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "删除成功!",
+                style: TextStyle(
+                  color: AppColor.primaryElement,
+                  fontSize: cddSetFontSize(17),
+                ),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 2,
+            ),
+          );
+          costListProvider.fetchCostListWithoutPetId();
+        },
+        background: Container(color: AppColor.listItemColors[index]),
+        child: Container(
+          width: double.infinity,
+          height: cddSetHeight(60),
+          margin: EdgeInsets.symmetric(vertical: cddSetHeight(10)),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 5),
+                blurRadius: 3,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: cddSetWidth(11),
+                height: double.infinity,
+                color: AppColor
+                    .listItemColors[index % AppColor.listItemColors.length],
+              ),
+              SizedBox(width: cddSetWidth(12)),
+              Icon(Iconfont.zhangdan, color: AppColor.secondaryElement),
+              SizedBox(width: cddSetWidth(19)),
+              Text(
+                cddFormatBirthday(cost.createTime),
+                style: TextStyle(
+                    fontSize: cddSetFontSize(16),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+              Spacer(),
+              Text(
+                "￥${cost.costValue}",
+                style: TextStyle(
+                  fontSize: cddSetFontSize(16),
+                  color: Color.fromARGB(255, 75, 3, 242),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(width: cddSetWidth(20)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 底部按钮布局
+  Widget _buildBottomButton(
+    BuildContext context,
+    CostListProvider costListProvider,
+  ) {
+    return Container(
+      margin: EdgeInsets.only(top: cddSetHeight(10), bottom: cddSetHeight(10)),
+      child: btnFlatButtonWidget(
+        onPressed: () => _handleAddCost(context, costListProvider),
+        bgColor: AppColor.costColor,
+        width: cddSetWidth(250),
+        height: cddSetHeight(48),
+        title: "添加",
+        fontSize: cddSetFontSize(14),
+      ),
+    );
+  }
+}
+
+/*
 class CostPage extends StatefulWidget {
   final petId;
   CostPage({Key key, @required this.petId}) : super(key: key);
@@ -235,3 +484,4 @@ class _CostPageState extends State<CostPage> {
     );
   }
 }
+*/

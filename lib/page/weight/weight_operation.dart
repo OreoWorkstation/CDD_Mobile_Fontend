@@ -45,16 +45,17 @@ class _WeightOperationState extends State<WeightOperation> {
   }
 
   // 处理完成按钮
-  _handleFinishButton(WeightOperationProvider provider) async {
+  _handleFinishButton(
+    BuildContext context,
+    WeightOperationProvider provider,
+  ) async {
+    _weight.weightValue = double.parse(_weightValueController.text);
+    _weight.createTime = _createTime;
     if (widget.operation == 0) {
       // 添加体重
-      _weight.weightValue = double.parse(_weightValueController.text);
-      _weight.createTime = _createTime;
       await provider.addWeight(weight: _weight);
     } else {
       // 更新体重
-      _weight.weightValue = double.parse(_weightValueController.text);
-      _weight.createTime = _createTime;
       await provider.updateWeight(weight: _weight);
     }
     Navigator.of(context).pop();
@@ -84,7 +85,7 @@ class _WeightOperationState extends State<WeightOperation> {
               ),
               actions: <Widget>[
                 textBtnFlatButtonWidget(
-                  onPressed: () => _handleFinishButton(provider),
+                  onPressed: () => _handleFinishButton(context, provider),
                   title: "完成",
                 ),
               ],

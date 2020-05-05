@@ -1,10 +1,12 @@
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
+import 'package:cdd_mobile_frontend/page/cost/cost.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_edit.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/dialog.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/page/weight/weight.dart';
+import 'package:cdd_mobile_frontend/provider/cost/cost_list_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_delete_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_edit_provider.dart';
 import 'package:cdd_mobile_frontend/provider/pet/pet_provider.dart';
@@ -281,7 +283,17 @@ class _PetPageState extends State<PetPage> {
               Iconfont.zhangdan,
               "账单",
               "￥${pet.totalCost}",
-              () async {},
+              () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (_) => CostListProvider(pet.id),
+                      child: CostPage(),
+                    ),
+                  ),
+                );
+                petProvider.fetchPet();
+              },
             ),
             _buildPetValueItem(
               AppColor.photoColor,

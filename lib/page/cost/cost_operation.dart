@@ -1,29 +1,264 @@
-import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/util/list.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
+import 'package:cdd_mobile_frontend/provider/cost/cost_operation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 class CostOperation extends StatefulWidget {
-  final int costId;
-  final int petId;
-  final double costValue;
-  final String costContent;
-  final DateTime createTime;
-  final int operation;
+  final int operation; // 0: 添加消费，1：编辑消费
+  final CostEntity cost;
 
   CostOperation({
     Key key,
-    this.costId,
-    @required this.petId,
-    this.costValue,
-    this.costContent,
-    this.createTime,
     @required this.operation,
+    @required this.cost,
+  }) : super(key: key);
+
+  @override
+  _CostOperationState createState() => _CostOperationState();
+}
+
+class _CostOperationState extends State<CostOperation> {
+  List<String> _tags = [
+    "衣服",
+    "食物",
+    "玩具",
+    "医疗",
+    "其他",
+  ];
+
+  List<Color> _colors = [
+    Color.fromARGB(255, 241, 137, 238),
+    Color.fromARGB(255, 154, 137, 241),
+    Color.fromARGB(255, 246, 110, 95),
+    Color.fromARGB(255, 137, 207, 241),
+    Color.fromARGB(255, 0, 200, 12),
+  ];
+
+  List<IconData> _icons = [
+    Iconfont.yifu,
+    Iconfont.gouliang,
+    Iconfont.wanju,
+    Iconfont.yiliao,
+    Iconfont.qita,
+  ];
+
+  // 消费内容
+  List<String> _selected = [];
+  // 消费值控制器
+  TextEditingController _costValueController = TextEditingController();
+  // 消费时间
+  DateTime _createTime = DateTime.now();
+  // 消费类
+  CostEntity _cost;
+
+  @override
+  void initState() {
+    super.initState();
+    _cost = widget.cost;
+    if (widget.operation == 0) {
+      _createTime = DateTime.now();
+    } else {
+      _createTime = _cost.createTime;
+      _costValueController.text = _cost.costValue.toString();
+      _selected = _cost.costContent == null
+          ? []
+          : cddConvertString2List(_cost.costContent);
+    }
+  }
+
+  // 处理完成按钮
+  _handleFinishButton(
+    BuildContext context,
+    CostOperationProvider provider,
+  ) async {
+    _cost.costValue = double.parse(_costValueController.text);
+    _cost.costContent = _selected.toString();
+    _cost.createTime = _createTime;
+    if (widget.operation == 0) {
+      // 添加消费
+      await provider.addCost(cost: _cost);
+    } else {
+      // 更新消费
+      await provider.updateCost(cost: _cost);
+    }
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => CostOperationProvider(),
+      child: Consumer<CostOperationProvider>(
+        builder: (_, provider, __) {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              brightness: Brightness.light,
+              title: Text(
+                widget.operation == 0 ? "添加消费" : "消费",
+                style: TextStyle(color: Colors.black),
+              ),
+              centerTitle: true,
+              elevation: 0,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+              ),
+              actions: <Widget>[
+                textBtnFlatButtonWidget(
+                  onPressed: () => _handleFinishButton(context, provider),
+                  title: "完成",
+                ),
+              ],
+            ),
+            body: LoadingOverlay(
+              isLoading: provider.isBusy,
+              color: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: cddSetWidth(45),
+                  right: cddSetWidth(45),
+                  top: cddSetHeight(45),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    _buildCostValueInput(),
+                    SizedBox(height: cddSetHeight(15)),
+                    _buildCostContentChoose(),
+                    SizedBox(height: cddSetHeight(15)),
+                    _buildCreateTime(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // 消费值布局
+  Widget _buildCostValueInput() {
+    return buildFormListItem(
+      title: "消费金额",
+      operation: TextField(
+        controller: _costValueController,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: "输入消费金额",
+          prefixText: "￥",
+        ),
+        style: TextStyle(
+          fontSize: cddSetFontSize(18),
+          color: AppColor.primaryText,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  // 消费内容布局
+  Widget _buildCostContentChoose() {
+    return Column(
+      children: <Widget>[
+        Container(
+          width: double.infinity,
+          child: Text(
+            "消费内容",
+            style: TextStyle(
+              color: AppColor.primaryText.withOpacity(0.8),
+              fontSize: cddSetFontSize(17),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: cddSetHeight(10)),
+        Wrap(
+          spacing: 30.0,
+          children: <Widget>[
+            _buildChip(0),
+            _buildChip(1),
+            _buildChip(2),
+            _buildChip(3),
+            _buildChip(4),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // 消费时间布局
+  Widget _buildCreateTime() {
+    return buildFormListItem(
+      title: "日期",
+      operation: cddDatePickerWidget(
+        context: context,
+        dt: _createTime,
+        onConfirm: (Picker picker, List value) {
+          setState(
+            () {
+              _createTime = (picker.adapter as DateTimePickerAdapter).value;
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  // 消费选项布局
+  Widget _buildChip(int index) {
+    return FilterChip(
+      label: Text(
+        _tags[index],
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: cddSetFontSize(14),
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      disabledColor: AppColor.primaryText,
+      selectedColor: _colors[index],
+      avatar: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        child: Icon(
+          _icons[index],
+          color: Colors.white,
+          size: cddSetFontSize(17),
+        ),
+      ),
+      selected: _selected.contains(_tags[index]),
+      onSelected: (val) {
+        setState(() {
+          if (_selected.contains(_tags[index])) {
+            _selected.remove(_tags[index]);
+          } else {
+            _selected.add(_tags[index]);
+          }
+        });
+      },
+    );
+  }
+}
+/*
+class CostOperation extends StatefulWidget {
+  final int operation; // 0: 添加消费，1：编辑消费
+  final CostEntity cost;
+
+  CostOperation({
+    Key key,
+    @required this.operation,
+    @required this.cost,
   }) : super(key: key);
 
   @override
@@ -243,3 +478,4 @@ class _CostOperationState extends State<CostOperation> {
     );
   }
 }
+*/

@@ -1,19 +1,29 @@
 import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/common/provider/view_state_model.dart';
-import 'package:flutter/material.dart';
 
-/// 体重的增，改
-class WeightOperationProvider extends ViewStateModel {
-  /// 添加体重
-  Future<bool> addWeight({@required WeightEntity weight}) async {
+class CostListProvider extends ViewStateModel {
+  List<CostEntity> _costList;
+  int _petId;
+
+  List<CostEntity> get costList => _costList;
+  int get petId => _petId;
+
+  CostListProvider(int petId) {
+    _petId = petId;
+    fetchCostList(petId);
+  }
+
+  /// 获取体重列表
+  Future<bool> fetchCostList(int petId) async {
     setBusy();
     try {
-      var response = await WeightAPI.insertWeight(weight: weight);
+      var response = await CostAPI.getCostList(petId: petId);
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;
       } else {
+        _costList = response.data;
         setIdle();
         return true;
       }
@@ -23,15 +33,16 @@ class WeightOperationProvider extends ViewStateModel {
     }
   }
 
-  /// 更新体重
-  Future<bool> updateWeight({@required WeightEntity weight}) async {
+  /// 获取体重列表,不需要petId
+  Future<bool> fetchCostListWithoutPetId() async {
     setBusy();
     try {
-      var response = await WeightAPI.updateWeight(weight: weight);
-      if (response.error) {
+      var response = await CostAPI.getCostList(petId: petId);
+      if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;
       } else {
+        _costList = response.data;
         setIdle();
         return true;
       }
