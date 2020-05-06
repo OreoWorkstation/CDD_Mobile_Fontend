@@ -1,5 +1,6 @@
 import 'package:cdd_mobile_frontend/common/entity/entity.dart';
 import 'package:cdd_mobile_frontend/page/cost/cost.dart';
+import 'package:cdd_mobile_frontend/page/diary/diary.dart';
 import 'package:cdd_mobile_frontend/page/pet/pet_edit.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
@@ -272,7 +273,24 @@ class _PetPageState extends State<PetPage> {
               Iconfont.riji,
               "日记",
               "${pet.diaryNumber}",
-              () {},
+              () async {
+                // await Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => ChangeNotifierProvider(
+                //       create: (_) => WeightListProvider(pet.id),
+                //       child: WeightPage(),
+                //     ),
+                //   ),
+                // );
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DiaryPage(
+                      petId: petProvider.pet.id,
+                    ),
+                  ),
+                );
+                petProvider.fetchPet();
+              },
             ),
           ],
         ),

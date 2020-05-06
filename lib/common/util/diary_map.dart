@@ -9,6 +9,7 @@ Map<DateTime, List> cddConvertDiaryMap(List<DiaryEntity> diaryList) {
     list.add(diary.videoPath);
     list.add(diary.audioPath);
     list.add(diary.content);
+    list.add(diary.id);
     res.putIfAbsent(cddFormatDatetime(diary.createTime), () => list);
     list = [];
   }

@@ -35,8 +35,8 @@ class _PhotoPageState extends State<PhotoPage> {
           create: (_) => PhotoAddProvider(),
         ),
       ],
-      child: Consumer2<PhotoListProvider, PhotoAddProvider>(
-        builder: (_, photoListProvider, photoAddProvider, __) {
+      child: Consumer<PhotoListProvider>(
+        builder: (_, photoListProvider, __) {
           return Builder(
             builder: (_) {
               if (photoListProvider.isBusy) {
@@ -54,15 +54,15 @@ class _PhotoPageState extends State<PhotoPage> {
                     icon: Icon(Icons.arrow_back_ios, color: Colors.black),
                   ),
                   actions: <Widget>[
-                    Consumer<ChooseImageProvider>(
-                      builder: (_, chooseImageProvider, __) {
+                    Consumer2<ChooseImageProvider, PhotoAddProvider>(
+                      builder: (_, chooseImageProvider, photoAddProvider, __) {
                         print("chooseimagexxxxxxxxxxxxxxxx");
                         return IconButton(
                           onPressed: () async {
                             await showModalBottomSheet(
                               context: context,
-                              builder: (context) =>
-                                  _buildBottomSheet(chooseImageProvider),
+                              builder: (context) => _buildBottomSheet(
+                                  context, chooseImageProvider),
                             );
                             print(
                                 "image path: ${chooseImageProvider.imageNetworkPath}");
@@ -86,7 +86,7 @@ class _PhotoPageState extends State<PhotoPage> {
                     ),
                   ],
                 ),
-                body: _buildPhotoGridView(photoListProvider, photoAddProvider),
+                body: _buildPhotoGridView(photoListProvider),
               );
             },
           );
@@ -97,8 +97,10 @@ class _PhotoPageState extends State<PhotoPage> {
 
   // 打开底部选项：拍摄 / 本地相册
   _buildBottomSheet(
+    BuildContext context,
     ChooseImageProvider chooseImageProvider,
   ) {
+    print("build bottom sheet: ${chooseImageProvider.imageNetworkPath}");
     return choosePhotoBottomSheetWidget(
       context: context,
       tapCamera: () async {
@@ -113,12 +115,9 @@ class _PhotoPageState extends State<PhotoPage> {
   }
 
   // 页面布局
-  Widget _buildPhotoGridView(
-    PhotoListProvider photoListProvider,
-    PhotoAddProvider photoAddProvider,
-  ) {
+  Widget _buildPhotoGridView(PhotoListProvider photoListProvider) {
     return LoadingOverlay(
-      isLoading: photoListProvider.isBusy || photoAddProvider.isBusy,
+      isLoading: photoListProvider.isBusy,
       color: Colors.transparent,
       child: GridView.count(
         crossAxisCount: 3,

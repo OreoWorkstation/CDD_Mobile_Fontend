@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 class PhotoAddProvider extends ViewStateModel {
   /// 添加相片
   Future<bool> addPhoto({@required PhotoEntity photo}) async {
-    setBusy();
+    // setBusy();
     try {
       var response = await PhotoAPI.insertPhoto(photo: photo);
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);
         return false;
       } else {
-        setIdle();
+        // setIdle();
         return true;
       }
     } catch (e, s) {
