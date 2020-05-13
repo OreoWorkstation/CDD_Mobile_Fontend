@@ -22,7 +22,7 @@ class ChooseImageProvider extends ViewStateModel {
   Future getImageFromCamera() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
-      getNetworkPath(image);
+      await getNetworkPath(image);
     }
   }
 
@@ -30,7 +30,7 @@ class ChooseImageProvider extends ViewStateModel {
   Future getImageFromGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      getNetworkPath(image);
+      await getNetworkPath(image);
     }
   }
 

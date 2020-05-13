@@ -206,7 +206,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
     );
   }
 
-  // 宠物性别布局
+  // 宠物性别布
   Widget _buildGender() {
     return _buildFormListItem(
       "性别",

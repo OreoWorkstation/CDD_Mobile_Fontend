@@ -1,8 +1,95 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
+import 'package:cdd_mobile_frontend/page/community/community_type.dart';
+import 'package:cdd_mobile_frontend/page/community/instant_add.dart';
+import 'package:cdd_mobile_frontend/provider/community/instant_list_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+class CommunityPage extends StatefulWidget {
+  CommunityPage({Key key}) : super(key: key);
+
+  @override
+  _CommunityPageState createState() => _CommunityPageState();
+}
+
+class _CommunityPageState extends State<CommunityPage>
+    with TickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => InstantListProvider(),
+        ),
+      ],
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(cddSetHeight(55)),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
+            elevation: 1,
+            automaticallyImplyLeading: false,
+            bottom: _buildTabBar(),
+          ),
+        ),
+        body: _buildTabView(context),
+        floatingActionButton: Consumer<InstantListProvider>(
+          builder: (_, instantListProvider, __) {
+            return FloatingActionButton(
+              child: Icon(Icons.add),
+              backgroundColor: AppColor.primaryElement.withOpacity(0.8),
+              onPressed: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => InstantAddPage(),
+                ));
+                instantListProvider.fetchAllData();
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  // 顶部tab布局
+  Widget _buildTabBar() {
+    return TabBar(
+      isScrollable: false,
+      controller: _tabController,
+      labelPadding: EdgeInsets.only(bottom: cddSetHeight(5)),
+      labelStyle:
+          TextStyle(fontSize: cddSetFontSize(18), fontWeight: FontWeight.bold),
+      labelColor: Colors.black,
+      unselectedLabelColor: Colors.black45,
+      indicatorColor: Colors.transparent,
+      tabs: <Widget>[Text("热门"), Text("关注")],
+    );
+  }
+
+  // 主界面布局
+  Widget _buildTabView(BuildContext context) {
+    return TabBarView(
+      controller: _tabController,
+      children: <Widget>[
+        CommunityType(type: 0),
+        CommunityType(type: 1),
+      ],
+    );
+  }
+}
+
+/*
 class CommunityPage extends StatefulWidget {
   CommunityPage({Key key}) : super(key: key);
 
@@ -212,3 +299,4 @@ class _CommunityPageState extends State<CommunityPage> {
     );
   }
 }
+*/

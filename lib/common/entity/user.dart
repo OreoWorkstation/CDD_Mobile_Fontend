@@ -1,3 +1,5 @@
+import 'package:cdd_mobile_frontend/common/entity/entity.dart';
+
 class UserInfoEntity {
   int id;
   String account;
@@ -75,5 +77,47 @@ class UserInfoEntity {
         "fansNumber": fansNumber,
         "createTime": createTime,
         "updateTime": updateTime,
+      };
+}
+
+class UserZoneEntity {
+  int userId;
+  String nickname;
+  int gender;
+  String avatar;
+  String introduction;
+  String address;
+  List<InstantVO> instantVOList;
+
+  UserZoneEntity({
+    this.userId,
+    this.nickname,
+    this.gender,
+    this.avatar,
+    this.introduction,
+    this.address,
+    this.instantVOList,
+  });
+
+  factory UserZoneEntity.fromJson(Map<String, dynamic> json) => UserZoneEntity(
+        userId: json["userId"],
+        nickname: json["nickname"],
+        gender: json["gender"],
+        introduction: json["introduction"],
+        avatar: json["avatar"],
+        address: json["address"],
+        instantVOList: List<InstantVO>.from(
+            json["instantDTOList"].map((x) => InstantVO.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "userId": userId,
+        "nickname": nickname,
+        "gender": gender,
+        "avatar": avatar,
+        "address": address,
+        "introduction": introduction,
+        "instantDTOList":
+            List<dynamic>.from(instantVOList.map((x) => x.toJson())),
       };
 }

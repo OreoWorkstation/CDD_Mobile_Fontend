@@ -24,6 +24,7 @@ class PhotoPage extends StatefulWidget {
 }
 
 class _PhotoPageState extends State<PhotoPage> {
+  String _imagePath = "";
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -56,7 +57,8 @@ class _PhotoPageState extends State<PhotoPage> {
                   actions: <Widget>[
                     Consumer2<ChooseImageProvider, PhotoAddProvider>(
                       builder: (_, chooseImageProvider, photoAddProvider, __) {
-                        print("chooseimagexxxxxxxxxxxxxxxx");
+                        print(
+                            "chooseimagexxxxxxxxxxxxxxxx: ${chooseImageProvider.imageNetworkPath}");
                         return IconButton(
                           onPressed: () async {
                             await showModalBottomSheet(
@@ -64,8 +66,9 @@ class _PhotoPageState extends State<PhotoPage> {
                               builder: (context) => _buildBottomSheet(
                                   context, chooseImageProvider),
                             );
+                            print("======>image path: $_imagePath");
                             print(
-                                "image path: ${chooseImageProvider.imageNetworkPath}");
+                                ">>>>>>>>>image path: ${chooseImageProvider.imageNetworkPath}");
                             if (chooseImageProvider.imageNetworkPath != "") {
                               await photoAddProvider.addPhoto(
                                 photo: PhotoEntity(
@@ -74,7 +77,8 @@ class _PhotoPageState extends State<PhotoPage> {
                                       chooseImageProvider.imageNetworkPath,
                                 ),
                               );
-                              photoListProvider.fetchPhotoListWithoutPetId();
+                              await photoListProvider
+                                  .fetchPhotoListWithoutPetId();
                             }
                           },
                           icon: Icon(
@@ -101,6 +105,7 @@ class _PhotoPageState extends State<PhotoPage> {
     ChooseImageProvider chooseImageProvider,
   ) {
     print("build bottom sheet: ${chooseImageProvider.imageNetworkPath}");
+    _imagePath = chooseImageProvider.imageNetworkPath;
     return choosePhotoBottomSheetWidget(
       context: context,
       tapCamera: () async {

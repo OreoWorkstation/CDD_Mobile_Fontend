@@ -7,3 +7,4 @@ export 'photo.dart';
 export 'user.dart';
 export 'weight.dart';
 export 'file.dart';
+export 'instant.dart';

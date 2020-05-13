@@ -9,3 +9,5 @@ export 'photo.dart';
 export 'register.dart';
 export 'user.dart';
 export 'weight.dart';
+export 'instant.dart';
+export 'comment.dart';

@@ -54,4 +54,23 @@ class UserAPI {
           error: true, errorMessage: "An error occured");
     });
   }
+
+  /// 获取用户空间信息
+  static Future<APIResponse<UserZoneEntity>> getUserZone(int userId) {
+    return HttpUtil().get("/user/$userId/zone").then((response) {
+      if (response.statusCode == 200) {
+        if (response.data['code'] == 0)
+          return APIResponse<UserZoneEntity>(
+              data: UserZoneEntity.fromJson(response.data['data']));
+        else
+          return APIResponse<UserZoneEntity>(
+              error: true, errorMessage: "An error occured");
+      }
+      return APIResponse<UserZoneEntity>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) {
+      return APIResponse<UserZoneEntity>(
+          error: true, errorMessage: "An error occured");
+    });
+  }
 }
