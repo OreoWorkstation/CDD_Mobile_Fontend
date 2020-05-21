@@ -70,11 +70,12 @@ class FeedProvider extends ViewStateModel {
   }
 
   /// 创建评论
-  createComment(CommentEntity comment) {
-    _commentList.add(comment);
+  Future<bool> createComment(Comment comment) async {
+    setIdle();
+    await FeedAPI.insertComment(comment: comment);
     _instant.instant.commentNumber++;
-    FeedAPI.insertComment(comment: comment);
-    notifyListeners();
+    setIdle();
+    return true;
   }
 
   /// 点赞动态

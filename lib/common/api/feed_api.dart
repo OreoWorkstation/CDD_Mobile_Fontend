@@ -97,7 +97,7 @@ class FeedAPI {
 
   /// 添加评论
   static Future<APIResponse<bool>> insertComment({
-    CommentEntity comment,
+    Comment comment,
   }) {
     return HttpUtil()
         .post("/comment", params: comment.toJson())

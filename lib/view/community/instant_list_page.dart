@@ -10,14 +10,16 @@ import 'package:provider/provider.dart';
 class InstantListPage extends StatefulWidget {
   final List<InstantVO> instantList;
 
-  const InstantListPage({Key key, this.instantList,}) : super(key: key);
+  const InstantListPage({
+    Key key,
+    this.instantList,
+  }) : super(key: key);
 
   @override
   _InstantListPageState createState() => _InstantListPageState();
 }
 
 class _InstantListPageState extends State<InstantListPage> {
-
   List<InstantVO> _instantList;
 
   @override
@@ -26,16 +28,17 @@ class _InstantListPageState extends State<InstantListPage> {
     _instantList = widget.instantList;
   }
 
-  _handleLikeInstant(int instantId) async{
+  _handleLikeInstant(int instantId) async {
     Provider.of<FeedProvider>(context, listen: false).likeInstant(instantId);
   }
 
-  _routeToDetailPage(InstantVO instantVO) async{
+  _routeToDetailPage(InstantVO instantVO) async {
     Provider.of<FeedProvider>(context, listen: false).getInstant(instantVO);
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => InstantDetailPage(),
     ));
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -77,9 +80,9 @@ class _InstantListPageState extends State<InstantListPage> {
         borderRadius: Radii.k10pxRadius,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 3),
-            blurRadius: 6,
-            color: Colors.grey,
+            offset: Offset(0, 0),
+            blurRadius: 1,
+            color: Colors.grey.withOpacity(.6),
           ),
         ],
       ),
@@ -108,7 +111,7 @@ class _InstantListPageState extends State<InstantListPage> {
           children: <Widget>[
             GestureDetector(
               //onTap: () => _routeToUserZone(instantVO.instant.userId, context),
-              onTap: (){},
+              onTap: () {},
               child: Container(
                 width: sWidth(45),
                 height: sWidth(45),
@@ -165,29 +168,29 @@ class _InstantListPageState extends State<InstantListPage> {
         instantVO.instant.imagePath == ""
             ? Container()
             : GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SinglePhotoView(
-                  imageProvider:
-                  NetworkImage(instantVO.instant.imagePath),
-                  heroTag: 'simple',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SinglePhotoView(
+                        imageProvider:
+                            NetworkImage(instantVO.instant.imagePath),
+                        heroTag: 'simple',
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: sWidth(280),
+                  height: sHeight(200),
+                  decoration: BoxDecoration(
+                    borderRadius: Radii.k10pxRadius,
+                    image: DecorationImage(
+                      image: NetworkImage(instantVO.instant.imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            );
-          },
-          child: Container(
-            width: sWidth(280),
-            height: sHeight(200),
-            decoration: BoxDecoration(
-              borderRadius: Radii.k10pxRadius,
-              image: DecorationImage(
-                image: NetworkImage(instantVO.instant.imagePath),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
         SizedBox(height: sHeight(10)),
         GestureDetector(
           onTap: () => _routeToDetailPage(instantVO),
@@ -212,33 +215,32 @@ class _InstantListPageState extends State<InstantListPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-         Row(
-           crossAxisAlignment: CrossAxisAlignment.center,
-           children: <Widget>[
-             IconButton(
-               onPressed: () => _handleLikeInstant(instantVO.instant.id),
-               //onPressed: (){},
-               icon: Icon(
-                 Iconfont.dianzan,
-                 size: 25,
-                 color: instantVO.status == 0 ? Colors.black : Colors.red,
-               ),
-             ),
-             SizedBox(width: sWidth(3)),
-             Text(
-               "${instantVO.instant.likeNumber}",
-               style: TextStyle(
-                   fontSize: sSp(16),
-                   color: AppColor.secondaryElement),
-             ),
-           ],
-         ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              onPressed: () => _handleLikeInstant(instantVO.instant.id),
+              //onPressed: (){},
+              icon: Icon(
+                Iconfont.dianzan,
+                size: 25,
+                color: instantVO.status == 0 ? Colors.black : Colors.red,
+              ),
+            ),
+            SizedBox(width: sWidth(3)),
+            Text(
+              "${instantVO.instant.likeNumber}",
+              style: TextStyle(
+                  fontSize: sSp(16), color: AppColor.secondaryElement),
+            ),
+          ],
+        ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             IconButton(
               //onPressed: () => _routeToDetailPage(instantVO),
-              onPressed: (){},
+              onPressed: () {},
               icon: Icon(
                 Iconfont.pinglun,
                 size: 25,
@@ -248,8 +250,7 @@ class _InstantListPageState extends State<InstantListPage> {
             Text(
               "${instantVO.instant.commentNumber}",
               style: TextStyle(
-                  fontSize: sSp(16),
-                  color: AppColor.secondaryElement),
+                  fontSize: sSp(16), color: AppColor.secondaryElement),
             ),
           ],
         ),

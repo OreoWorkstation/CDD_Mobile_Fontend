@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class InputBottomSheet extends StatelessWidget {
   final ValueChanged onEditingCompleteText;
   final TextEditingController controller = TextEditingController();
+  final hintText;
 
-  InputBottomSheet({Key key, this.onEditingCompleteText}) : super(key: key);
+  InputBottomSheet({Key key, this.onEditingCompleteText, this.hintText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class InputBottomSheet extends StatelessWidget {
                 Navigator.pop(context);
               },
               decoration: InputDecoration(
-                hintText: '请输入评论的内容',
+                hintText: hintText == null ? '请输入评论的内容' : "回复: $hintText",
                 isDense: true,
                 contentPadding:
                     EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
@@ -64,6 +66,57 @@ class InputBottomSheet extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ReplayTextFiefd extends StatelessWidget {
+  final ValueChanged onEditingCompleteText;
+  final TextEditingController controller = TextEditingController();
+
+  ReplayTextFiefd({Key key, this.onEditingCompleteText}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Container(
+        color: Color(0xFFF4F4F4),
+        padding: EdgeInsets.only(
+          left: sWidth(16),
+          top: sHeight(8),
+          bottom: sHeight(8),
+          right: sHeight(16),
+        ),
+        child: TextField(
+          controller: controller,
+          autocorrect: true,
+          style: TextStyle(
+            fontSize: sSp(16),
+          ),
+          textInputAction: TextInputAction.send,
+          keyboardType: TextInputType.multiline,
+          onEditingComplete: () {
+            //点击发送调用
+            print('onEditingComplete');
+            onEditingCompleteText(controller.text);
+            Navigator.pop(context);
+          },
+          decoration: InputDecoration(
+            hintText: '请输入评论的内容',
+            isDense: true,
+            contentPadding:
+                EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+            border: const OutlineInputBorder(
+              gapPadding: 0,
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
+          ),
+          minLines: 1,
+          maxLines: 5,
+        ),
       ),
     );
   }

@@ -1,9 +1,11 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
+import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/community/comment_list.dart';
 import 'package:cdd_mobile_frontend/view_model/feed_provider.dart';
+import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,35 +28,75 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
     Provider.of<FeedProvider>(context, listen: false).likeInstant(instantId);
   }
 
+  _handleComment(
+    instantId, {
+    bool isCommentOther = false,
+    int parentId,
+    String parentName,
+  }) {
+    Navigator.push(
+      context,
+      PopRoute(
+        child: InputBottomSheet(
+          hintText: isCommentOther ? parentName : null,
+          onEditingCompleteText: (text) async {
+            UserInfoEntity _user =
+                Provider.of<UserProvider>(context, listen: false).userInfo;
+            print(_user.nickname);
+            await Provider.of<FeedProvider>(context, listen: false)
+                .createComment(
+              Comment(
+                id: 0,
+                userId: _user.id,
+                instantId: instantId,
+                content: text,
+                parentId: isCommentOther ? parentId : 0,
+              ),
+            );
+            await Provider.of<FeedProvider>(context, listen: false)
+                .fetchCommentList();
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FeedProvider>(context);
     final _instantVO = provider.instant;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "${_instantVO.nickname}",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "${_instantVO.nickname}",
+              style: TextStyle(color: Colors.black),
+            ),
+            centerTitle: true,
+            brightness: Brightness.light,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          body: _buildBody(provider),
         ),
-      ),
-      body: _buildBody(provider),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: _buildInstantBottom(provider)),
+      ],
     );
   }
 
-  Widget _buildBody(provider) {
+  Widget _buildBody(FeedProvider provider) {
     return NestedScrollView(
       headerSliverBuilder: (context, _) {
         return [
@@ -67,7 +109,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           ),
         ];
       },
-      body: CommentListWidget(),
+      body: CommentListWidget(instantId: provider.instant.instant.id),
     );
   }
 
@@ -81,8 +123,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
             _buildInstantHeader(provider),
             SizedBox(height: sHeight(12)),
             _buildInstantBody(provider),
-            SizedBox(height: sHeight(12)),
-            _buildInstantBottom(provider),
+            // SizedBox(height: sHeight(12)),
+            // _buildInstantBottom(provider),
           ],
         ),
       ),
@@ -197,48 +239,50 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   // 动态底部: 点赞数,评论数
   Widget _buildInstantBottom(FeedProvider provider) {
     final _instantVO = provider.instant;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              onPressed: () => _handleLikeInstant(_instantVO.instant.id),
-              //onPressed: (){},
-              icon: Icon(
-                Iconfont.dianzan,
-                size: 25,
-                color: _instantVO.status == 0 ? Colors.black : Colors.red,
+    return Material(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                onPressed: () => _handleLikeInstant(_instantVO.instant.id),
+                //onPressed: (){},
+                icon: Icon(
+                  Iconfont.dianzan,
+                  size: 25,
+                  color: _instantVO.status == 0 ? Colors.black : Colors.red,
+                ),
               ),
-            ),
-            SizedBox(width: sWidth(3)),
-            Text(
-              "${_instantVO.instant.likeNumber}",
-              style: TextStyle(
-                  fontSize: sSp(16), color: AppColor.secondaryElement),
-            ),
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Iconfont.pinglun,
-                size: 25,
+              SizedBox(width: sWidth(3)),
+              Text(
+                "${_instantVO.instant.likeNumber}",
+                style: TextStyle(
+                    fontSize: sSp(16), color: AppColor.secondaryElement),
               ),
-            ),
-            SizedBox(width: sWidth(3)),
-            Text(
-              "${_instantVO.instant.commentNumber}",
-              style: TextStyle(
-                  fontSize: sSp(16), color: AppColor.secondaryElement),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                onPressed: () => _handleComment(_instantVO.instant.id),
+                icon: Icon(
+                  Iconfont.pinglun,
+                  size: 25,
+                ),
+              ),
+              SizedBox(width: sWidth(3)),
+              Text(
+                "${_instantVO.instant.commentNumber}",
+                style: TextStyle(
+                    fontSize: sSp(16), color: AppColor.secondaryElement),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
