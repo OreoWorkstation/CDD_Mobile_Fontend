@@ -27,7 +27,7 @@ class Global {
     HttpUtil();
 
     // 初始化语言：日历显示中文
-    //initializeDateFormatting();
+    initializeDateFormatting();
 
     // 初始化Fluro
     final router = Router();

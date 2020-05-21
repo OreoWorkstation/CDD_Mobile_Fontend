@@ -4,7 +4,6 @@ import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/view/index.dart';
 import 'package:cdd_mobile_frontend/view_model/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -28,13 +27,13 @@ class _MyAppState extends State<MyApp> {
             title: "Cat & Dog Diary",
             debugShowCheckedModeBanner: false,
             home: IndexPage(),
-            onGenerateRoute: Application.router.generator,
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('zh', 'CH'), Locale('en', 'US')],
+//            onGenerateRoute: Application.router.generator,
+//            localizationsDelegates: const [
+//              GlobalMaterialLocalizations.delegate,
+//              GlobalWidgetsLocalizations.delegate,
+//              GlobalCupertinoLocalizations.delegate,
+//            ],
+//            supportedLocales: const [Locale('zh', 'CH'), Locale('en', 'US')],
             builder: (context, child) {
               /// 保证文字大小不受手机系统设置影响 https://www.kikt.top/posts/flutter/layout/dynamic-text/
               return MediaQuery(
