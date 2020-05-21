@@ -101,7 +101,15 @@ class _CommentListWidgetState extends State<CommentListWidget> {
           Align(
               alignment: Alignment.topLeft,
               child: textBtnFlatButtonWidget(
-                  onPressed: () {}, title: "Replay", fontSize: 14)),
+                  onPressed: () {
+                    Navigator.push(context, PopRoute(child: InputBottomSheet(
+                      onEditingCompleteText: (text) {
+                        print("send $text");
+                      },
+                    )));
+                  },
+                  title: "Replay",
+                  fontSize: 14)),
         ],
       ),
     );

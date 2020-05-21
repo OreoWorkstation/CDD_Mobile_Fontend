@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InstantDetailPage extends StatefulWidget {
- // final InstantVO instantVO;
+  // final InstantVO instantVO;
 
   //const InstantDetailPage({Key key, this.instantVO}) : super(key: key);
   @override
@@ -16,14 +16,13 @@ class InstantDetailPage extends StatefulWidget {
 }
 
 class _InstantDetailPageState extends State<InstantDetailPage> {
-
   @override
   void initState() {
     super.initState();
     //_instantVO = widget.instantVO;
   }
 
-  _handleLikeInstant(int instantId) async{
+  _handleLikeInstant(int instantId) async {
     Provider.of<FeedProvider>(context, listen: false).likeInstant(instantId);
   }
 
@@ -42,8 +41,11 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
-          onPressed: (){
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
@@ -98,7 +100,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           children: <Widget>[
             GestureDetector(
               //onTap: () => _routeToUserZone(_instantVO.instant.userId),
-              onTap: (){},
+              onTap: () {},
               child: Container(
                 width: sWidth(50),
                 height: sWidth(50),
@@ -156,29 +158,29 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
         _instantVO.instant.imagePath == ""
             ? Container()
             : GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SinglePhotoView(
-                  imageProvider:
-                  NetworkImage(_instantVO.instant.imagePath),
-                  heroTag: 'simple',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SinglePhotoView(
+                        imageProvider:
+                            NetworkImage(_instantVO.instant.imagePath),
+                        heroTag: 'simple',
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: sWidth(300),
+                  height: sHeight(200),
+                  decoration: BoxDecoration(
+                    borderRadius: Radii.k10pxRadius,
+                    image: DecorationImage(
+                      image: NetworkImage(_instantVO.instant.imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            );
-          },
-          child: Container(
-            width: sWidth(300),
-            height: sHeight(200),
-            decoration: BoxDecoration(
-              borderRadius: Radii.k10pxRadius,
-              image: DecorationImage(
-                image: NetworkImage(_instantVO.instant.imagePath),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
         SizedBox(height: sHeight(10)),
         Text(
           _instantVO.instant.content,
@@ -198,27 +200,26 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-         Row(
-           crossAxisAlignment: CrossAxisAlignment.center,
-           children: <Widget>[
-             IconButton(
-               onPressed: () => _handleLikeInstant(_instantVO.instant.id),
-               //onPressed: (){},
-               icon: Icon(
-                 Iconfont.dianzan,
-                 size: 25,
-                 color: _instantVO.status == 0 ? Colors.black : Colors.red,
-               ),
-             ),
-             SizedBox(width: sWidth(3)),
-             Text(
-               "${_instantVO.instant.likeNumber}",
-               style: TextStyle(
-                   fontSize: sSp(16),
-                   color: AppColor.secondaryElement),
-             ),
-           ],
-         ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              onPressed: () => _handleLikeInstant(_instantVO.instant.id),
+              //onPressed: (){},
+              icon: Icon(
+                Iconfont.dianzan,
+                size: 25,
+                color: _instantVO.status == 0 ? Colors.black : Colors.red,
+              ),
+            ),
+            SizedBox(width: sWidth(3)),
+            Text(
+              "${_instantVO.instant.likeNumber}",
+              style: TextStyle(
+                  fontSize: sSp(16), color: AppColor.secondaryElement),
+            ),
+          ],
+        ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -233,8 +234,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
             Text(
               "${_instantVO.instant.commentNumber}",
               style: TextStyle(
-                  fontSize: sSp(16),
-                  color: AppColor.secondaryElement),
+                  fontSize: sSp(16), color: AppColor.secondaryElement),
             ),
           ],
         ),
@@ -248,8 +248,8 @@ class _myDelegate extends SliverPersistentHeaderDelegate {
 
   _myDelegate(this.provider);
   @override
-  Widget build(BuildContext context, double shrinkOffset,
-      bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       height: sHeight(48),
       padding: EdgeInsets.symmetric(horizontal: sWidth(20)),
@@ -258,12 +258,14 @@ class _myDelegate extends SliverPersistentHeaderDelegate {
         children: <Widget>[
           Text(
             "赞: ${provider.instant.instant.likeNumber}",
+            style: TextStyle(fontSize: sSp(14)),
           ),
           SizedBox(
             width: sWidth(15),
           ),
           Text(
             "评论: ${provider.instant.instant.commentNumber}",
+            style: TextStyle(fontSize: sSp(14)),
           ),
         ],
       ),
@@ -271,14 +273,13 @@ class _myDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 48;
+  double get maxExtent => sHeight(48);
 
   @override
-  double get minExtent => 48;
+  double get minExtent => sHeight(48);
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
 }
-
