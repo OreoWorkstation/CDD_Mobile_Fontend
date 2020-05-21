@@ -4,6 +4,7 @@ import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/community/comment_list.dart';
+import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
 import 'package:cdd_mobile_frontend/view_model/feed_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,14 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                 .fetchCommentList();
           },
         ),
+      ),
+    );
+  }
+
+  _routeToUserZone(int userId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => UserZonePage(userId: userId),
       ),
     );
   }
@@ -132,7 +141,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   }
 
   // 动态头部: 头像, 昵称, 关注, 发布日期
-  Widget _buildInstantHeader(provider) {
+  Widget _buildInstantHeader(FeedProvider provider) {
     final _instantVO = provider.instant;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +151,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           children: <Widget>[
             GestureDetector(
               //onTap: () => _routeToUserZone(_instantVO.instant.userId),
-              onTap: () {},
+              onTap: () => _routeToUserZone(_instantVO.instant.userId),
               child: Container(
                 width: sWidth(50),
                 height: sWidth(50),

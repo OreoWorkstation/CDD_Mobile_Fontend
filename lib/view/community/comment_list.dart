@@ -2,6 +2,7 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
+import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
 import 'package:cdd_mobile_frontend/view_model/feed_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,14 @@ class _CommentListWidgetState extends State<CommentListWidget> {
     );
   }
 
+  _routeToUserZone(int userId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => UserZonePage(userId: userId),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<FeedProvider>(
@@ -103,13 +112,16 @@ class _CommentListWidgetState extends State<CommentListWidget> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    width: sWidth(50),
-                    height: sWidth(50),
-                    child: ClipOval(
-                      child: Image.network(
-                        CAT_AVATAR,
-                        fit: BoxFit.cover,
+                  InkWell(
+                    onTap: () => _routeToUserZone(comment.userId),
+                    child: Container(
+                      width: sWidth(50),
+                      height: sWidth(50),
+                      child: ClipOval(
+                        child: Image.network(
+                          comment.userAvatar,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),

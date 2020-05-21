@@ -73,18 +73,20 @@ class UserAPI {
   }
 
   /// 获取关注的人列表
-  static Future<APIResponse<List<UserInfoEntity>>> fetchFollowList(int userId) {
+  static Future<APIResponse<List<FollowReponseEntity>>> fetchFollowList(
+      int userId) {
     return HttpUtil().get("/user/$userId/follow").then((response) {
-      if (response.statueCode == 200) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
         var data = response.data['data'] as List;
-        return APIResponse<List<UserInfoEntity>>(
-          data: data.map((item) => UserInfoEntity.fromJson(item)).toList(),
+        return APIResponse<List<FollowReponseEntity>>(
+          data: data.map((item) => FollowReponseEntity.fromJson(item)).toList(),
         );
       }
-      return APIResponse<List<UserInfoEntity>>(
+      return APIResponse<List<FollowReponseEntity>>(
           error: true, errorMessage: "An error occurred");
     }).catchError((_) {
-      return APIResponse<List<UserInfoEntity>>(
+      return APIResponse<List<FollowReponseEntity>>(
           error: true, errorMessage: "An error occurred");
     });
   }
@@ -107,13 +109,16 @@ class UserAPI {
   }
 
   /// 关注/取关
-  static Future<APIResponse<bool>> followUser(Map<String, dynamic> params) {
-    return HttpUtil().post("/follow", params: params).then((response) {
+  static Future<APIResponse<bool>> followUser(FollowEntity follow) {
+    print(follow.id);
+    print(follow.userId);
+    print(follow.followedId);
+    return HttpUtil().post("/follow", params: follow.toJson()).then((response) {
       if (response.statusCode == 200) {
         return APIResponse<bool>(data: true);
       }
       return APIResponse<bool>(error: true, errorMessage: "An error occurred");
-    }).catchError((_){
+    }).catchError((_) {
       return APIResponse<bool>(error: true, errorMessage: "An error occurred");
     });
   }

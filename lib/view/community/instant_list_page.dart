@@ -3,6 +3,7 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/community/instant_detail.dart';
+import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
 import 'package:cdd_mobile_frontend/view_model/feed_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,22 +40,25 @@ class _InstantListPageState extends State<InstantListPage> {
     ));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: sWidth(10),
-        right: sWidth(10),
-        top: sHeight(20),
-      ),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: _buildBody(_instantList),
-          ),
-        ],
+  _routeToUserZone(int userId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => UserZonePage(userId: userId),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // return Padding(
+    //   padding: EdgeInsets.only(
+    //     left: sWidth(10),
+    //     right: sWidth(10),
+    //     top: sHeight(20),
+    //   ),
+    //   child: _buildBody(_instantList),
+    // );
+    return _buildBody(_instantList);
   }
 
   // 动态列表
@@ -110,8 +114,7 @@ class _InstantListPageState extends State<InstantListPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-              //onTap: () => _routeToUserZone(instantVO.instant.userId, context),
-              onTap: () {},
+              onTap: () => _routeToUserZone(instantVO.instant.userId),
               child: Container(
                 width: sWidth(45),
                 height: sWidth(45),
@@ -239,11 +242,11 @@ class _InstantListPageState extends State<InstantListPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             IconButton(
-              //onPressed: () => _routeToDetailPage(instantVO),
-              onPressed: () {},
+              onPressed: () => _routeToDetailPage(instantVO),
+              // onPressed: () {},
               icon: Icon(
                 Iconfont.pinglun,
-                size: 25,
+                size: sSp(24),
               ),
             ),
             SizedBox(width: sWidth(3)),

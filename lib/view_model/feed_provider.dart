@@ -51,6 +51,7 @@ class FeedProvider extends ViewStateModel {
     return true;
   }
 
+  /// 创建动态
   Future<bool> createInstant(
       {@required InstantEntity instant, String nickname, String avatar}) async {
     setBusy();

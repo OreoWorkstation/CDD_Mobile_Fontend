@@ -9,13 +9,14 @@ Widget primaryBtn({
   Color bgColor = Colours.app_main,
   @required String title,
   double fontSize = 20.0,
+  BorderRadiusGeometry radii = Radii.k24pxRadius,
 }) {
   return Container(
     height: sHeight(height),
     width: sWidth(width),
     decoration: BoxDecoration(
       color: bgColor,
-      borderRadius: Radii.k24pxRadius,
+      borderRadius: radii,
     ),
     child: FlatButton(
       onPressed: onPressed,
