@@ -19,6 +19,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  fluro: ^1.6.3
+
+  flustars: ^0.3.2
+
+  flutter_slidable: ^0.5.4
+
+  cached_network_image: ^2.2.0+1
 
   # Provider
   provider: ^4.0.5+1
@@ -95,11 +105,32 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/images/splash/
+    - assets/images/state/
 
   fonts:
     - family: Iconfont
       fonts:
         - asset: assets/fonts/iconfont.ttf
+    - family: HelveticaNeue
+      fonts:
+        - asset: assets/fonts/HelveticaNeue.ttf
+        - asset: assets/fonts/HelveticaNeue400.ttf
+          weight: 400
+        - asset: assets/fonts/HelveticaNeue500.ttf
+          weight: 500
+        - asset: assets/fonts/HelveticaNeue600.ttf
+          weight: 600
+        - asset: assets/fonts/HelveticaNeue700.ttf
+          weight: 700
+        - asset: assets/fonts/HelveticaNeue800.ttf
+          weight: 800
+        - asset: assets/fonts/HelveticaNeue900.ttf
+          weight: 900
+        - asset: assets/fonts/HelveticaNeueIt.ttf
+          style: italic
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
