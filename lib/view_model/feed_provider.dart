@@ -51,7 +51,8 @@ class FeedProvider extends ViewStateModel {
     return true;
   }
 
-  Future<bool> createInstant({@required InstantEntity instant, String nickname, String avatar}) async{
+  Future<bool> createInstant(
+      {@required InstantEntity instant, String nickname, String avatar}) async {
     setBusy();
     try {
       var response = await FeedAPI.insertInstant(instant: instant);
@@ -77,17 +78,15 @@ class FeedProvider extends ViewStateModel {
   }
 
   /// 点赞动态
-  Future<bool> likeInstant(
-    int instantId
-  ) async {
+  Future<bool> likeInstant(int instantId) async {
     bool isLike = false;
     _instantList.forEach((element) {
       if (element.instant.id == instantId) {
         isLike = element.status == 0 ? false : true;
         if (element.status == 0) {
-          element.instant.likeNumber ++;
+          element.instant.likeNumber++;
         } else {
-          element.instant.likeNumber --;
+          element.instant.likeNumber--;
         }
         element.status = element.status == 0 ? 1 : 0;
       }

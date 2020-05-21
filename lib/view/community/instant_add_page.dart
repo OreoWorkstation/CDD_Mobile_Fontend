@@ -26,10 +26,11 @@ class _InstantAddPageState extends State<InstantAddPage> {
 
   // 处理完成按钮
   _handleFinishButton(
-      BuildContext context,
-      FeedProvider provider,
-      ) async {
-    UserInfoEntity userInfo = Provider.of<UserProvider>(context, listen: false).userInfo;
+    BuildContext context,
+    FeedProvider provider,
+  ) async {
+    UserInfoEntity userInfo =
+        Provider.of<UserProvider>(context, listen: false).userInfo;
     await provider.createInstant(
       instant: InstantEntity(
         userId: int.parse(Global.accessToken),
@@ -142,33 +143,33 @@ class _InstantAddPageState extends State<InstantAddPage> {
           },
           child: _imagePath == ""
               ? Container(
-            height: sHeight(200),
-            width: double.infinity,
-            child: Icon(
-              Icons.camera_alt,
-              size: sSp(50),
-            ),
-          )
+                  height: sHeight(200),
+                  width: double.infinity,
+                  child: Icon(
+                    Icons.camera_alt,
+                    size: sSp(50),
+                  ),
+                )
               : Container(
-            height: sHeight(300),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: Radii.k10pxRadius,
-              image: DecorationImage(
-                image: NetworkImage(_imagePath),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+                  height: sHeight(300),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: Radii.k10pxRadius,
+                    image: DecorationImage(
+                      image: NetworkImage(_imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
         );
       },
     );
   }
 
   Widget _buildChooseImageBottomSheet(
-      ChooseImageProvider chooseImageProvider,
-      ) {
+    ChooseImageProvider chooseImageProvider,
+  ) {
     return LoadingOverlay(
       isLoading: chooseImageProvider.isBusy,
       color: Colors.transparent,
