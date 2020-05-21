@@ -1,6 +1,7 @@
 library value;
 
 export 'api.dart';
+export 'avatar.dart';
 export 'color.dart';
 export 'dimens.dart';
 export 'gap.dart';

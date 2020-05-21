@@ -30,6 +30,26 @@ Widget primaryBtn({
   );
 }
 
+/// 纯文本button
+Widget textBtnFlatButtonWidget({
+  @required VoidCallback onPressed,
+  @required String title,
+  Color textColor = AppColor.primaryElement,
+  double fontSize = 17,
+}) {
+  return FlatButton(
+    onPressed: onPressed,
+    child: Text(
+      title,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: sSp(fontSize),
+        color: textColor,
+      ),
+    ),
+  );
+}
+
 /*
 /// 有背景色button
 Widget btnFlatButtonWidget({

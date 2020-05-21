@@ -2,7 +2,6 @@ import 'package:cdd_mobile_frontend/common/net/http.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:dio/dio.dart';
 
-
 /// 用户相关API
 class UserAPI {
   /// 登录
@@ -70,6 +69,52 @@ class UserAPI {
     }).catchError((_) {
       return APIResponse<UserZoneEntity>(
           error: true, errorMessage: "An error occured");
+    });
+  }
+
+  /// 获取关注的人列表
+  static Future<APIResponse<List<UserInfoEntity>>> fetchFollowList(int userId) {
+    return HttpUtil().get("/user/$userId/follow").then((response) {
+      if (response.statueCode == 200) {
+        var data = response.data['data'] as List;
+        return APIResponse<List<UserInfoEntity>>(
+          data: data.map((item) => UserInfoEntity.fromJson(item)).toList(),
+        );
+      }
+      return APIResponse<List<UserInfoEntity>>(
+          error: true, errorMessage: "An error occurred");
+    }).catchError((_) {
+      return APIResponse<List<UserInfoEntity>>(
+          error: true, errorMessage: "An error occurred");
+    });
+  }
+
+  /// 获取粉丝列表
+  static Future<APIResponse<List<UserInfoEntity>>> fetchFansList(int userId) {
+    return HttpUtil().get("/user/$userId/fans").then((response) {
+      if (response.statueCode == 200) {
+        var data = response.data['data'] as List;
+        return APIResponse<List<UserInfoEntity>>(
+          data: data.map((item) => UserInfoEntity.fromJson(item)).toList(),
+        );
+      }
+      return APIResponse<List<UserInfoEntity>>(
+          error: true, errorMessage: "An error occurred");
+    }).catchError((_) {
+      return APIResponse<List<UserInfoEntity>>(
+          error: true, errorMessage: "An error occurred");
+    });
+  }
+
+  /// 关注/取关
+  static Future<APIResponse<bool>> followUser(Map<String, dynamic> params) {
+    return HttpUtil().post("/follow", params: params).then((response) {
+      if (response.statusCode == 200) {
+        return APIResponse<bool>(data: true);
+      }
+      return APIResponse<bool>(error: true, errorMessage: "An error occurred");
+    }).catchError((_){
+      return APIResponse<bool>(error: true, errorMessage: "An error occurred");
     });
   }
 }

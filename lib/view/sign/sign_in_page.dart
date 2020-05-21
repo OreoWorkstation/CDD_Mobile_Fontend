@@ -1,3 +1,5 @@
+import 'package:cdd_mobile_frontend/common/router/fluro_navigator.dart';
+import 'package:cdd_mobile_frontend/common/router/user_router.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
@@ -39,8 +41,9 @@ class _SignInPageState extends State<SignInPage> {
     bool isSuccess = await userProvider.signIn(
         _accountController.text, _passwordController.text);
     if (isSuccess) {
+      NavigatorUtil.push(context, UserRouter.APPLICATION, replace: true);
       //Navigator.of(context).pushReplacementNamed("/application");
-      print("success");
+      //print("success");
     } else {
       userProvider.showErrorMessage(context);
     }

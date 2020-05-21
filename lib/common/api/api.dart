@@ -1,5 +1,6 @@
 library api;
 
+export 'comment.dart';
 export 'cost_api.dart';
 export 'diary_api.dart';
 export 'file_api.dart';
