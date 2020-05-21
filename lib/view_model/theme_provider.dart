@@ -2,7 +2,7 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+/*
 class ThemeProvider extends ChangeNotifier {
   static const Map<ThemeMode, String> themes = {
     ThemeMode.dark: 'Dark',
@@ -77,3 +77,4 @@ class ThemeProvider extends ChangeNotifier {
     );
   }
 }
+*/
