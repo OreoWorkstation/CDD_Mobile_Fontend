@@ -92,18 +92,19 @@ class UserAPI {
   }
 
   /// 获取粉丝列表
-  static Future<APIResponse<List<UserInfoEntity>>> fetchFansList(int userId) {
+  static Future<APIResponse<List<FollowReponseEntity>>> fetchFansList(
+      int userId) {
     return HttpUtil().get("/user/$userId/fans").then((response) {
-      if (response.statueCode == 200) {
+      if (response.statusCode == 200) {
         var data = response.data['data'] as List;
-        return APIResponse<List<UserInfoEntity>>(
-          data: data.map((item) => UserInfoEntity.fromJson(item)).toList(),
+        return APIResponse<List<FollowReponseEntity>>(
+          data: data.map((item) => FollowReponseEntity.fromJson(item)).toList(),
         );
       }
-      return APIResponse<List<UserInfoEntity>>(
+      return APIResponse<List<FollowReponseEntity>>(
           error: true, errorMessage: "An error occurred");
     }).catchError((_) {
-      return APIResponse<List<UserInfoEntity>>(
+      return APIResponse<List<FollowReponseEntity>>(
           error: true, errorMessage: "An error occurred");
     });
   }

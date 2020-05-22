@@ -11,7 +11,7 @@ class UserProvider extends ViewStateModel {
   int _userProfileId;
   int _isFollow;
   List<FollowReponseEntity> _followList;
-  List<UserInfoEntity> _fansList;
+  List<FollowReponseEntity> _fansList;
   UserZoneEntity _userZone;
   bool _isLoggedUser;
 
@@ -20,7 +20,7 @@ class UserProvider extends ViewStateModel {
   int get userId => _userId;
   int get userProfileId => _userProfileId;
   List<FollowReponseEntity> get followList => _followList;
-  List<UserInfoEntity> get fansList => _fansList;
+  List<FollowReponseEntity> get fansList => _fansList;
   int get isFollow => _isFollow;
   UserZoneEntity get userZone => _userZone;
   bool get isLoggedUser => _isLoggedUser;

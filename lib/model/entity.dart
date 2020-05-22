@@ -10,3 +10,5 @@ export 'photo_entity.dart';
 export 'user_entity.dart';
 export 'weight_entity.dart';
 export 'follow_entity.dart';
+export 'fans_entity.dart';
+export 'article_entity.dart';
