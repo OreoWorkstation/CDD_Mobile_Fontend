@@ -40,84 +40,87 @@ class _UserZonePageState extends State<UserZonePage> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final UserInfoEntity userProfileInfo = userProvider.userProfileInfo;
 
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: sHeight(300.0),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(userProfileInfo.avatar),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        BackdropFilter(
-          filter: new ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-          child: new Container(
-            color: Colors.white.withOpacity(0.1),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Container(
             width: MediaQuery.of(context).size.width,
-            height: sHeight(300),
-          ),
-        ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            brightness: Brightness.light,
-            elevation: 0.0,
-            leading: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-            ),
-            actions: <Widget>[
-              userProvider.isLoggedUser
-                  ? SizedBox.shrink()
-                  : userProvider.isFollow == 1
-                      ? textBtnFlatButtonWidget(
-                          onPressed: () => _handleFollow(userProvider, true),
-                          title: "取消关注",
-                          fontSize: 15,
-                          textColor: Colors.white,
-                        )
-                      : textBtnFlatButtonWidget(
-                          onPressed: () => _handleFollow(userProvider, false),
-                          title: "关注",
-                          fontSize: 15,
-                          textColor: Colors.white,
-                        )
-            ],
-          ),
-          body: Column(
-            children: <Widget>[
-              SizedBox(
-                height: sHeight(60),
+            height: sHeight(300.0),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(userProfileInfo.avatar),
+                fit: BoxFit.cover,
               ),
-              _buildHeader(userProfileInfo),
-            ],
+            ),
           ),
-        ),
-        Positioned(
-          top: sHeight(300),
-          child: Builder(
-            builder: (_) {
-              if (userProvider.isBusy || userProvider.userZone == null) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (userProvider.userZone.instantVOList.isEmpty) {
-                return Center(child: Text("No instant"));
-              }
-              return Material(
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: InstantListPage(
-                        instantList: userProvider.userZone.instantVOList)),
-              );
-            },
+          BackdropFilter(
+            filter: new ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: new Container(
+              color: Colors.white.withOpacity(0.1),
+              width: MediaQuery.of(context).size.width,
+              height: sHeight(300),
+            ),
           ),
-        ),
-      ],
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              brightness: Brightness.light,
+              elevation: 0.0,
+              leading: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+              ),
+              actions: <Widget>[
+                userProvider.isLoggedUser
+                    ? SizedBox.shrink()
+                    : userProvider.isFollow == 1
+                        ? textBtnFlatButtonWidget(
+                            onPressed: () => _handleFollow(userProvider, true),
+                            title: "取消关注",
+                            fontSize: 15,
+                            textColor: Colors.white,
+                          )
+                        : textBtnFlatButtonWidget(
+                            onPressed: () => _handleFollow(userProvider, false),
+                            title: "关注",
+                            fontSize: 15,
+                            textColor: Colors.white,
+                          )
+              ],
+            ),
+            body: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: sHeight(60),
+                ),
+                _buildHeader(userProfileInfo),
+              ],
+            ),
+          ),
+          Positioned(
+            top: sHeight(300),
+            child: Builder(
+              builder: (_) {
+                if (userProvider.isBusy || userProvider.userZone == null) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (userProvider.userZone.instantVOList.isEmpty) {
+                  return Center(child: Text("No instant"));
+                }
+                return Material(
+                  color: Colors.white,
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: InstantListPage(
+                          instantList: userProvider.userZone.instantVOList)),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 

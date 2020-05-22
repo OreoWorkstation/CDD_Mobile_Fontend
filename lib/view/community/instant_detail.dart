@@ -126,7 +126,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
     return Container(
       width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+        padding:
+            EdgeInsets.symmetric(horizontal: sWidth(15), vertical: sHeight(30)),
         child: Column(
           children: <Widget>[
             _buildInstantHeader(provider),
@@ -205,7 +206,23 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   Widget _buildInstantBody(provider) {
     final _instantVO = provider.instant;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: sWidth(20), vertical: sHeight(10)),
+          child: Text(
+            _instantVO.instant.content,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: sSp(15),
+              letterSpacing: 1.1,
+            ),
+          ),
+        ),
+        _instantVO.instant.imagePath != ""
+            ? SizedBox(height: sHeight(20))
+            : SizedBox.shrink(),
         _instantVO.instant.imagePath == ""
             ? Container()
             : GestureDetector(
@@ -221,10 +238,10 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                   );
                 },
                 child: Container(
-                  width: sWidth(300),
-                  height: sHeight(200),
+                  width: sWidth(350),
+                  height: sHeight(400),
                   decoration: BoxDecoration(
-                    borderRadius: Radii.k10pxRadius,
+                    borderRadius: Radii.k6pxRadius,
                     image: DecorationImage(
                       image: NetworkImage(_instantVO.instant.imagePath),
                       fit: BoxFit.cover,
@@ -232,15 +249,6 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                   ),
                 ),
               ),
-        SizedBox(height: sHeight(10)),
-        Text(
-          _instantVO.instant.content,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: sSp(16),
-            letterSpacing: 1.1,
-          ),
-        ),
       ],
     );
   }
@@ -311,14 +319,14 @@ class _myDelegate extends SliverPersistentHeaderDelegate {
         children: <Widget>[
           Text(
             "赞: ${provider.instant.instant.likeNumber}",
-            style: TextStyle(fontSize: sSp(14)),
+            style: TextStyle(fontSize: sSp(15)),
           ),
           SizedBox(
             width: sWidth(15),
           ),
           Text(
             "评论: ${provider.instant.instant.commentNumber}",
-            style: TextStyle(fontSize: sSp(14)),
+            style: TextStyle(fontSize: sSp(15)),
           ),
         ],
       ),

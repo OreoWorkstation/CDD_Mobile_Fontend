@@ -37,9 +37,26 @@ class _UserListPageState extends State<UserListPage> {
     final UserProvider provider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: widget.type == 0 ? Text("关注列表") : Text("粉丝列表"),
+        title: widget.type == 0
+            ? Text(
+                "关注列表",
+                style: TextStyle(color: Colors.black),
+              )
+            : Text(
+                "粉丝列表",
+                style: TextStyle(color: Colors.black),
+              ),
         centerTitle: true,
-        backgroundColor: Colours.app_main,
+        backgroundColor: Colors.white,
+        elevation: 0.4,
+        brightness: Brightness.light,
+        leading: IconButton(
+          color: Colors.black,
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Builder(
         builder: (_) {

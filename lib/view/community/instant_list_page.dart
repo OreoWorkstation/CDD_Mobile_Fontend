@@ -167,7 +167,29 @@ class _InstantListPageState extends State<InstantListPage> {
   // 动态内容:图片,文字
   Widget _buildInstantBody(InstantVO instantVO) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        SizedBox(height: sHeight(10)),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: sWidth(10)),
+          child: GestureDetector(
+            onTap: () => _routeToDetailPage(instantVO),
+            //onTap: (){},
+            child: Text(
+              instantVO.instant.content,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: sSp(15),
+                letterSpacing: 1.1,
+              ),
+            ),
+          ),
+        ),
+        instantVO.instant.imagePath != ""
+            ? SizedBox(height: sHeight(20))
+            : SizedBox.shrink(),
         instantVO.instant.imagePath == ""
             ? Container()
             : GestureDetector(
@@ -183,10 +205,10 @@ class _InstantListPageState extends State<InstantListPage> {
                   );
                 },
                 child: Container(
-                  width: sWidth(280),
-                  height: sHeight(200),
+                  width: sWidth(350),
+                  height: sHeight(300),
                   decoration: BoxDecoration(
-                    borderRadius: Radii.k10pxRadius,
+                    borderRadius: Radii.k6pxRadius,
                     image: DecorationImage(
                       image: NetworkImage(instantVO.instant.imagePath),
                       fit: BoxFit.cover,
@@ -194,21 +216,6 @@ class _InstantListPageState extends State<InstantListPage> {
                   ),
                 ),
               ),
-        SizedBox(height: sHeight(10)),
-        GestureDetector(
-          onTap: () => _routeToDetailPage(instantVO),
-          //onTap: (){},
-          child: Text(
-            instantVO.instant.content,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: sSp(14),
-              letterSpacing: 1.1,
-            ),
-          ),
-        ),
       ],
     );
   }

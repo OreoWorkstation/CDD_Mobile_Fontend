@@ -1,4 +1,5 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
+import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/view/community/follow_instant_page.dart';
 import 'package:cdd_mobile_frontend/view/community/hot_instant_page.dart';
 import 'package:cdd_mobile_frontend/view/community/instant_add_page.dart';
@@ -72,6 +73,7 @@ class _CommunityPageState extends State<CommunityPage>
             }
           },
           child: Icon(Icons.add),
+          backgroundColor: AppColor.primaryElement,
         ),
       ),
     );

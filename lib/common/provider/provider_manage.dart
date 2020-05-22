@@ -1,3 +1,4 @@
+import 'package:cdd_mobile_frontend/view_model/article_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/feed_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/theme_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
@@ -10,5 +11,8 @@ List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (_) => FeedProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (_) => ArticleProvider(),
   ),
 ];
