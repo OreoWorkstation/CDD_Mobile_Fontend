@@ -134,7 +134,10 @@ class _CommentListWidgetState extends State<CommentListWidget> {
                 children: <Widget>[
                   Text(
                     comment.userNickname,
-                    style: TextStyle(fontSize: sSp(16), color: Colors.black),
+                    style: TextStyle(
+                        fontSize: sSp(15),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: sHeight(5)),
                   Text(
@@ -155,12 +158,12 @@ class _CommentListWidgetState extends State<CommentListWidget> {
                               TextSpan(
                                 text: "回复 ",
                                 style: TextStyle(
-                                    fontSize: sSp(16), color: Colors.black),
+                                    fontSize: sSp(15), color: Colors.black),
                               ),
                               TextSpan(
                                 text: "${comment.parentNickname}",
                                 style: TextStyle(
-                                    fontSize: sSp(16), color: Colours.app_main),
+                                    fontSize: sSp(15), color: Colours.app_main),
                               ),
                               TextSpan(
                                 text: ": ${comment.content}",
