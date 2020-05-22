@@ -39,7 +39,9 @@ class _ArticleListPageState extends State<ArticleListPage> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => ArticleDetailPage(),
+          builder: (_) => ArticleDetailPage(
+            article: article,
+          ),
         ));
       },
       child: Container(
@@ -55,8 +57,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      // title
-                      "Some important things",
+                      article.title,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
                       style: TextStyle(
@@ -73,15 +74,14 @@ class _ArticleListPageState extends State<ArticleListPage> {
                           height: sWidth(20),
                           child: ClipOval(
                             child: Image.network(
-                              "https://images.unsplash.com/photo-1587733761351-c75905de4127?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixlib=rb-1.2.1&q=80&w=300",
+                              article.expertAvatar,
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         SizedBox(width: sWidth(5)),
                         Text(
-                          // expertname
-                          "Scott Wong",
+                          article.expertName,
                           style: TextStyle(
                             color: Color(0xff325384).withOpacity(.5),
                             fontSize: sSp(12),
@@ -104,7 +104,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: Image.network(
-                  "https://images.unsplash.com/photo-1589860711038-223912d9121c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixlib=rb-1.2.1&q=80&w=300",
+                  article.thumbnail,
                   width: sWidth(72),
                   height: sHeight(72),
                   fit: BoxFit.cover,

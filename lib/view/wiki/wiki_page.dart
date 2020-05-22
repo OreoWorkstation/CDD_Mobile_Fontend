@@ -125,7 +125,9 @@ class _WikiPageState extends State<WikiPage> {
           // TODO
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => ArticleDetailPage(),
+              builder: (_) => ArticleDetailPage(
+                article: article,
+              ),
             ));
           },
           child: Container(

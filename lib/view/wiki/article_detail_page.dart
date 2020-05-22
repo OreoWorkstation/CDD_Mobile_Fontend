@@ -1,5 +1,6 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
+import 'package:cdd_mobile_frontend/model/article_entity.dart';
 import 'package:flutter/material.dart';
 
 Color color = Color(0xff59c2ff);
@@ -7,11 +8,22 @@ final img =
     "https://images.unsplash.com/photo-1587733761351-c75905de4127?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixlib=rb-1.2.1&q=80&w=300";
 
 class ArticleDetailPage extends StatefulWidget {
+  final ArticleResponseEntity article;
+
+  const ArticleDetailPage({Key key, this.article}) : super(key: key);
   @override
   _ArticleDetailPageState createState() => _ArticleDetailPageState();
 }
 
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
+  ArticleResponseEntity _article;
+
+  @override
+  void initState() {
+    _article = widget.article;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -34,7 +46,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 ),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(img),
+                  image: NetworkImage(_article.thumbnail),
                 ),
               ),
             ),
@@ -87,7 +99,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Beautiful House in Malang",
+                    _article.title,
                     style: TextStyle(
                       fontSize: sSp(20),
                       color: Colors.white,
@@ -107,16 +119,15 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                     contentPadding: EdgeInsets.only(left: 0),
                     leading: CircleAvatar(
                       backgroundColor: Colors.grey,
-                      backgroundImage: new NetworkImage(
-                          "https://heavyeditorial.files.wordpress.com/2017/07/jessica-johnson-5.jpg?w=531&quality=65&strip=all&h=531"),
+                      backgroundImage: new NetworkImage(_article.expertAvatar),
                     ),
-                    title: Text("by Lynne William"),
-                    subtitle: Text("January 23, 2019"),
+                    title: Text("by ${_article.expertName}"),
+                    subtitle: Text(cddTimeLineFormat(_article.createTime)),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
-                        "Al contrario del pensamiento popular, el texto de Lorem Ipsum no es simplemente texto aleatorio. Tiene sus raices en una pieza cl´sica de la literatura del Latin, que data del año 45 antes de Cristo, haciendo que este adquiera mas de 2000 años de antiguedad. Richard McClintock, un profesor de Latin de la Universidad de Hampden-Sydney en Virginia, encontró una de las palabras más oscuras de la lengua del latín, consecteur, en un pasaje de Lorem Ipsum, y al seguir leyendo distintos textos del latín, descubrió la fuente indudable. Lorem Ipsum viene de las secciones 1.10.32 y 1.10.33 de de Finnibus Bonorum et Malorum (Los Extremos del Bien y El Mal) por Cicero, escrito en el año 45 antes de Cristo. Este libro es un tratado de teoría de éticas, muy popular durante el Renacimiento. La primera linea del Lorem Ipsum, Lorem ipsum dolor sit amet.., viene de una linea en la sección 1.10.32. El trozo de texto estándar de Lorem Ipsum usado desde el año 1500 es reproducido debajo para aquellos interesados. Las secciones 1.10.32 y 1.10.33 de de Finibus Bonorum et Malorum por Cicero son también reproducidas en su forma original exacta, acompañadas por versiones en Inglés de la traducción realizada en 1914 por H. Rackham.",
+                        _article.content,
                         textAlign: TextAlign.justify,
                       ),
                     ),
