@@ -45,14 +45,25 @@ class ArticleProvider extends ViewStateModel {
     return true;
   }
 
-  postBrowse(int articleId, int starValue) {
+  postBrowse(int articleId, int starValue) async {
     int value = starValue + 2;
-    ArticleAPI.postBrowse(
+    if (_hotArticleList != null) {
+      _hotArticleList.forEach((item) {
+        if (item.id == articleId) item.browseValue = starValue;
+      });
+    }
+    if (_recommendArticleList != null) {
+      _recommendArticleList.forEach((item) {
+        if (item.id == articleId) item.browseValue = starValue;
+      });
+    }
+    await ArticleAPI.postBrowse(
       browse: BrowseEntity(
         articleId: articleId,
         userId: int.parse(Global.accessToken),
         browseValue: value,
       ),
     );
+    notifyListeners();
   }
 }

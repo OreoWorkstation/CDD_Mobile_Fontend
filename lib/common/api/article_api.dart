@@ -85,7 +85,7 @@ class ArticleAPI {
   }
 
   static Future<APIResponse<bool>> postBrowse({BrowseEntity browse}) {
-    return HttpUtil().post("browse", params: browse.toJson()).then((response) {
+    return HttpUtil().post("/browse", params: browse.toJson()).then((response) {
       if (response.statusCode == 200) {
         return APIResponse<bool>(data: true);
       }

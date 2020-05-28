@@ -1,7 +1,10 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/model/article_entity.dart';
+import 'package:cdd_mobile_frontend/view_model/article_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_star/flutter_star.dart';
+import 'package:provider/provider.dart';
 
 Color color = Color(0xff59c2ff);
 final img =
@@ -17,10 +20,12 @@ class ArticleDetailPage extends StatefulWidget {
 
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
   ArticleResponseEntity _article;
+  int _starValue;
 
   @override
   void initState() {
     _article = widget.article;
+    _starValue = _article.browseValue;
     super.initState();
   }
 
@@ -28,6 +33,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    print(cddGetStarValue(_article.browseValue));
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -41,8 +47,8 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
                 ),
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -83,16 +89,20 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
+                  print(_starValue);
+                  final provider =
+                      Provider.of<ArticleProvider>(context, listen: false);
+                  provider.postBrowse(_article.id, _starValue);
                   Navigator.of(context).pop();
                 },
               ),
             ),
           ),
           Positioned(
-            top: height * .3,
+            top: height * .3 - sHeight(20),
             left: 0,
             width: width,
-            height: (height * .7),
+            height: (height * .7) + sHeight(20),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -114,7 +124,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                       color: color,
                     ),
                   ),
-                  SizedBox(height: sHeight(20)),
+                  SizedBox(height: sHeight(30)),
                   ListTile(
                     contentPadding: EdgeInsets.only(left: 0),
                     leading: CircleAvatar(
@@ -126,9 +136,42 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      child: Text(
-                        _article.content,
-                        textAlign: TextAlign.justify,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            _article.content,
+                            textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.body2.copyWith(
+                                  fontSize: sSp(14),
+                                  height: 1.8,
+                                ),
+                          ),
+                          SizedBox(height: sHeight(30)),
+                          Text(
+                            "这篇文章对您有帮助吗？",
+                            style:
+                                Theme.of(context).textTheme.subtitle.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: sSp(14),
+                                      color: Colors.black.withOpacity(.6),
+                                    ),
+                          ),
+                          SizedBox(height: sHeight(10)),
+                          CustomRating(
+                            max: 5,
+                            score: cddGetStarValue(_article.browseValue),
+                            star: Star(
+                              emptyColor: Colors.grey,
+                              fillColor: Colors.red,
+                              fat: 0.7,
+                            ),
+                            onRating: (value) {
+                              _starValue = value.toInt();
+                              print(_starValue);
+                            },
+                          ),
+                          SizedBox(height: sHeight(30)),
+                        ],
                       ),
                     ),
                   ),
