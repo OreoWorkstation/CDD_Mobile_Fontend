@@ -48,7 +48,7 @@ class _UserEditPageState extends State<UserEditPage> {
       create: (_) => ChooseImageProvider(_avatar),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColor.primaryBackground,
+          backgroundColor: Colors.white,
           title: Text("编辑", style: TextStyle(color: Colors.black)),
           centerTitle: true,
           brightness: Brightness.light,

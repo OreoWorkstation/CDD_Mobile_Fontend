@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:cdd_mobile_frontend/common/router/fluro_navigator.dart';
 import 'package:cdd_mobile_frontend/common/router/user_router.dart';
-import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/widget/image.dart';
-import 'package:cdd_mobile_frontend/demo/demo.dart';
-import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/view/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,5 +1,4 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
-import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/model/article_entity.dart';
 import 'package:cdd_mobile_frontend/view_model/article_provider.dart';
 import 'package:flutter/material.dart';
@@ -46,10 +45,10 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             height: height * .4,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                /* borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15),
-                ),
+                ), */
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(_article.thumbnail),
@@ -64,10 +63,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             height: height * .4,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+/*                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
+ */
                 gradient: LinearGradient(
                   colors: [
                     Colors.black.withOpacity(.2),

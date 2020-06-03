@@ -2,7 +2,6 @@ import 'package:cdd_mobile_frontend/common/router/fluro_navigator.dart';
 import 'package:cdd_mobile_frontend/demo/button_demo.dart';
 import 'package:cdd_mobile_frontend/demo/color_demo.dart';
 import 'package:cdd_mobile_frontend/demo/dialog_demo.dart';
-import 'package:cdd_mobile_frontend/demo/state_demo.dart';
 import 'package:flutter/material.dart';
 
 class DemoPage extends StatefulWidget {

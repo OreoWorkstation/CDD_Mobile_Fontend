@@ -73,7 +73,7 @@ class _CommunityPageState extends State<CommunityPage>
             }
           },
           child: Icon(Icons.add),
-          backgroundColor: AppColor.primaryElement,
+          backgroundColor: AppColor.testBlueColor1,
         ),
       ),
     );

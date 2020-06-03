@@ -1,7 +1,4 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
-import 'package:cdd_mobile_frontend/common/util/util.dart';
-import 'package:cdd_mobile_frontend/common/util/util.dart';
-import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';

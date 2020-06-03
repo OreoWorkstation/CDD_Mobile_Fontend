@@ -1,4 +1,3 @@
-import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/color.dart';
 import 'package:cdd_mobile_frontend/common/value/dimens.dart';
 import 'package:flutter/material.dart';

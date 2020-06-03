@@ -10,15 +10,6 @@ static final Color primary = Color(0xff1DA1F2);
   static final Color extraExtraLightGrey = Color(0xfF5F8FA);
   static final Color white = Color(0xFFffffff);
  */
-List<Color> colorList = [
-  AppColor.primary,
-  AppColor.secondary,
-  AppColor.darkGrey,
-  AppColor.lightGrey,
-  AppColor.extraLightGrey,
-  AppColor.extraExtraLightGrey,
-  AppColor.white,
-];
 
 class ColorDemoPage extends StatefulWidget {
   @override
@@ -37,16 +28,15 @@ class _ColorDemoPageState extends State<ColorDemoPage> {
   }
 
   Widget _buildColorList() {
-    return ListView.builder(itemBuilder: (context, index) {
-      return ListTile(
-        title: Text(
-          "Color List",
-          style: TextStyle(
-            color: colorList[index],
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            "Color List",
           ),
-        ),
-      );
-    },
-    itemCount: colorList.length,);
+        );
+      },
+      itemCount: 4,
+    );
   }
 }

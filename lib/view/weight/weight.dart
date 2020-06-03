@@ -256,7 +256,7 @@ class _WeightPageState extends State<WeightPage> {
       margin: EdgeInsets.only(top: sHeight(10), bottom: sHeight(10)),
       child: primaryBtn(
         onPressed: () => _handleAddWeight(context, weightListProvider),
-        bgColor: AppColor.weightColor,
+        bgColor: AppColor.testBlueColor1,
         width: sWidth(250),
         height: sHeight(48),
         title: "添加",

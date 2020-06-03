@@ -2,8 +2,6 @@ import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 class ButtonDemoPage extends StatefulWidget {
   @override
   _ButtonDemoPageState createState() => _ButtonDemoPageState();

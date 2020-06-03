@@ -75,20 +75,19 @@ class _InstantListPageState extends State<InstantListPage> {
   Widget _buildInstant(InstantVO instantDTO) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: sWidth(10),
+        vertical: sHeight(5),
         horizontal: sWidth(5),
       ),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: Radii.k10pxRadius,
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 0),
-            blurRadius: 1,
-            color: Colors.grey.withOpacity(.6),
-          ),
-        ],
+        color: Colors.white, borderRadius: Radii.k6pxRadius,
+        // boxShadow: [
+        // BoxShadow(
+        //   offset: Offset(0, 0),
+        //   blurRadius: 1,
+        //   color: Colors.grey.withOpacity(.6),
+        // ),
+        // ],
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(17, 20, 17, 5),
@@ -231,11 +230,20 @@ class _InstantListPageState extends State<InstantListPage> {
             IconButton(
               onPressed: () => _handleLikeInstant(instantVO.instant.id),
               //onPressed: (){},
-              icon: Icon(
-                Iconfont.dianzan,
-                size: 25,
-                color: instantVO.status == 0 ? Colors.black : Colors.red,
-              ),
+              icon: instantVO.status == 0
+                  ? Icon(
+                      Icons.favorite_border,
+                      color: Colors.black38,
+                    )
+                  : Icon(
+                      Icons.favorite,
+                      color: Colors.redAccent,
+                    ),
+              // icon: Icon(
+              //   Icons.thumb_up,
+              //   color:
+              //       instantVO.status == 0 ? Colors.black38 : Colors.redAccent,
+              // ),
             ),
             SizedBox(width: sWidth(3)),
             Text(
@@ -252,8 +260,8 @@ class _InstantListPageState extends State<InstantListPage> {
               onPressed: () => _routeToDetailPage(instantVO),
               // onPressed: () {},
               icon: Icon(
-                Iconfont.pinglun,
-                size: sSp(24),
+                Icons.mode_comment,
+                color: Colors.black38,
               ),
             ),
             SizedBox(width: sWidth(3)),

@@ -3,7 +3,6 @@ import 'package:cdd_mobile_frontend/view/application/application_page.dart';
 import 'package:cdd_mobile_frontend/view/sign/sign_in_page.dart';
 import 'package:cdd_mobile_frontend/view/sign/sign_up_page.dart';
 import 'package:fluro/fluro.dart';
-import 'package:fluro/src/router.dart';
 
 class UserRouter implements IRouterProvider {
   static String LOGIN = "/login";

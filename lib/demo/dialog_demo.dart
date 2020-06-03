@@ -1,5 +1,4 @@
 import 'package:cdd_mobile_frontend/common/util/screen.dart';
-import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/button.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:flutter/material.dart';
@@ -42,21 +41,20 @@ class _DialogDemoPageState extends State<DialogDemoPage> {
       context: context,
       builder: (context) {
         return BaseDialog(
-          title: "提示",
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: sWidth(16),
-              vertical: sHeight(8),
+            title: "提示",
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: sWidth(16),
+                vertical: sHeight(8),
+              ),
+              child: Text(
+                "您确定要退出登录吗？",
+                style: TextStyle(fontSize: sSp(16)),
+              ),
             ),
-            child: Text(
-              "您确定要退出登录吗？",
-              style: TextStyle(fontSize: sSp(16)),
-            ),
-          ),
-          onPressed: () {
-            print("Press button");
-          }
-        );
+            onPressed: () {
+              print("Press button");
+            });
       },
     );
   }

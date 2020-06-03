@@ -1,7 +1,6 @@
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 typedef Success = void Function(dynamic json);
 typedef Error = void Function(int statusCode, String statusMessage);
@@ -70,11 +69,11 @@ class HttpUtil {
 
   /// restful GET
   Future get(
-      String path, {
-        // @required BuildContext context,
-        dynamic params,
-        Options options,
-      }) async {
+    String path, {
+    // @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     // requestOptions = requestOptions.merge(extra: {
     //   "context": context,
@@ -85,17 +84,17 @@ class HttpUtil {
     }
 
     var response =
-    await dio.get(path, queryParameters: params, options: requestOptions);
+        await dio.get(path, queryParameters: params, options: requestOptions);
     return response;
   }
 
   /// restful post 操作
   Future post(
-      String path, {
-        // @required BuildContext context,
-        dynamic params,
-        Options options,
-      }) async {
+    String path, {
+    // @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     // requestOptions = requestOptions.merge(extra: {
     //   "context": context,
@@ -111,11 +110,11 @@ class HttpUtil {
 
   /// restful put 操作
   Future put(
-      String path, {
-        // @required BuildContext context,
-        dynamic params,
-        Options options,
-      }) async {
+    String path, {
+    // @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     // requestOptions = requestOptions.merge(extra: {
     //   "context": context,
@@ -130,11 +129,11 @@ class HttpUtil {
 
   /// restful delete 操作
   Future delete(
-      String path, {
-        // @required BuildContext context,
-        dynamic params,
-        Options options,
-      }) async {
+    String path, {
+    // @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     // requestOptions = requestOptions.merge(extra: {
     //   "context": context,
@@ -150,11 +149,11 @@ class HttpUtil {
 
   /// restful post form 表单提交操作
   Future postForm(
-      String path, {
-        // @required BuildContext context,
-        dynamic params,
-        Options options,
-      }) async {
+    String path, {
+    // @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     // requestOptions = requestOptions.merge(extra: {
     //   "context": context,
@@ -167,10 +166,10 @@ class HttpUtil {
         data: FormData.fromMap(params),
         options: requestOptions,
         cancelToken: cancelToken, onSendProgress: (received, total) {
-          if (total != -1) {
-            print((received / total * 100).toStringAsFixed(0) + "%");
-          }
-        });
+      if (total != -1) {
+        print((received / total * 100).toStringAsFixed(0) + "%");
+      }
+    });
     return response;
   }
 
@@ -231,7 +230,6 @@ class HttpUtil {
     return options;
   }
    */
-
 
   /*
   /// restful GET
@@ -415,7 +413,6 @@ class HttpUtil {
     return Future.value();
   }
   */
-
 
 }
 

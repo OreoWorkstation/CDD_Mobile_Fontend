@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:cdd_mobile_frontend/common/api/api.dart';
-import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
@@ -9,9 +7,7 @@ import 'package:cdd_mobile_frontend/view/photo/photo_gallery.dart';
 import 'package:cdd_mobile_frontend/view_model/choose_image_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/photo/photo_add_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/photo/photo_list_provider.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 

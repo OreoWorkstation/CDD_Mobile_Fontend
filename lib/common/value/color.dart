@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 
-
 class AppColor {
+  static const Color background = Color(0xFFF7F6FC);
+  static const Color primary = Color(0xFF2972FF);
+  static const Color dark = Color(0xFF222222);
+  static const Color grey = Color(0xFF707E89);
+  static const Color lightGrey = Color(0xFFAEBBC2);
+  static const Color extraLightGrey = Color(0xE1E8ED);
+  // static const Color testBlueColor1 = Color(0xFF2972FF);
+  // using
+  static const Color testBlueColor1 = Color(0xFF2972FF);
+  static const Color testBlueColor2 = Color(0xFF5f67ec);
+  static const Color testBlueColor3 = Color(0xFF5f67ec);
 
-  /// 主背景 白色
-  static const Color primaryBackground = Color.fromARGB(255, 255, 255, 255);
+  static const Color testBgColor1 = Color(0xFFE5EAF6);
+  static const Color testBgColor2 = Color(0xFFF2F5FE);
+  static const Color testBgColor3 = Color(0xFFF7F6FC);
+  static const Color testBgColor4 = Color(0xFFE9E9E9);
+
+  static const Color testTextBlackColor1 = Color(0xff4B6163);
+  // static const Color testTextBlackColor2 = Color(0xff403f40);
+  // using
+  static const Color testTextBlackColor2 = Color(0xff222222);
+  // static const Color testTextBlackColor2 = Color(0xff302A50);
+  static const Color testTextWhiteColor1 = Color(0xffdee9ff);
+
+  static const Color testGreyColor1 = Color(0xffbabdcb);
 
   /// 主文本 灰色
   static const Color primaryText = Color.fromARGB(255, 45, 45, 47);
@@ -83,17 +104,7 @@ class AppColor {
     Color.fromARGB(255, 240, 92, 106),
     Color.fromARGB(255, 235, 240, 105),
   ];
-
-
-  static final Color primary = Color(0xff1DA1F2);
-  static final Color secondary = Color(0xff14171A);
-  static final Color darkGrey = Color(0xff657786);
-  static final Color lightGrey = Color(0xffAAB8C2);
-  static final Color extraLightGrey = Color(0xffE1E8ED);
-  static final Color extraExtraLightGrey = Color(0xfF5F8FA);
-  static final Color white = Color(0xFFffffff);
 }
-
 
 /*
 class AppColor {
@@ -147,4 +158,3 @@ class Colours {
   static const Color bg_gray_ = Color(0xFFFAFAFA);
   static const Color dark_bg_gray_ = Color(0xFF242526);
 }
-

@@ -14,7 +14,6 @@ class ApplicationPage extends StatefulWidget {
 }
 
 class _ApplicationPageState extends State<ApplicationPage> {
-
   List<Widget> _pageList;
 
   final _pageController = PageController();
@@ -40,26 +39,73 @@ class _ApplicationPageState extends State<ApplicationPage> {
 
   // 底部导航项目
   final List<BottomNavigationBarItem> _bottomTabs = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(icon: Icon(Iconfont.shouye), title: Padding(
-      padding: EdgeInsets.only(top: sHeight(1)),
-      child: Text("首页"),
-      key: Key("home"),
-    )),
-    BottomNavigationBarItem(icon: Icon(Icons.local_library), title: Padding(
-      padding: EdgeInsets.only(top: sHeight(1)),
-      child: Text("百科"),
-      key: Key("wiki"),
-    )),
-    BottomNavigationBarItem(icon: Icon(Iconfont.shequ), title: Padding(
-      padding: EdgeInsets.only(top: sHeight(1)),
-      child: Text("社区"),
-      key: Key("community"),
-    )),
+    // BottomNavigationBarItem(
+    //     icon: Icon(Iconfont.shouye),
+    //     title: Padding(
+    //       padding: EdgeInsets.only(top: sHeight(1)),
+    //       child: Text("首页"),
+    //       key: Key("home"),
+    //     )),
+    // BottomNavigationBarItem(
+    //     icon: Icon(Icons.local_library),
+    //     title: Padding(
+    //       padding: EdgeInsets.only(top: sHeight(1)),
+    //       child: Text("百科"),
+    //       key: Key("wiki"),
+    //     )),
+    // BottomNavigationBarItem(
+    //     icon: Icon(Iconfont.shequ),
+    //     title: Padding(
+    //       padding: EdgeInsets.only(top: sHeight(1)),
+    //       child: Text("社区"),
+    //       key: Key("community"),
+    //     )),
+    // BottomNavigationBarItem(
+    //     icon: Icon(Iconfont.gerenzhongxin),
+    //     title: Padding(
+    //       padding: EdgeInsets.only(top: sHeight(1)),
+    //       child: Text("个人中心"),
+    //       key: Key("profile"),
+    //     )),
     BottomNavigationBarItem(
-        icon: Icon(Iconfont.gerenzhongxin), title: Padding(
-          padding: EdgeInsets.only(top: sHeight(1)),
-          child: Text("个人中心"),
-      key: Key("profile"),
+        icon: Padding(
+          padding: EdgeInsets.only(top: sHeight(8)),
+          child: Icon(Icons.home),
+        ),
+        title: Padding(
+          padding: EdgeInsets.only(top: sHeight(2)),
+          child: Text("首页"),
+          key: Key("home"),
+        )),
+    BottomNavigationBarItem(
+        icon: Padding(
+          padding: EdgeInsets.only(top: sHeight(8)),
+          child: Icon(Icons.layers),
+        ),
+        title: Padding(
+          padding: EdgeInsets.only(top: sHeight(2)),
+          child: Text("百科"),
+          key: Key("wiki"),
+        )),
+    BottomNavigationBarItem(
+        icon: Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: Icon(Icons.whatshot),
+        ),
+        title: Padding(
+          padding: EdgeInsets.only(top: sHeight(2)),
+          child: Text("社区"),
+          key: Key("community"),
+        )),
+    BottomNavigationBarItem(
+        icon: Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: Icon(Icons.person),
+        ),
+        title: Padding(
+          padding: EdgeInsets.only(top: sHeight(2)),
+          child: Text("我的"),
+          key: Key("profile"),
         )),
   ];
 
@@ -70,17 +116,23 @@ class _ApplicationPageState extends State<ApplicationPage> {
       child: Scaffold(
         bottomNavigationBar: Consumer<ApplicationProvider>(
           builder: (_, provider, __) {
-            return BottomNavigationBar(
-              items: _bottomTabs,
-              currentIndex: provider.value,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: AppColor.primaryBackground,
-              elevation: 0,
-              onTap: (index) => _pageController.jumpToPage(index),
-              selectedItemColor: AppColor.tabElementActive,
-              // unselectedItemColor: AppColor.tabElementInactive,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
+            return ClipRRect(
+              // borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+              child: BottomNavigationBar(
+                items: _bottomTabs,
+                currentIndex: provider.value,
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Colors.white,
+                // elevation: 0,
+                onTap: (index) => _pageController.jumpToPage(index),
+                // selectedItemColor: AppColor.tabElementActive,
+                selectedItemColor: AppColor.testBlueColor1,
+                unselectedItemColor: Colors.black45,
+                showSelectedLabels: true,
+                showUnselectedLabels: true,
+                selectedLabelStyle: TextStyle(fontSize: sSp(12)),
+                unselectedLabelStyle: TextStyle(fontSize: sSp(12)),
+              ),
             );
           },
         ),
@@ -93,8 +145,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
       ),
     );
   }
+
   void _onPageChanged(int index) {
     provider.value = index;
   }
-
 }

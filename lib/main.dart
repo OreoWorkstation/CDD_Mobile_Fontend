@@ -1,10 +1,8 @@
 import 'package:cdd_mobile_frontend/common/provider/provider_manage.dart';
-import 'package:cdd_mobile_frontend/common/router/application.dart';
+import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/view/index.dart';
-import 'package:cdd_mobile_frontend/view_model/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +24,10 @@ class _MyAppState extends State<MyApp> {
           child: MaterialApp(
             title: "Cat & Dog Diary",
             debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: AppColor.testBgColor3,
+              // primaryColor: AppColor.testBgColor3,
+            ),
             home: IndexPage(),
 //            onGenerateRoute: Application.router.generator,
 //            localizationsDelegates: const [

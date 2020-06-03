@@ -57,7 +57,7 @@ class _PetPageState extends State<PetPage> {
                 color: Colors.transparent,
                 child: DeleteConfirmDialog(
                   "确认删除宠物吗?",
-                      () async {
+                  () async {
                     await petDeleteProvider.deletePet(widget.id);
                     Navigator.of(context).popUntil(
                       ModalRoute.withName("/application"),
@@ -159,14 +159,14 @@ class _PetPageState extends State<PetPage> {
           child: ClipOval(
             child: pet.avatar == ""
                 ? pet.species == 'cat'
-                ? Image.asset(
-              "assets/images/cat_avatar.jpg",
-              fit: BoxFit.cover,
-            )
-                : Image.asset(
-              "assets/images/dog_avatar.jpg",
-              fit: BoxFit.cover,
-            )
+                    ? Image.asset(
+                        "assets/images/cat_avatar.jpg",
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        "assets/images/dog_avatar.jpg",
+                        fit: BoxFit.cover,
+                      )
                 : Image.network(pet.avatar, fit: BoxFit.cover),
           ),
         ),
@@ -191,7 +191,7 @@ class _PetPageState extends State<PetPage> {
     return Container(
       height: sHeight(158),
       decoration: BoxDecoration(
-        color: AppColor.primaryBackground,
+        color: Colors.white,
         borderRadius: Radii.k10pxRadius,
         boxShadow: [
           BoxShadow(
@@ -255,7 +255,7 @@ class _PetPageState extends State<PetPage> {
               Iconfont.weight,
               "体重值",
               "${pet.weight} Kg",
-                  () async {
+              () async {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChangeNotifierProvider(
@@ -272,7 +272,7 @@ class _PetPageState extends State<PetPage> {
               Iconfont.riji,
               "日记",
               "${pet.diaryNumber}",
-                  () async {
+              () async {
                 // await Navigator.of(context).push(
                 //   MaterialPageRoute(
                 //     builder: (context) => ChangeNotifierProvider(
@@ -302,7 +302,7 @@ class _PetPageState extends State<PetPage> {
               Iconfont.zhangdan,
               "账单",
               "￥${pet.totalCost}",
-                  () async {
+              () async {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChangeNotifierProvider(
@@ -319,7 +319,7 @@ class _PetPageState extends State<PetPage> {
               Iconfont.xiangce,
               "相册",
               "${pet.photoNumber}",
-                  () async {
+              () async {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChangeNotifierProvider(
@@ -339,12 +339,12 @@ class _PetPageState extends State<PetPage> {
 
   // 各项宠物数据布局
   Widget _buildPetValueItem(
-      Color bgColor,
-      IconData icon,
-      String title,
-      String value,
-      VoidCallback onTap,
-      ) {
+    Color bgColor,
+    IconData icon,
+    String title,
+    String value,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -356,8 +356,7 @@ class _PetPageState extends State<PetPage> {
           boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 6)],
         ),
         child: Padding(
-          padding:
-          EdgeInsets.only(left: sWidth(10), top: sHeight(13)),
+          padding: EdgeInsets.only(left: sWidth(10), top: sHeight(13)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -367,8 +366,7 @@ class _PetPageState extends State<PetPage> {
                   SizedBox(width: sWidth(14)),
                   Text(
                     title,
-                    style: TextStyle(
-                        fontSize: sSp(17), color: Colors.white),
+                    style: TextStyle(fontSize: sSp(17), color: Colors.white),
                   ),
                 ],
               ),

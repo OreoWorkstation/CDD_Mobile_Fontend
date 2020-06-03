@@ -1,7 +1,6 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
-import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/community/comment_list.dart';
 import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
