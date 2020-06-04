@@ -4,6 +4,7 @@ import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/view_model/choose_image_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/pet/pet_add_provider.dart';
+import 'package:cdd_mobile_frontend/view_model/pet/pet_list_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -134,9 +135,10 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
 
   // “完成”按钮
   _buildFinishButton(BuildContext context) {
-    return Consumer3<PetAddProvider, ChooseImageProvider, UserProvider>(
-      builder:
-          (context, petProvider, chooseImageProvider, userProvider, child) {
+    return Consumer4<PetAddProvider, ChooseImageProvider, UserProvider,
+        PetListProvider>(
+      builder: (context, petProvider, chooseImageProvider, userProvider,
+          petListProvider, child) {
         return IconButton(
           icon: Icon(
             Icons.done,
@@ -152,10 +154,8 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
               intro: _introductionController.text,
             );
             if (petProvider.isIdle) {
-              // Navigator.of(context).pop();
-              Navigator.of(context).popUntil(
-                ModalRoute.withName("/application"),
-              );
+              petListProvider.fetchPetList();
+              Navigator.of(context).pop();
             } else if (petProvider.isError) {
               showToast("服务器错误");
             }
@@ -228,7 +228,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
       "昵称",
       TextField(
         controller: _nicknameController,
-        maxLength: 11,
+        maxLength: 8,
         decoration: InputDecoration(
           counterText: "",
           hintText: "请输入宠物昵称",

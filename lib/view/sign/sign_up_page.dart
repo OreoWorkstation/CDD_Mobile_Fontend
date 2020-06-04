@@ -58,7 +58,13 @@ class _SignUpPageState extends State<SignUpPage> {
       ));
       return;
     } else {
-      Navigator.of(context).pop();
+      Scaffold.of(context).removeCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("注册成功"),
+      ));
+      _accountController.clear();
+      _passwordController.clear();
+      _repeatPasswordController.clear();
     }
   }
 
@@ -171,17 +177,17 @@ class _SignUpPageState extends State<SignUpPage> {
                     primaryBtn(
                       onPressed: () => _handleNavSignIn(),
                       bgColor: AppColor.secondaryElement,
-                      width: 130.0,
-                      height: 48.0,
+                      width: 120.0,
+                      height: 44.0,
                       title: "取消",
-                      fontSize: 19.0,
+                      fontSize: 17.0,
                     ),
                     primaryBtn(
                       onPressed: () => _handleRegister(context),
-                      width: 130.0,
-                      height: 48.0,
+                      width: 120.0,
+                      height: 44.0,
                       title: "注册",
-                      fontSize: 19.0,
+                      fontSize: 17.0,
                     ),
                   ],
                 ),

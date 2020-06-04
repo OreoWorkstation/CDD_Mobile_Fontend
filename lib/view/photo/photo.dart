@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
@@ -84,7 +85,18 @@ class _PhotoPageState extends State<PhotoPage> {
                       ),
                     ],
                   ),
-                  body: _buildPhotoGridView(photoListProvider),
+                  body: photoListProvider.photoList.isEmpty
+                      ? Center(
+                          child: Text(
+                            "赶快上传宠物的相片到云相册吧！",
+                            style: TextStyle(
+                              color: AppColor.lightGrey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: sSp(18),
+                            ),
+                          ),
+                        )
+                      : _buildPhotoGridView(photoListProvider),
                 ),
               );
             },

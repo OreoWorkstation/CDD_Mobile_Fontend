@@ -70,9 +70,11 @@ class _WikiPageState extends State<WikiPage> {
             // _buildCategory(),
             Text(
               "推荐",
-              style: Theme.of(context).textTheme.title.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: sSp(18),
+              ),
             ),
             SizedBox(height: sHeight(10)),
             _buildRecommendList(),

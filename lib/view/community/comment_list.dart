@@ -81,7 +81,17 @@ class _CommentListWidgetState extends State<CommentListWidget> {
             return Center(child: CircularProgressIndicator());
           }
           if (provider.commentList.isEmpty) {
-            return SizedBox.shrink();
+            // return SizedBox.shrink();
+            return Center(
+              child: Text(
+                "写下你的评论吧！",
+                style: TextStyle(
+                  color: AppColor.lightGrey,
+                  fontWeight: FontWeight.bold,
+                  fontSize: sSp(18),
+                ),
+              ),
+            );
           }
           return ListView.builder(
             itemCount: provider.commentList.length,

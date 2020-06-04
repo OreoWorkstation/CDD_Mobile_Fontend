@@ -5,9 +5,11 @@ import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/home/home_page.dart';
+import 'package:cdd_mobile_frontend/view/pet/pet_list.dart';
 import 'package:cdd_mobile_frontend/view/user/user_edit.dart';
 import 'package:cdd_mobile_frontend/view/user/user_list_page.dart';
 import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
+import 'package:cdd_mobile_frontend/view_model/pet/pet_list_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,12 +59,11 @@ class _UserPageState extends State<UserPage> {
   }
 
   _routeToPetList() {
-    return null;
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (_) => HomePage(type: 1),
-    //   ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PetListPage(),
+      ),
+    );
   }
 
   @override
@@ -123,8 +124,8 @@ class _UserPageState extends State<UserPage> {
             ),
             SizedBox(height: sHeight(10)),
             Text(
-              user.nickname.toUpperCase(),
-              style: GoogleFonts.muli(
+              user.nickname,
+              style: TextStyle(
                 // color: AppColor.testTextBlackColor2,
                 color: Colors.black,
                 fontSize: sSp(16),
@@ -133,8 +134,8 @@ class _UserPageState extends State<UserPage> {
             ),
             SizedBox(height: sHeight(14)),
             Text(
-              user.introduction,
-              style: GoogleFonts.muli(
+              user.introduction == "" ? "Nothing to say" : user.introduction,
+              style: TextStyle(
                 color: AppColor.dark,
                 fontSize: sSp(14),
               ),
@@ -155,7 +156,9 @@ class _UserPageState extends State<UserPage> {
       // _buildSliverListItem(Icons.settings, "系统设置", () {}),
       _buildSliverListItem(Icons.help, "帮助", () {}),
       _buildSliverListItem(Icons.info_outline, "关于我们", () {}),
-      _buildSliverListItem(Icons.exit_to_app, "注销登录", () {}),
+      _buildSliverListItem(Icons.exit_to_app, "注销登录", () {
+        Navigator.of(context).pushReplacementNamed("/signin");
+      }),
       //_buildLogoutButton(),
     ];
   }

@@ -72,9 +72,24 @@ class _UserListPageState extends State<UserListPage> {
           if ((widget.type == 0 && provider.followList.isEmpty) ||
               (widget.type == 1 && provider.fansList.isEmpty)) {
             return Center(
-                child: widget.type == 0
-                    ? Text("暂时还没有关注任何人哦！")
-                    : Text("暂时还没有被其他人关注过哦！"));
+              child: widget.type == 0
+                  ? Text(
+                      "暂时还没有关注任何人哦！",
+                      style: TextStyle(
+                        color: AppColor.lightGrey,
+                        fontSize: sSp(18),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Text(
+                      "暂时还没有被其他人关注过哦！",
+                      style: TextStyle(
+                        color: AppColor.lightGrey,
+                        fontSize: sSp(18),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+            );
           }
           return Padding(
             padding: EdgeInsets.symmetric(

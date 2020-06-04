@@ -71,6 +71,8 @@ class UserProvider extends ViewStateModel {
 
   /// 注册
   Future<bool> register(String account, String password) async {
+    print(account);
+    print(password);
     setBusy();
     try {
       var res = await UserAPI.register(params: {

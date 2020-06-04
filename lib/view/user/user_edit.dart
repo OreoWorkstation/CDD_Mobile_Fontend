@@ -162,6 +162,16 @@ class _UserEditPageState extends State<UserEditPage> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      child: _buildIntro(),
+                    ),
+                    SizedBox(height: sHeight(15)),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: sHeight(5), horizontal: sWidth(10)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: _buildGender(),
                     ),
                     SizedBox(height: sHeight(15)),
@@ -181,6 +191,48 @@ class _UserEditPageState extends State<UserEditPage> {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildIntro() {
+    return Stack(
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Positioned(
+          top: sHeight(10),
+          child: Text(
+            "个人介绍",
+            style: TextStyle(
+              color: AppColor.dark.withOpacity(.7),
+              fontSize: sSp(16),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            width: sWidth(200),
+            child: TextField(
+              controller: _introductionController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                counterText: "",
+              ),
+              maxLength: 41,
+              maxLines: null,
+              style: TextStyle(
+                fontSize: sSp(16),
+                color: AppColor.dark,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        // operation,
+      ],
     );
   }
 
@@ -258,7 +310,9 @@ class _UserEditPageState extends State<UserEditPage> {
             ),
           );
           setState(() {
-            _address = result1.provinceName + "-" + result1.cityName;
+            if (result1 != null) {
+              _address = result1.provinceName + "-" + result1.cityName;
+            }
           });
           print(_address);
         },
@@ -277,7 +331,7 @@ class _UserEditPageState extends State<UserEditPage> {
   Widget _buildListItem(String title, Widget operation) {
     return Container(
       padding:
-          EdgeInsets.symmetric(vertical: sHeight(5), horizontal: sWidth(10)),
+          EdgeInsets.symmetric(vertical: sHeight(8), horizontal: sWidth(10)),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),

@@ -1,3 +1,5 @@
+import 'package:cdd_mobile_frontend/common/util/util.dart';
+import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/community/instant_list_page.dart';
@@ -31,8 +33,14 @@ class _FollowInstantPageState extends State<FollowInstantPage> {
         }
         if (provider.instantList.isEmpty) {
           return Center(
-            child: Text("你关注的人还没有发布动态哦"),
-          );
+              child: Text(
+            "你关注的人还没有发布动态哦",
+            style: TextStyle(
+              color: AppColor.lightGrey,
+              fontSize: sSp(18),
+              fontWeight: FontWeight.bold,
+            ),
+          ));
         }
 //          return Expanded(
 //            child: InstantListPage(instantList: provider.instantList),

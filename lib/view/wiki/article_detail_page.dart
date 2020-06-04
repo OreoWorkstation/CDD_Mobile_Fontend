@@ -1,4 +1,5 @@
 import 'package:cdd_mobile_frontend/common/util/util.dart';
+import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/model/article_entity.dart';
 import 'package:cdd_mobile_frontend/view_model/article_provider.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             child: SafeArea(
               child: IconButton(
                 icon: Icon(
-                  Icons.arrow_back_ios,
+                  Icons.arrow_back,
                   color: Colors.white,
                 ),
                 onPressed: () {
@@ -111,28 +112,42 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   Text(
                     _article.title,
                     style: TextStyle(
-                      fontSize: sSp(20),
+                      fontSize: sSp(22),
                       color: Colors.white,
                     ),
                   ),
                   SizedBox(height: sHeight(14)),
                   Container(
-                    height: sHeight(5),
+                    height: sHeight(3),
                     width: width * .25,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: color,
+                      color: AppColor.primary,
                     ),
                   ),
                   SizedBox(height: sHeight(30)),
                   ListTile(
                     contentPadding: EdgeInsets.only(left: 0),
                     leading: CircleAvatar(
-                      backgroundColor: Colors.grey,
+                      backgroundColor: Colors.white,
                       backgroundImage: new NetworkImage(_article.expertAvatar),
                     ),
-                    title: Text("by ${_article.expertName}"),
-                    subtitle: Text(cddTimeLineFormat(_article.createTime)),
+                    title: Text(
+                      "${_article.expertName}",
+                      style: TextStyle(
+                        color: AppColor.dark,
+                        fontSize: sSp(16),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    subtitle: Text(
+                      cddTimeLineFormat(_article.createTime),
+                      style: TextStyle(
+                        color: AppColor.grey,
+                        fontSize: sSp(14),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
@@ -141,20 +156,21 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                           Text(
                             _article.content,
                             textAlign: TextAlign.justify,
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                  fontSize: sSp(14),
-                                  height: 1.8,
-                                ),
+                            style: TextStyle(
+                              fontSize: sSp(16),
+                              color: AppColor.dark,
+                              fontWeight: FontWeight.w400,
+                              height: 1.5,
+                            ),
                           ),
                           SizedBox(height: sHeight(30)),
                           Text(
                             "这篇文章对您有帮助吗？",
-                            style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: sSp(14),
-                                      color: Colors.black.withOpacity(.6),
-                                    ),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: sSp(14),
+                              color: AppColor.grey,
+                            ),
                           ),
                           SizedBox(height: sHeight(10)),
                           CustomRating(
@@ -169,6 +185,19 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                               _starValue = value.toInt();
                               print(_starValue);
                             },
+                          ),
+                          SizedBox(height: sHeight(30)),
+                          GestureDetector(
+                            onTap: () {
+                              print("tap");
+                            },
+                            child: Text(
+                              "点击加载相似文章",
+                              style: TextStyle(
+                                color: AppColor.primary,
+                                fontSize: sSp(15),
+                              ),
+                            ),
                           ),
                           SizedBox(height: sHeight(30)),
                         ],

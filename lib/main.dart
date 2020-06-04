@@ -2,6 +2,7 @@ import 'package:cdd_mobile_frontend/common/provider/provider_manage.dart';
 import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/view/index.dart';
+import 'package:cdd_mobile_frontend/view/sign/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
@@ -32,6 +33,9 @@ class _MyAppState extends State<MyApp> {
               // primaryColor: AppColor.testBgColor3,
             ),
             home: IndexPage(),
+            routes: {
+              "/signin": (_) => SignInPage(),
+            },
 //            onGenerateRoute: Application.router.generator,
 //            localizationsDelegates: const [
 //              GlobalMaterialLocalizations.delegate,

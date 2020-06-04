@@ -12,6 +12,10 @@ class PetListProvider extends ViewStateModel {
     fetchPetList();
   }
 
+  clearPetList() {
+    _petList = [];
+  }
+
   /// 获取宠物列表
   Future<bool> fetchPetList() async {
     setBusy();

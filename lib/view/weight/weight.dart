@@ -178,7 +178,16 @@ class _WeightPageState extends State<WeightPage> {
     return Expanded(
       child: Container(
         child: weightList.length == 0
-            ? Text("none")
+            ? Center(
+                child: Text(
+                  "赶快记录宠物体重吧！",
+                  style: TextStyle(
+                    color: AppColor.lightGrey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: sSp(18),
+                  ),
+                ),
+              )
             : ListView.builder(
                 itemBuilder: (context, index) {
                   return _buildWeightListItem(

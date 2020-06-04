@@ -170,7 +170,15 @@ class _UserZonePageState extends State<UserZonePage> {
           return Center(child: CircularProgressIndicator());
         }
         if (userProvider.userZone.instantVOList.isEmpty) {
-          return Center(child: Text("No instant"));
+          return Center(
+              child: Text(
+            "还没有发布动态哦",
+            style: TextStyle(
+              color: AppColor.lightGrey,
+              fontSize: sSp(18),
+              fontWeight: FontWeight.bold,
+            ),
+          ));
         }
         return Material(
           color: AppColor.background,

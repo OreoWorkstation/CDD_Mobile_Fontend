@@ -49,7 +49,8 @@ class _PetPageState extends State<PetPage> {
   }
 
   // 处理删除宠物
-  _handleDeletePet() {
+  _handleDeletePet(BuildContext ocntext) {
+    Navigator.of(context).pop();
     showDialog(
       context: context,
       builder: (context) {
@@ -65,9 +66,11 @@ class _PetPageState extends State<PetPage> {
                   () async {
                     await petDeleteProvider.deletePet(widget.id);
                     userProvider.changePetNumber(-1);
-                    Navigator.of(context).popUntil(
-                      ModalRoute.withName("/application"),
-                    );
+                    // Navigator.of(context).popUntil(
+                    //   ModalRoute.withName("/application"),
+                    // );
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                 ),
               );
@@ -109,7 +112,7 @@ class _PetPageState extends State<PetPage> {
                       return commonBottomSheetWidget(
                         context: context,
                         tapEdit: () => _handleEditPet(petProvider.pet),
-                        tapDelete: () => _handleDeletePet(),
+                        tapDelete: () => _handleDeletePet(context),
                       );
                     },
                   );

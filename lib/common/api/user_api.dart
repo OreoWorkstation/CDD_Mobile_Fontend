@@ -27,11 +27,19 @@ class UserAPI {
   static Future<APIResponse<bool>> register({
     Map<String, dynamic> params,
   }) async {
-    var response = await HttpUtil().post(
-      "/register",
-      params: params,
-    );
-    return response;
+    print(params);
+    return HttpUtil().post('/register', params: params).then((response) {
+      if (response.statusCode == 200) {
+        if (response.data['code'] == 0) {
+          return APIResponse<bool>(data: true);
+        }
+        return APIResponse<bool>(
+            error: true, errorMessage: "An error occurred");
+      }
+      return APIResponse<bool>(error: true, errorMessage: "An error occurred");
+    }).catchError((e, s) {
+      return APIResponse<bool>(error: true, errorMessage: "An error occurred");
+    });
   }
 
   /// 获取用户信息

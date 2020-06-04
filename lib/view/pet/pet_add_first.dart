@@ -78,7 +78,7 @@ class PetAddFirstPage extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () async {
-            await Navigator.of(context).push(
+            await Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) =>
                     PetAddSecondPage(species: species == 0 ? "cat" : "dog"),

@@ -62,7 +62,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       maxLines: 3,
                       style: TextStyle(
                         fontSize: sSp(16),
-                        color: Color(0xff325384),
+                        color: AppColor.dark,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -70,8 +70,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: <Widget>[
                         Container(
-                          width: sWidth(20),
-                          height: sWidth(20),
+                          width: sWidth(22),
+                          height: sWidth(22),
                           child: ClipOval(
                             child: Image.network(
                               article.expertAvatar,
@@ -83,15 +83,15 @@ class _ArticleListPageState extends State<ArticleListPage> {
                         Text(
                           article.expertName,
                           style: TextStyle(
-                            color: Color(0xff325384).withOpacity(.5),
-                            fontSize: sSp(12),
+                            color: AppColor.grey,
+                            fontSize: sSp(14),
                           ),
                         ),
                         SizedBox(width: sWidth(5)),
                         Icon(
                           Icons.launch,
                           size: sSp(12),
-                          color: Color(0xff325384).withOpacity(.5),
+                          color: AppColor.grey,
                         ),
                       ],
                     ),
