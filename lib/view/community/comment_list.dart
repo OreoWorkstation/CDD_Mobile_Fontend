@@ -59,7 +59,9 @@ class _CommentListWidgetState extends State<CommentListWidget> {
     );
   }
 
-  _routeToUserZone(int userId) {
+  _routeToUserZone(int userId) async {
+    await Provider.of<UserProvider>(context, listen: false)
+        .fetchUserZone(userId);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => UserZonePage(userId: userId),
@@ -105,29 +107,24 @@ class _CommentListWidgetState extends State<CommentListWidget> {
       margin: EdgeInsets.only(bottom: sHeight(10)),
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          InkWell(
+            onTap: () => _routeToUserZone(comment.userId),
+            child: Container(
+              width: sWidth(45),
+              height: sWidth(45),
+              child: ClipOval(
+                child: Image.network(
+                  comment.userAvatar,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
           Row(
             children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () => _routeToUserZone(comment.userId),
-                    child: Container(
-                      width: sWidth(50),
-                      height: sWidth(50),
-                      child: ClipOval(
-                        child: Image.network(
-                          comment.userAvatar,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(width: sWidth(17)),
+              SizedBox(width: sWidth(16)),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,59 +132,82 @@ class _CommentListWidgetState extends State<CommentListWidget> {
                   Text(
                     comment.userNickname,
                     style: TextStyle(
-                        fontSize: sSp(15),
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
+                        fontSize: sSp(16),
+                        color: AppColor.dark,
+                        fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: sHeight(5)),
                   Text(
                     cddTimeLineFormat(comment.createTime),
-                    style: TextStyle(
-                        fontSize: sSp(14), color: Colors.black.withOpacity(.7)),
+                    style: TextStyle(fontSize: sSp(14), color: AppColor.grey),
                   ),
-                  SizedBox(height: sHeight(13)),
+                  SizedBox(height: sHeight(5)),
                   comment.parentId == 0 || comment.parentId == null
-                      ? Text(
-                          comment.content,
-                          style:
-                              TextStyle(fontSize: sSp(16), color: Colors.black),
+                      ? Container(
+                          width: sWidth(230),
+                          child: Text(
+                            comment.content,
+                            style: TextStyle(
+                                fontSize: sSp(16), color: Colors.black),
+                            softWrap: true,
+                          ),
                         )
-                      : RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "回复 ",
-                                style: TextStyle(
-                                    fontSize: sSp(15), color: Colors.black),
-                              ),
-                              TextSpan(
-                                text: "${comment.parentNickname}",
-                                style: TextStyle(
-                                    fontSize: sSp(15), color: Colours.app_main),
-                              ),
-                              TextSpan(
-                                text: ": ${comment.content}",
-                                style: TextStyle(
-                                    fontSize: sSp(16), color: Colors.black),
-                              ),
-                            ],
+                      : Container(
+                          width: sWidth(230),
+                          child: RichText(
+                            softWrap: true,
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "回复 ",
+                                  style: TextStyle(
+                                      fontSize: sSp(15), color: AppColor.grey),
+                                ),
+                                TextSpan(
+                                  text: "${comment.parentNickname}",
+                                  style: TextStyle(
+                                      fontSize: sSp(16),
+                                      color: AppColor.primary),
+                                ),
+                                TextSpan(
+                                  text: ": ${comment.content}",
+                                  style: TextStyle(
+                                      fontSize: sSp(16),
+                                      color: AppColor.dark,
+                                      letterSpacing: 0.6,
+                                      height: 1.1),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                 ],
               ),
             ],
           ),
-          textBtnFlatButtonWidget(
-            onPressed: () => _handleComment(
-              widget.instantId,
-              isCommentOther: true,
-              parentId: comment.userId,
-              parentName: comment.userNickname,
+          Spacer(),
+          Expanded(
+            child: IconButton(
+              icon: Icon(Icons.reply, color: AppColor.grey),
+              onPressed: () => _handleComment(
+                widget.instantId,
+                isCommentOther: true,
+                parentId: comment.userId,
+                parentName: comment.userNickname,
+              ),
             ),
-            title: "回复",
-            fontSize: sSp(14),
-            textColor: Colors.black.withOpacity(.5),
           ),
+          // textBtnFlatButtonWidget(
+          //   onPressed: () => _handleComment(
+          //     widget.instantId,
+          //     isCommentOther: true,
+          //     parentId: comment.userId,
+          //     parentName: comment.userNickname,
+          //   ),
+          //   title: "回复",
+          //   fontSize: sSp(14),
+          //   textColor: Colors.black.withOpacity(.5),
+          // ),
         ],
       ),
     );

@@ -27,6 +27,8 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: AppColor.testBgColor3,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               // primaryColor: AppColor.testBgColor3,
             ),
             home: IndexPage(),

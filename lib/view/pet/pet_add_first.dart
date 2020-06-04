@@ -12,7 +12,7 @@ class PetAddFirstPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         brightness: Brightness.light,
-        title: Text("添加宠物",
+        title: Text("宠物类别",
             style:
                 TextStyle(color: AppColor.dark, fontWeight: FontWeight.w400)),
         centerTitle: true,
@@ -32,7 +32,7 @@ class PetAddFirstPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _buildHeader(),
+            // _buildHeader(),
             SizedBox(height: sHeight(32)),
             _buildPetOption(context),
           ],

@@ -59,23 +59,24 @@ class _InstantAddPageState extends State<InstantAddPage> {
                 brightness: Brightness.light,
                 title: Text(
                   "发布动态",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: AppColor.dark, fontWeight: FontWeight.w400),
                 ),
                 centerTitle: true,
-                elevation: 0,
+                elevation: 0.6,
                 leading: IconButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                  icon: Icon(Icons.arrow_back, color: AppColor.dark),
                 ),
                 actions: <Widget>[
                   Consumer<FeedProvider>(
                     builder: (_, instantAddProvider, __) {
-                      return textBtnFlatButtonWidget(
+                      return IconButton(
+                        icon: Icon(Icons.done, color: AppColor.dark),
                         onPressed: () =>
                             _handleFinishButton(context, instantAddProvider),
-                        title: "完成",
                       );
                     },
                   ),
@@ -90,9 +91,9 @@ class _InstantAddPageState extends State<InstantAddPage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      _buildContent(),
-                      SizedBox(height: sHeight(80)),
                       _buildImage(),
+                      SizedBox(height: sHeight(20)),
+                      _buildContent(),
                     ],
                   ),
                 ),
@@ -134,6 +135,7 @@ class _InstantAddPageState extends State<InstantAddPage> {
           onTap: () {
             showModalBottomSheet(
               context: context,
+              backgroundColor: Colors.transparent,
               builder: (context) =>
                   _buildChooseImageBottomSheet(chooseImageProvider),
             );
@@ -142,6 +144,10 @@ class _InstantAddPageState extends State<InstantAddPage> {
               ? Container(
                   height: sHeight(200),
                   width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Icon(
                     Icons.camera_alt,
                     size: sSp(50),

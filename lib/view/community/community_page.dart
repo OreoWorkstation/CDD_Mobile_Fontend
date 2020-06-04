@@ -31,18 +31,18 @@ class _CommunityPageState extends State<CommunityPage>
           centerTitle: true,
           backgroundColor: Colors.white,
           brightness: Brightness.light,
-          elevation: 0,
+          elevation: 0.6,
           title: TabBar(
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.black26,
+            labelColor: AppColor.dark,
+            unselectedLabelColor: AppColor.grey,
             unselectedLabelStyle: TextStyle(
-              fontSize: sSp(17),
+              fontSize: sSp(18),
             ),
             labelStyle: TextStyle(
               fontSize: sSp(18),
               fontWeight: FontWeight.bold,
             ),
-            indicatorColor: Colors.black,
+            indicatorColor: AppColor.dark.withOpacity(.4),
             isScrollable: true,
             tabs: List.generate(
                 tabs.length,
@@ -73,7 +73,7 @@ class _CommunityPageState extends State<CommunityPage>
             }
           },
           child: Icon(Icons.add),
-          backgroundColor: AppColor.testBlueColor1,
+          backgroundColor: AppColor.primary,
         ),
       ),
     );

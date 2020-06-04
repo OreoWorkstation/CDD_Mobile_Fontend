@@ -27,7 +27,7 @@ class _FollowInstantPageState extends State<FollowInstantPage> {
     return Consumer<FeedProvider>(
       builder: (_, provider, __) => Builder(builder: (_) {
         if (provider.isBusy || provider.instantList == null) {
-          return CddLoadingWidget();
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         if (provider.instantList.isEmpty) {
           return Center(

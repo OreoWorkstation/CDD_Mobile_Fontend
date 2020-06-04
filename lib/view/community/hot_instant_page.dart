@@ -27,15 +27,19 @@ class _HotInstantPageState extends State<HotInstantPage> {
     return Consumer<FeedProvider>(
       builder: (_, provider, __) => Builder(builder: (_) {
         if (provider.isBusy) {
-          return CddLoadingWidget();
+          print("busyxxxx");
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
+          // return SizedBox.shrink();
         }
         if (provider.instantList == null || provider.instantList.isEmpty) {
-          return CddLoadingWidget();
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
         }
 //          return Expanded(
 //            child: InstantListPage(instantList: provider.instantList),
 //          );
-      return InstantListPage(instantList: provider.instantList,);
+        return InstantListPage(
+          instantList: provider.instantList,
+        );
       }),
     );
   }

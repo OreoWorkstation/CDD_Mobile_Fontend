@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Iconfont {
-    // iconName: 编辑
+// iconName: 编辑
+  static const comment = IconData(
+    0xf151,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 编辑
   static const bianji = IconData(
     0xe645,
     fontFamily: 'Iconfont',
@@ -581,6 +588,4 @@ class Iconfont {
     fontFamily: 'Iconfont',
     matchTextDirection: true,
   );
-
-
 }

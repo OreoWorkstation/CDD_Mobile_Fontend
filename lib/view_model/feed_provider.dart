@@ -21,7 +21,7 @@ class FeedProvider extends ViewStateModel {
   /// 获取单个动态
   getInstant(InstantVO instant) {
     _instant = instant;
-    notifyListeners();
+    // notifyListeners();
   }
 
   ///获取热门动态列表

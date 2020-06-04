@@ -5,6 +5,7 @@ import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:cdd_mobile_frontend/view/community/instant_detail.dart';
 import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
 import 'package:cdd_mobile_frontend/view_model/feed_provider.dart';
+import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,12 +36,14 @@ class _InstantListPageState extends State<InstantListPage> {
 
   _routeToDetailPage(InstantVO instantVO) async {
     Provider.of<FeedProvider>(context, listen: false).getInstant(instantVO);
-    await Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => InstantDetailPage(),
     ));
   }
 
-  _routeToUserZone(int userId) {
+  _routeToUserZone(int userId) async {
+    await Provider.of<UserProvider>(context, listen: false)
+        .fetchUserZone(userId);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => UserZonePage(userId: userId),
@@ -72,33 +75,33 @@ class _InstantListPageState extends State<InstantListPage> {
   }
 
   // 动态列表项
-  Widget _buildInstant(InstantVO instantDTO) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: sHeight(5),
-        horizontal: sWidth(5),
-      ),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white, borderRadius: Radii.k6pxRadius,
-        // boxShadow: [
-        // BoxShadow(
-        //   offset: Offset(0, 0),
-        //   blurRadius: 1,
-        //   color: Colors.grey.withOpacity(.6),
-        // ),
-        // ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(17, 20, 17, 5),
-        child: Column(
-          children: <Widget>[
-            _buildInstantHeader(instantDTO),
-            SizedBox(height: sWidth(12)),
-            _buildInstantBody(instantDTO),
-            SizedBox(height: sWidth(12)),
-            _buildInstantBottom(instantDTO),
-          ],
+  Widget _buildInstant(InstantVO instantVO) {
+    return GestureDetector(
+      onTap: () => _routeToDetailPage(instantVO),
+      child: Container(
+        margin: EdgeInsets.only(bottom: sHeight(8)),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white70,
+          // boxShadow: [
+          // BoxShadow(
+          //   offset: Offset(0, 0),
+          //   blurRadius: 1,
+          //   color: Colors.grey.withOpacity(.6),
+          // ),
+          // ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(17, 20, 17, 5),
+          child: Column(
+            children: <Widget>[
+              _buildInstantHeader(instantVO),
+              SizedBox(height: sWidth(12)),
+              _buildInstantBody(instantVO),
+              SizedBox(height: sWidth(12)),
+              _buildInstantBottom(instantVO),
+            ],
+          ),
         ),
       ),
     );
@@ -133,16 +136,16 @@ class _InstantListPageState extends State<InstantListPage> {
                 Text(
                   instantVO.nickname,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: sSp(14),
-                      color: Colors.black),
+                      fontWeight: FontWeight.w500,
+                      fontSize: sSp(16),
+                      color: AppColor.dark),
                 ),
                 SizedBox(height: sHeight(5)),
                 Text(
                   cddTimeLineFormat(instantVO.instant.createTime),
                   style: TextStyle(
-                    color: AppColor.secondaryTextColor,
-                    fontSize: sSp(12),
+                    color: AppColor.grey,
+                    fontSize: sSp(14),
                   ),
                 ),
               ],
@@ -180,8 +183,8 @@ class _InstantListPageState extends State<InstantListPage> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: sSp(15),
-                letterSpacing: 1.1,
+                fontSize: sSp(16),
+                // letterSpacing: 0.6,
               ),
             ),
           ),
@@ -245,14 +248,13 @@ class _InstantListPageState extends State<InstantListPage> {
               //       instantVO.status == 0 ? Colors.black38 : Colors.redAccent,
               // ),
             ),
-            SizedBox(width: sWidth(3)),
             Text(
               "${instantVO.instant.likeNumber}",
-              style: TextStyle(
-                  fontSize: sSp(16), color: AppColor.secondaryElement),
+              style: TextStyle(fontSize: sSp(16), color: Colors.black38),
             ),
           ],
         ),
+        SizedBox(width: sWidth(10)),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -260,15 +262,13 @@ class _InstantListPageState extends State<InstantListPage> {
               onPressed: () => _routeToDetailPage(instantVO),
               // onPressed: () {},
               icon: Icon(
-                Icons.mode_comment,
+                Iconfont.pinglun,
                 color: Colors.black38,
               ),
             ),
-            SizedBox(width: sWidth(3)),
             Text(
               "${instantVO.instant.commentNumber}",
-              style: TextStyle(
-                  fontSize: sSp(16), color: AppColor.secondaryElement),
+              style: TextStyle(fontSize: sSp(16), color: Colors.black38),
             ),
           ],
         ),

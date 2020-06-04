@@ -21,7 +21,6 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   @override
   void initState() {
     super.initState();
-    //_instantVO = widget.instantVO;
   }
 
   _handleLikeInstant(int instantId) async {
@@ -79,17 +78,15 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           appBar: AppBar(
             title: Text(
               "${_instantVO.nickname}",
-              style: TextStyle(color: Colors.black),
+              style:
+                  TextStyle(color: AppColor.dark, fontWeight: FontWeight.w400),
             ),
             centerTitle: true,
             brightness: Brightness.light,
             backgroundColor: Colors.white,
-            elevation: 0,
+            elevation: 0.6,
             leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
+              icon: Icon(Icons.arrow_back, color: AppColor.dark),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -97,9 +94,9 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           ),
           body: _buildBody(provider),
         ),
-        Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildInstantBottom(provider)),
+        // Align(
+        //     alignment: Alignment.bottomCenter,
+        //     child: _buildInstantBottom(provider)),
       ],
     );
   }
@@ -110,6 +107,9 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
         return [
           SliverToBoxAdapter(
             child: _buildInstantDetail(provider),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: sHeight(10)),
           ),
           SliverPersistentHeader(
             delegate: _myDelegate(provider),
@@ -124,16 +124,17 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   Widget _buildInstantDetail(provider) {
     return Container(
       width: double.infinity,
+      decoration: BoxDecoration(color: Colors.white70),
       child: Padding(
         padding:
-            EdgeInsets.symmetric(horizontal: sWidth(15), vertical: sHeight(30)),
+            EdgeInsets.symmetric(horizontal: sWidth(15), vertical: sHeight(10)),
         child: Column(
           children: <Widget>[
             _buildInstantHeader(provider),
             SizedBox(height: sHeight(12)),
             _buildInstantBody(provider),
-            // SizedBox(height: sHeight(12)),
-            // _buildInstantBottom(provider),
+            SizedBox(height: sHeight(12)),
+            _buildInstantBottom(provider),
           ],
         ),
       ),
@@ -153,8 +154,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
               //onTap: () => _routeToUserZone(_instantVO.instant.userId),
               onTap: () => _routeToUserZone(_instantVO.instant.userId),
               child: Container(
-                width: sWidth(50),
-                height: sWidth(50),
+                width: sWidth(45),
+                height: sWidth(45),
                 child: ClipOval(
                   child: Image.network(
                     _instantVO.avatar,
@@ -163,7 +164,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                 ),
               ),
             ),
-            SizedBox(width: sWidth(15)),
+            SizedBox(width: sWidth(16)),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,16 +172,16 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                 Text(
                   _instantVO.nickname,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: sSp(15),
-                      color: Colors.black),
+                      fontWeight: FontWeight.w500,
+                      fontSize: sSp(16),
+                      color: AppColor.dark),
                 ),
                 SizedBox(height: sHeight(5)),
                 Text(
                   cddTimeLineFormat(_instantVO.instant.createTime),
                   style: TextStyle(
-                    color: AppColor.secondaryTextColor,
-                    fontSize: sSp(13),
+                    color: AppColor.grey,
+                    fontSize: sSp(14),
                   ),
                 ),
               ],
@@ -213,9 +214,9 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           child: Text(
             _instantVO.instant.content,
             style: TextStyle(
-              color: Colors.black,
-              fontSize: sSp(15),
-              letterSpacing: 1.1,
+              color: AppColor.dark,
+              fontSize: sSp(16),
+              letterSpacing: 0.6,
             ),
           ),
         ),
@@ -257,7 +258,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
     final _instantVO = provider.instant;
     return Material(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -265,20 +266,23 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
               IconButton(
                 onPressed: () => _handleLikeInstant(_instantVO.instant.id),
                 //onPressed: (){},
-                icon: Icon(
-                  Iconfont.dianzan,
-                  size: 25,
-                  color: _instantVO.status == 0 ? Colors.black : Colors.red,
-                ),
+                icon: _instantVO.status == 0
+                    ? Icon(
+                        Icons.favorite_border,
+                        color: Colors.black38,
+                      )
+                    : Icon(
+                        Icons.favorite,
+                        color: Colors.redAccent,
+                      ),
               ),
-              SizedBox(width: sWidth(3)),
               Text(
                 "${_instantVO.instant.likeNumber}",
-                style: TextStyle(
-                    fontSize: sSp(16), color: AppColor.secondaryElement),
+                style: TextStyle(fontSize: sSp(16), color: Colors.black38),
               ),
             ],
           ),
+          SizedBox(width: sWidth(10)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -289,11 +293,9 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                   size: 25,
                 ),
               ),
-              SizedBox(width: sWidth(3)),
               Text(
                 "${_instantVO.instant.commentNumber}",
-                style: TextStyle(
-                    fontSize: sSp(16), color: AppColor.secondaryElement),
+                style: TextStyle(fontSize: sSp(16), color: Colors.black38),
               ),
             ],
           ),
@@ -318,14 +320,14 @@ class _myDelegate extends SliverPersistentHeaderDelegate {
         children: <Widget>[
           Text(
             "赞: ${provider.instant.instant.likeNumber}",
-            style: TextStyle(fontSize: sSp(15)),
+            style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
           ),
           SizedBox(
             width: sWidth(15),
           ),
           Text(
             "评论: ${provider.instant.instant.commentNumber}",
-            style: TextStyle(fontSize: sSp(15)),
+            style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
           ),
         ],
       ),
