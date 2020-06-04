@@ -89,13 +89,30 @@ class _CostPageState extends State<CostPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         brightness: Brightness.light,
-        title: Text("消费", style: TextStyle(color: Colors.black)),
+        title: Text("消费",
+            style: TextStyle(
+              color: AppColor.dark,
+              fontWeight: FontWeight.w500,
+            )),
         centerTitle: true,
-        elevation: 0.0,
+        elevation: 0.6,
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: AppColor.dark),
         ),
+        actions: <Widget>[
+          Consumer<CostListProvider>(
+            builder: (_, provider, __) {
+              return IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: AppColor.dark,
+                ),
+                onPressed: () => _handleAddCost(context, provider),
+              );
+            },
+          ),
+        ],
       ),
       body: Consumer<CostListProvider>(
         builder: (_, costListProvider, __) {
@@ -104,7 +121,7 @@ class _CostPageState extends State<CostPage> {
             return Center(child: CircularProgressIndicator());
           }
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: sWidth(23)),
+            padding: EdgeInsets.symmetric(horizontal: sWidth(20)),
             child: Column(
               children: <Widget>[
                 // 曲线图表
@@ -112,7 +129,7 @@ class _CostPageState extends State<CostPage> {
                 // 消费列表
                 _buildCostList(context, costListProvider),
                 // 添加按钮
-                _buildBottomButton(context, costListProvider),
+                // _buildBottomButton(context, costListProvider),
               ],
             ),
           );
@@ -130,8 +147,22 @@ class _CostPageState extends State<CostPage> {
           }).toList();
     return Container(
       margin: EdgeInsets.only(top: sHeight(10), bottom: sHeight(10)),
+      padding: EdgeInsets.symmetric(
+        horizontal: sWidth(10),
+        vertical: sHeight(15),
+      ),
       width: double.infinity,
-      height: sHeight(210),
+      height: sHeight(220),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6,
+              offset: Offset(0, 0),
+              color: Colors.grey.withOpacity(.1),
+            ),
+          ]),
       child: cddLineChart(dataLine),
     );
   }
@@ -202,9 +233,9 @@ class _CostPageState extends State<CostPage> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0, 5),
-                blurRadius: 3,
+                color: Colors.grey.withOpacity(.1),
+                offset: Offset(0, 0),
+                blurRadius: 6,
               ),
             ],
           ),
@@ -212,27 +243,29 @@ class _CostPageState extends State<CostPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: sWidth(11),
+                width: sWidth(10),
                 height: double.infinity,
                 color: AppColor
                     .listItemColors[index % AppColor.listItemColors.length],
               ),
               SizedBox(width: sWidth(12)),
-              Icon(Iconfont.zhangdan, color: AppColor.secondaryElement),
-              SizedBox(width: sWidth(19)),
+              Icon(Iconfont.zhangdan, color: AppColor.grey),
+              SizedBox(width: sWidth(20)),
               Text(
                 cddFormatBirthday(cost.createTime),
                 style: TextStyle(
-                    fontSize: sSp(16),
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
+                  fontSize: sSp(16),
+                  color: AppColor.dark,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.6,
+                ),
               ),
               Spacer(),
               Text(
                 "￥${cost.costValue}",
                 style: TextStyle(
                   fontSize: sSp(16),
-                  color: Color.fromARGB(255, 75, 3, 242),
+                  color: AppColor.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),

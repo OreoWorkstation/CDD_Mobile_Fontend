@@ -47,12 +47,12 @@ Widget buildFormListItem({@required String title, @required Widget operation}) {
       Text(
         title,
         style: TextStyle(
-          color: AppColor.primaryText.withOpacity(0.8),
-          fontSize: sSp(17),
-          fontWeight: FontWeight.bold,
+          color: AppColor.dark.withOpacity(.7),
+          fontSize: sSp(16),
+          fontWeight: FontWeight.w500,
         ),
       ),
-      SizedBox(width: sWidth(60)),
+      SizedBox(width: sWidth(20)),
       Expanded(child: operation),
       // operation,
     ],

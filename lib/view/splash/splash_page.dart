@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:cdd_mobile_frontend/common/router/fluro_navigator.dart';
 import 'package:cdd_mobile_frontend/common/router/user_router.dart';
 import 'package:cdd_mobile_frontend/common/util/util.dart';
-import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -61,15 +61,15 @@ class _PetEditPageState extends State<PetEditPage> {
           brightness: Brightness.light,
           title: Text(
             "编辑",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: AppColor.dark, fontWeight: FontWeight.w400),
           ),
           centerTitle: true,
-          elevation: 0,
+          elevation: 0.6,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: AppColor.dark),
           ),
           actions: <Widget>[
             _buildFinishButton(context),
@@ -113,7 +113,11 @@ class _PetEditPageState extends State<PetEditPage> {
   _buildFinishButton(BuildContext context) {
     return Consumer<PetEditProvider>(
       builder: (_, petEditProvider, __) {
-        return textBtnFlatButtonWidget(
+        return IconButton(
+          icon: Icon(
+            Icons.done,
+            color: AppColor.dark,
+          ),
           onPressed: () async {
             _pet.avatar = _avatar;
             _pet.nickname = _nicknameController.text;
@@ -128,7 +132,6 @@ class _PetEditPageState extends State<PetEditPage> {
               showToast("请求失败");
             }
           },
-          title: "完成",
         );
       },
     );

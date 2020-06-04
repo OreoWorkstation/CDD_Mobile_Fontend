@@ -14,7 +14,7 @@ Widget commonBottomSheetWidget({
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          topLeft: Radius.circular(18), topRight: Radius.circular(18)),
     ),
     child: Padding(
       padding: EdgeInsets.only(top: sHeight(10), bottom: sHeight(10)),
@@ -22,45 +22,49 @@ Widget commonBottomSheetWidget({
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
-            "选择要执行的操作",
-            style: TextStyle(
-              fontSize: sSp(17),
-              color: AppColor.secondaryTextColor.withOpacity(0.7),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.1,
+            height: sHeight(5),
+            decoration: BoxDecoration(
+              color: AppColor.lightGrey,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
           ),
-          ListTile(
-            title: Text(
-              "编辑",
-              textAlign: TextAlign.center,
+          _bottomSheetRow(context, Iconfont.bianji1, "编辑宠物信息", tapEdit),
+          _bottomSheetRow(context, Iconfont.shanchu, "删除该宠物", tapDelete),
+          _bottomSheetRow(context, Icons.close, "取消", () {
+            Navigator.of(context).pop();
+          }),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _bottomSheetRow(
+    BuildContext context, IconData iconData, String text, Function onPressed) {
+  return Expanded(
+    child: InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: sWidth(20)),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              iconData,
+              color: AppColor.dark,
+            ),
+            SizedBox(width: sWidth(20)),
+            Text(
+              text,
               style: TextStyle(
-                color: Colors.black,
-                fontSize: sSp(17),
+                color: AppColor.dark,
+                fontSize: sSp(18),
+                fontWeight: FontWeight.w400,
               ),
             ),
-            onTap: tapEdit,
-          ),
-          ListTile(
-            title: Text("删除",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColor.primaryElementRed,
-                  fontSize: sSp(17),
-                )),
-            onTap: tapDelete,
-          ),
-          ListTile(
-            title: Text("取消",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColor.secondaryTextColor,
-                  fontSize: sSp(17),
-                )),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -74,13 +78,13 @@ Widget chooseAvatarBottomSheetWidget({
   @required VoidCallback tapDefault,
 }) {
   return Container(
-    height: sHeight(350),
+    height: sHeight(330),
     width: MediaQuery.of(context).size.width,
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
+        topLeft: Radius.circular(18),
+        topRight: Radius.circular(18),
       ),
     ),
     child: Padding(
@@ -89,59 +93,20 @@ Widget chooseAvatarBottomSheetWidget({
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Text(
-            "选择要执行的操作",
-            style: TextStyle(
-              fontSize: sSp(17),
-              color: AppColor.secondaryTextColor.withOpacity(0.7),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.1,
+            height: sHeight(5),
+            decoration: BoxDecoration(
+              color: AppColor.lightGrey,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
           ),
-          ListTile(
-            title: Text(
-              "拍摄",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: tapCamera,
-          ),
-          ListTile(
-            title: Text(
-              "相册",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: tapGallery,
-          ),
-          ListTile(
-            title: Text(
-              "默认头像",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: tapDefault,
-          ),
-          ListTile(
-            title: Text(
-              "取消",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColor.secondaryTextColor,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+          _bottomSheetRow(context, Icons.photo_camera, "相机拍摄", tapCamera),
+          _bottomSheetRow(context, Icons.collections, "本地相册", tapGallery),
+          _bottomSheetRow(context, Icons.scatter_plot, "默认头像", tapDefault),
+          _bottomSheetRow(context, Icons.close, "取消", () {
+            Navigator.of(context).pop();
+          }),
         ],
       ),
     ),
@@ -160,8 +125,8 @@ Widget choosePhotoBottomSheetWidget({
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
+        topLeft: Radius.circular(18),
+        topRight: Radius.circular(18),
       ),
     ),
     child: Padding(
@@ -170,48 +135,19 @@ Widget choosePhotoBottomSheetWidget({
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Text(
-            "选择要执行的操作",
-            style: TextStyle(
-              fontSize: sSp(17),
-              color: AppColor.secondaryTextColor.withOpacity(0.7),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.1,
+            height: sHeight(5),
+            decoration: BoxDecoration(
+              color: AppColor.lightGrey,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
           ),
-          ListTile(
-            title: Text(
-              "拍摄",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: tapCamera,
-          ),
-          ListTile(
-            title: Text(
-              "相册",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: tapGallery,
-          ),
-          ListTile(
-            title: Text(
-              "取消",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColor.secondaryTextColor,
-                fontSize: sSp(17),
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+          _bottomSheetRow(context, Icons.photo_camera, "相机拍摄", tapCamera),
+          _bottomSheetRow(context, Icons.collections, "本地相册", tapGallery),
+          _bottomSheetRow(context, Icons.close, "取消", () {
+            Navigator.of(context).pop();
+          }),
         ],
       ),
     ),

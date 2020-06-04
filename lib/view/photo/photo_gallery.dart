@@ -90,7 +90,7 @@ class _PhtotoGalleryPageState extends State<PhtotoGalleryPage> {
       top: MediaQuery.of(context).padding.top,
       child: IconButton(
         icon: Icon(
-          Icons.arrow_back_ios,
+          Icons.arrow_back,
           size: sSp(25),
           color: Colors.white,
         ),

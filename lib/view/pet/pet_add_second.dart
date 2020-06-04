@@ -4,6 +4,7 @@ import 'package:cdd_mobile_frontend/common/widget/date_picker.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/view_model/choose_image_provider.dart';
 import 'package:cdd_mobile_frontend/view_model/pet/pet_add_provider.dart';
+import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -53,15 +54,15 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
           brightness: Brightness.light,
           title: Text(
             "添加宠物",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: AppColor.dark, fontWeight: FontWeight.w400),
           ),
           centerTitle: true,
-          elevation: 0,
+          elevation: 0.6,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: AppColor.dark),
           ),
           actions: <Widget>[
             _buildFinishButton(context),
@@ -103,9 +104,14 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
 
   // “完成”按钮
   _buildFinishButton(BuildContext context) {
-    return Consumer2<PetAddProvider, ChooseImageProvider>(
-      builder: (context, petProvider, chooseImageProvider, child) {
-        return textBtnFlatButtonWidget(
+    return Consumer3<PetAddProvider, ChooseImageProvider, UserProvider>(
+      builder:
+          (context, petProvider, chooseImageProvider, userProvider, child) {
+        return IconButton(
+          icon: Icon(
+            Icons.done,
+            color: AppColor.dark,
+          ),
           onPressed: () async {
             await petProvider.addPet(
               species: widget.species,
@@ -123,8 +129,8 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
             } else if (petProvider.isError) {
               showToast("服务器错误");
             }
+            userProvider.changePetNumber(1);
           },
-          title: "完成",
         );
       },
     );
@@ -154,6 +160,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
                   // 更改头像弹框
                   showModalBottomSheet(
                     context: context,
+                    backgroundColor: Colors.transparent,
                     builder: (context) => LoadingOverlay(
                       isLoading: chooseImageProvider.isBusy,
                       color: Colors.transparent,

@@ -103,20 +103,23 @@ class _CostOperationState extends State<CostOperation> {
               brightness: Brightness.light,
               title: Text(
                 widget.operation == 0 ? "添加消费" : "消费",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: AppColor.dark),
               ),
               centerTitle: true,
-              elevation: 0,
+              elevation: 0.6,
               leading: IconButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                icon: Icon(Icons.arrow_back, color: AppColor.dark),
               ),
               actions: <Widget>[
-                textBtnFlatButtonWidget(
+                IconButton(
+                  icon: Icon(
+                    Icons.done,
+                    color: AppColor.dark,
+                  ),
                   onPressed: () => _handleFinishButton(context, provider),
-                  title: "完成",
                 ),
               ],
             ),
@@ -124,10 +127,9 @@ class _CostOperationState extends State<CostOperation> {
               isLoading: provider.isBusy,
               color: Colors.transparent,
               child: Padding(
-                padding: EdgeInsets.only(
-                  left: sWidth(45),
-                  right: sWidth(45),
-                  top: sHeight(45),
+                padding: EdgeInsets.symmetric(
+                  vertical: sHeight(10),
+                  horizontal: sWidth(20),
                 ),
                 child: Column(
                   children: <Widget>[
@@ -148,20 +150,38 @@ class _CostOperationState extends State<CostOperation> {
 
   // 消费值布局
   Widget _buildCostValueInput() {
-    return buildFormListItem(
-      title: "消费金额",
-      operation: TextField(
-        controller: _costValueController,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: "输入消费金额",
-          prefixText: "￥",
-        ),
-        style: TextStyle(
-          fontSize: sSp(18),
-          color: AppColor.primaryText,
-          fontWeight: FontWeight.w500,
+    return Container(
+      padding:
+          EdgeInsets.symmetric(horizontal: sWidth(15), vertical: sHeight(5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: buildFormListItem(
+        title: "消费金额",
+        operation: TextField(
+          controller: _costValueController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: "输入消费金额",
+            prefixText: "￥",
+            hintStyle: TextStyle(
+              color: AppColor.lightGrey,
+              fontSize: sSp(16),
+              fontWeight: FontWeight.w500,
+            ),
+            prefixStyle: TextStyle(
+              color: AppColor.grey,
+              fontSize: sSp(16),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          style: TextStyle(
+            fontSize: sSp(16),
+            color: AppColor.dark,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
@@ -169,48 +189,66 @@ class _CostOperationState extends State<CostOperation> {
 
   // 消费内容布局
   Widget _buildCostContentChoose() {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          child: Text(
-            "消费内容",
-            style: TextStyle(
-              color: AppColor.primaryText.withOpacity(0.8),
-              fontSize: sSp(17),
-              fontWeight: FontWeight.bold,
+    return Container(
+      padding:
+          EdgeInsets.symmetric(horizontal: sWidth(15), vertical: sHeight(15)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            child: Text(
+              "消费内容",
+              style: TextStyle(
+                color: AppColor.dark.withOpacity(.7),
+                fontSize: sSp(16),
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: sHeight(10)),
-        Wrap(
-          spacing: 30.0,
-          children: <Widget>[
-            _buildChip(0),
-            _buildChip(1),
-            _buildChip(2),
-            _buildChip(3),
-            _buildChip(4),
-          ],
-        ),
-      ],
+          SizedBox(height: sHeight(10)),
+          Wrap(
+            spacing: sWidth(30),
+            children: <Widget>[
+              _buildChip(0),
+              _buildChip(1),
+              _buildChip(2),
+              _buildChip(3),
+              _buildChip(4),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   // 消费时间布局
   Widget _buildCreateTime() {
-    return buildFormListItem(
-      title: "日期",
-      operation: cddDatePickerWidget(
-        context: context,
-        dt: _createTime,
-        onConfirm: (Picker picker, List value) {
-          setState(
-            () {
-              _createTime = (picker.adapter as DateTimePickerAdapter).value;
-            },
-          );
-        },
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: sWidth(15),
+        vertical: sHeight(15),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: buildFormListItem(
+        title: "日期",
+        operation: cddDatePickerWidget(
+          context: context,
+          dt: _createTime,
+          onConfirm: (Picker picker, List value) {
+            setState(
+              () {
+                _createTime = (picker.adapter as DateTimePickerAdapter).value;
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -226,14 +264,14 @@ class _CostOperationState extends State<CostOperation> {
           fontWeight: FontWeight.w600,
         ),
       ),
-      disabledColor: AppColor.primaryText,
-      selectedColor: _colors[index],
+      disabledColor: AppColor.grey,
+      selectedColor: _colors[index].withOpacity(.6),
       avatar: CircleAvatar(
         backgroundColor: Colors.transparent,
         child: Icon(
           _icons[index],
           color: Colors.white,
-          size: sSp(17),
+          size: sSp(16),
         ),
       ),
       selected: _selected.contains(_tags[index]),

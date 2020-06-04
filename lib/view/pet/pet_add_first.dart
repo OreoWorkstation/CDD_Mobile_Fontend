@@ -12,14 +12,16 @@ class PetAddFirstPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         brightness: Brightness.light,
-        title: Text("添加宠物", style: TextStyle(color: Colors.black)),
+        title: Text("添加宠物",
+            style:
+                TextStyle(color: AppColor.dark, fontWeight: FontWeight.w400)),
         centerTitle: true,
-        elevation: 0,
+        elevation: 0.6,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: AppColor.dark),
         ),
       ),
       body: Padding(

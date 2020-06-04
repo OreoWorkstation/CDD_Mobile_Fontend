@@ -31,61 +31,61 @@ class _PhotoPageState extends State<PhotoPage> {
           create: (_) => PhotoAddProvider(),
         ),
       ],
-      child: Consumer<PhotoListProvider>(
-        builder: (_, photoListProvider, __) {
+      child:
+          Consumer3<PhotoListProvider, PhotoAddProvider, ChooseImageProvider>(
+        builder:
+            (_, photoListProvider, photoAddProvider, chooseImageProvider, __) {
           return Builder(
             builder: (_) {
               if (photoListProvider.isBusy) {
-                return Center(child: CircularProgressIndicator());
+                return Scaffold(
+                    body: Center(child: CircularProgressIndicator()));
               }
-              return Scaffold(
-                appBar: AppBar(
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
-                  title: Text("相册", style: TextStyle(color: Colors.black)),
-                  centerTitle: true,
-                  elevation: 0.0,
-                  leading: IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-                  ),
-                  actions: <Widget>[
-                    Consumer2<ChooseImageProvider, PhotoAddProvider>(
-                      builder: (_, chooseImageProvider, photoAddProvider, __) {
-                        print(
-                            "chooseimagexxxxxxxxxxxxxxxx: ${chooseImageProvider.imageNetworkPath}");
-                        return IconButton(
-                          onPressed: () async {
-                            await showModalBottomSheet(
-                              context: context,
-                              builder: (context) => _buildBottomSheet(
-                                  context, chooseImageProvider),
-                            );
-                            print("======>image path: $_imagePath");
-                            print(
-                                ">>>>>>>>>image path: ${chooseImageProvider.imageNetworkPath}");
-                            if (chooseImageProvider.imageNetworkPath != "") {
-                              await photoAddProvider.addPhoto(
-                                photo: PhotoEntity(
-                                  petId: photoListProvider.petId,
-                                  photoPath:
-                                      chooseImageProvider.imageNetworkPath,
-                                ),
-                              );
-                              await photoListProvider
-                                  .fetchPhotoListWithoutPetId();
-                            }
-                          },
-                          icon: Icon(
-                            Icons.add_circle_outline,
-                            color: Colors.black,
-                          ),
-                        );
-                      },
+              return LoadingOverlay(
+                color: Colors.transparent,
+                isLoading: photoAddProvider.isBusy ||
+                    photoListProvider.isBusy ||
+                    chooseImageProvider.isBusy,
+                child: Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: Colors.white,
+                    brightness: Brightness.light,
+                    title: Text("相册", style: TextStyle(color: AppColor.dark)),
+                    centerTitle: true,
+                    elevation: 0.6,
+                    leading: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(Icons.arrow_back, color: AppColor.dark),
                     ),
-                  ],
+                    actions: <Widget>[
+                      IconButton(
+                        onPressed: () async {
+                          await showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) =>
+                                _buildBottomSheet(context, chooseImageProvider),
+                          );
+                          if (chooseImageProvider.imageNetworkPath != "") {
+                            await photoAddProvider.addPhoto(
+                              photo: PhotoEntity(
+                                petId: photoListProvider.petId,
+                                photoPath: chooseImageProvider.imageNetworkPath,
+                              ),
+                            );
+                            await photoListProvider
+                                .fetchPhotoListWithoutPetId();
+                          }
+                        },
+                        icon: Icon(
+                          Icons.add,
+                          color: AppColor.dark,
+                        ),
+                      ),
+                    ],
+                  ),
+                  body: _buildPhotoGridView(photoListProvider),
                 ),
-                body: _buildPhotoGridView(photoListProvider),
               );
             },
           );
@@ -99,7 +99,6 @@ class _PhotoPageState extends State<PhotoPage> {
     BuildContext context,
     ChooseImageProvider chooseImageProvider,
   ) {
-    print("build bottom sheet: ${chooseImageProvider.imageNetworkPath}");
     _imagePath = chooseImageProvider.imageNetworkPath;
     return choosePhotoBottomSheetWidget(
       context: context,

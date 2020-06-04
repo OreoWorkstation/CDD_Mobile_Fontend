@@ -6,7 +6,7 @@ Widget primaryBtn({
   @required VoidCallback onPressed,
   double height = 45.0,
   double width = 250.0,
-  Color bgColor = Colours.app_main,
+  Color bgColor = AppColor.primary,
   @required String title,
   double fontSize = 20.0,
   BorderRadiusGeometry radii = Radii.k24pxRadius,
@@ -35,8 +35,8 @@ Widget primaryBtn({
 Widget textBtnFlatButtonWidget({
   @required VoidCallback onPressed,
   @required String title,
-  Color textColor = AppColor.primaryElement,
-  double fontSize = 17,
+  Color textColor = AppColor.primary,
+  double fontSize = 16,
 }) {
   return FlatButton(
     onPressed: onPressed,
@@ -51,37 +51,30 @@ Widget textBtnFlatButtonWidget({
   );
 }
 
-/*
-/// 有背景色button
-Widget btnFlatButtonWidget({
-  @required VoidCallback onPressed,
-  double width = 240.0,
-  double height = 48.0,
-  Color bgColor = AppColor.primaryElement,
-  String title = "button",
-  Color fontColor = AppColor.primaryElementText,
-  double fontSize = 18.0,
-  FontWeight fontWeight = FontWeight.w400,
-}) {
-  return Container(
-    width: sWidth(width),
-    height: sHeight(height),
-    child: FlatButton(
-      onPressed: onPressed,
-      color: bgColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: Radii.k10pxRadius,
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: fontColor,
-          fontSize: sSp(fontSize),
-          height: 1,
-        ),
-      ),
-    ),
-  );
+class CustomButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final double height;
+  final double width;
+  final Color btnColor;
+  final Color textColor;
+  final String content;
+  final double fontSize;
+  final BorderRadiusGeometry radius;
+
+  const CustomButton({
+    Key key,
+    @required this.onPressed,
+    @required this.height,
+    this.width,
+    this.btnColor,
+    this.textColor,
+    this.content,
+    this.fontSize,
+    this.radius,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }
-*/

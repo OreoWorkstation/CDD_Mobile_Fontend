@@ -9,6 +9,7 @@ import 'package:cdd_mobile_frontend/view/user/user_list_page.dart';
 import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
 import 'package:cdd_mobile_frontend/view_model/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class UserPage extends StatefulWidget {
@@ -110,7 +111,7 @@ class _UserPageState extends State<UserPage> {
             //   ),
             // ),
             AnimatedContainer(
-              duration: Duration(microseconds: 500),
+              duration: Duration(milliseconds: 500),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.white, width: sWidth(5)),
                 shape: BoxShape.circle,
@@ -129,8 +130,8 @@ class _UserPageState extends State<UserPage> {
             ),
             SizedBox(height: sHeight(10)),
             Text(
-              user.nickname,
-              style: TextStyle(
+              user.nickname.toUpperCase(),
+              style: GoogleFonts.muli(
                 // color: AppColor.testTextBlackColor2,
                 color: Colors.black,
                 fontSize: sSp(16),
@@ -140,7 +141,7 @@ class _UserPageState extends State<UserPage> {
             SizedBox(height: sHeight(14)),
             Text(
               user.introduction,
-              style: TextStyle(
+              style: GoogleFonts.muli(
                 color: AppColor.dark,
                 fontSize: sSp(14),
               ),
@@ -204,7 +205,7 @@ class _UserPageState extends State<UserPage> {
             children: <Widget>[
               Text(
                 title,
-                style: TextStyle(
+                style: GoogleFonts.muli(
                     fontSize: sSp(15),
                     color: AppColor.dark,
                     fontWeight: FontWeight.w500),
@@ -214,7 +215,7 @@ class _UserPageState extends State<UserPage> {
               ),
               Text(
                 "$value",
-                style: TextStyle(
+                style: GoogleFonts.muli(
                     fontSize: sSp(14),
                     color: AppColor.grey,
                     fontWeight: FontWeight.w500),
@@ -242,7 +243,7 @@ class _UserPageState extends State<UserPage> {
         onTap: onTap,
         title: Text(
           title,
-          style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
+          style: GoogleFonts.muli(fontSize: sSp(16), color: AppColor.dark),
         ),
         leading: Icon(prefixIcon, color: AppColor.grey),
         trailing: Icon(Icons.navigate_next, color: AppColor.lightGrey),

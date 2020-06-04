@@ -90,13 +90,29 @@ class _WeightPageState extends State<WeightPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         brightness: Brightness.light,
-        title: Text("体重", style: TextStyle(color: Colors.black)),
+        title: Text(
+          "体重",
+          style: TextStyle(color: AppColor.dark, fontWeight: FontWeight.w500),
+        ),
         centerTitle: true,
-        elevation: 0.0,
+        elevation: 0.6,
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: AppColor.dark),
         ),
+        actions: <Widget>[
+          Consumer<WeightListProvider>(
+            builder: (_, provider, __) {
+              return IconButton(
+                onPressed: () => _handleAddWeight(context, provider),
+                icon: Icon(
+                  Icons.add,
+                  color: AppColor.dark,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Consumer<WeightListProvider>(
         builder: (context, weightListProvider, child) => Builder(
@@ -106,7 +122,7 @@ class _WeightPageState extends State<WeightPage> {
               return Center(child: CircularProgressIndicator());
             }
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: sWidth(23)),
+              padding: EdgeInsets.symmetric(horizontal: sWidth(20)),
               child: Column(
                 children: <Widget>[
                   // 曲线图表
@@ -114,7 +130,7 @@ class _WeightPageState extends State<WeightPage> {
                   // 体重列表
                   _buildWeightList(context, weightListProvider),
                   // 添加按钮
-                  _buildBottomButton(context, weightListProvider),
+                  // _buildBottomButton(context, weightListProvider),
                 ],
               ),
             );
@@ -133,8 +149,22 @@ class _WeightPageState extends State<WeightPage> {
           }).toList();
     return Container(
       margin: EdgeInsets.only(top: sHeight(10), bottom: sHeight(10)),
+      padding: EdgeInsets.symmetric(
+        horizontal: sWidth(10),
+        vertical: sHeight(15),
+      ),
       width: double.infinity,
-      height: sHeight(210),
+      height: sHeight(220),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6,
+              offset: Offset(0, 0),
+              color: Colors.grey.withOpacity(.1),
+            ),
+          ]),
       child: cddLineChart(dataLine),
     );
   }
@@ -205,9 +235,9 @@ class _WeightPageState extends State<WeightPage> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0, 5),
-                blurRadius: 3,
+                color: Colors.grey.withOpacity(.1),
+                offset: Offset(0, 0),
+                blurRadius: 6,
               ),
             ],
           ),
@@ -215,27 +245,29 @@ class _WeightPageState extends State<WeightPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: sWidth(11),
+                width: sWidth(10),
                 height: double.infinity,
                 color: AppColor
                     .listItemColors[index % AppColor.listItemColors.length],
               ),
               SizedBox(width: sWidth(12)),
-              Icon(Iconfont.weight, color: AppColor.secondaryElement),
-              SizedBox(width: sWidth(19)),
+              Icon(Iconfont.weight, color: AppColor.grey),
+              SizedBox(width: sWidth(20)),
               Text(
                 cddFormatBirthday(weight.createTime),
                 style: TextStyle(
-                    fontSize: sSp(16),
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
+                  fontSize: sSp(16),
+                  color: AppColor.dark,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.6,
+                ),
               ),
               Spacer(),
               Text(
                 "${weight.weightValue} Kg",
                 style: TextStyle(
                   fontSize: sSp(16),
-                  color: Color.fromARGB(255, 75, 3, 242),
+                  color: AppColor.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),

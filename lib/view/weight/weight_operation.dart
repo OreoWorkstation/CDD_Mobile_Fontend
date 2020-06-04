@@ -72,20 +72,30 @@ class _WeightOperationState extends State<WeightOperation> {
               brightness: Brightness.light,
               title: Text(
                 widget.operation == 0 ? "添加体重" : "体重",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  color: AppColor.dark,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
               centerTitle: true,
-              elevation: 0,
+              elevation: 0.6,
               leading: IconButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                icon: Icon(Icons.arrow_back, color: AppColor.dark),
               ),
               actions: <Widget>[
-                textBtnFlatButtonWidget(
+                // textBtnFlatButtonWidget(
+                //   onPressed: () => _handleFinishButton(context, provider),
+                //   title: "完成",
+                // ),
+                IconButton(
+                  icon: Icon(
+                    Icons.done,
+                    color: AppColor.dark,
+                  ),
                   onPressed: () => _handleFinishButton(context, provider),
-                  title: "完成",
                 ),
               ],
             ),
@@ -93,10 +103,10 @@ class _WeightOperationState extends State<WeightOperation> {
               isLoading: provider.isBusy,
               color: Colors.transparent,
               child: Padding(
-                padding: EdgeInsets.only(
-                    left: sWidth(45),
-                    right: sWidth(45),
-                    top: sSp(50)),
+                padding: EdgeInsets.symmetric(
+                  horizontal: sWidth(20),
+                  vertical: sHeight(10),
+                ),
                 child: Column(
                   children: <Widget>[
                     _buildWeightValueInput(),
@@ -114,20 +124,38 @@ class _WeightOperationState extends State<WeightOperation> {
 
   // 体重值布局
   Widget _buildWeightValueInput() {
-    return buildFormListItem(
-      title: "体重",
-      operation: TextField(
-        controller: _weightValueController,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: "输入体重值",
-          suffixText: "Kg",
-        ),
-        style: TextStyle(
-          fontSize: sSp(18),
-          color: AppColor.primaryText,
-          fontWeight: FontWeight.w500,
+    return Container(
+      padding:
+          EdgeInsets.symmetric(horizontal: sWidth(15), vertical: sHeight(5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: buildFormListItem(
+        title: "体重",
+        operation: TextField(
+          controller: _weightValueController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: "输入体重值",
+            suffixText: "Kg",
+            hintStyle: TextStyle(
+              color: AppColor.lightGrey,
+              fontSize: sSp(16),
+              fontWeight: FontWeight.w500,
+            ),
+            suffixStyle: TextStyle(
+              color: AppColor.lightGrey,
+              fontSize: sSp(16),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          style: TextStyle(
+            fontSize: sSp(16),
+            color: AppColor.dark,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
@@ -135,16 +163,26 @@ class _WeightOperationState extends State<WeightOperation> {
 
   // 创建时间布局
   _buildCreateTime(BuildContext context) {
-    return buildFormListItem(
-      title: "日期",
-      operation: cddDatePickerWidget(
-        context: context,
-        dt: _createTime,
-        onConfirm: (Picker picker, List value) {
-          setState(() {
-            _createTime = (picker.adapter as DateTimePickerAdapter).value;
-          });
-        },
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: sWidth(15),
+        vertical: sHeight(15),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: buildFormListItem(
+        title: "日期",
+        operation: cddDatePickerWidget(
+          context: context,
+          dt: _createTime,
+          onConfirm: (Picker picker, List value) {
+            setState(() {
+              _createTime = (picker.adapter as DateTimePickerAdapter).value;
+            });
+          },
+        ),
       ),
     );
   }

@@ -25,24 +25,28 @@ Widget cddDatePickerWidget({
             value: dt,
           ),
           cancelTextStyle: TextStyle(
-            color: AppColor.primaryElement,
-            fontSize: Picker.DefaultTextSize,
+            color: AppColor.primary,
+            fontSize: sSp(16),
           ),
           confirmTextStyle: TextStyle(
-            color: AppColor.primaryElement,
-            fontSize: Picker.DefaultTextSize,
+            color: AppColor.primary,
+            fontSize: sSp(16),
           ),
-          selectedTextStyle: TextStyle(color: AppColor.primaryElement),
-          title: Text("请选择日期"),
+          selectedTextStyle: TextStyle(color: AppColor.primary),
+          title: Text(
+            "请选择日期",
+            style: TextStyle(color: AppColor.dark),
+          ),
           onConfirm: onConfirm,
         ).showModal(context);
     },
     child: Text(
       cddFormatBirthday(dt),
       style: TextStyle(
-        color: AppColor.primaryText,
+        color: AppColor.dark,
         fontWeight: FontWeight.w500,
-        fontSize: sSp(18),
+        fontSize: sSp(16),
+        letterSpacing: 0.6,
       ),
     ),
   );

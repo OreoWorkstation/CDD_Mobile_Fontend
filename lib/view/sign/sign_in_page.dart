@@ -102,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildLoginForm(UserProvider userProvider) {
     return Container(
       width: sWidth(350.0),
-      height: sHeight(380.0),
+      height: sHeight(320.0),
       margin: EdgeInsets.only(top: sHeight(44.0)),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -129,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
               style: GoogleFonts.marckScript(
                 fontSize: sSp(42.0),
                 fontWeight: FontWeight.bold,
-                color: Colours.app_main,
+                color: AppColor.primary.withOpacity(.8),
               ),
             ),
             // 输入账号
@@ -145,23 +145,23 @@ class _SignInPageState extends State<SignInPage> {
               hintText: "密码",
               isPassword: true,
             ),
-            SizedBox(height: sHeight(24.0)),
+            // SizedBox(height: sHeight(24.0)),
             // 忘记密码
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                InkWell(
-                  onTap: () => print("tap foget password"),
-                  child: Text(
-                    "忘记密码?",
-                    style: TextStyle(
-                      color: AppColor.primaryElement,
-                      fontSize: sSp(15.0),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: <Widget>[
+            //     InkWell(
+            //       onTap: () => print("tap foget password"),
+            //       child: Text(
+            //         "忘记密码?",
+            //         style: TextStyle(
+            //           color: AppColor.primaryElement,
+            //           fontSize: sSp(15.0),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: sHeight(32.0)),
             // 登录按钮
             Row(
@@ -181,7 +181,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildRegisterItem() {
     return Container(
-      margin: EdgeInsets.only(bottom: sHeight(35.0)),
+      margin: EdgeInsets.only(bottom: sHeight(60.0)),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: sWidth(59)),
         child: Row(
@@ -191,7 +191,7 @@ class _SignInPageState extends State<SignInPage> {
               "没有账号?",
               style: TextStyle(
                 fontSize: sSp(17.0),
-                color: AppColor.primaryText,
+                color: AppColor.dark,
               ),
             ),
             GestureDetector(
@@ -200,7 +200,7 @@ class _SignInPageState extends State<SignInPage> {
                 "立即注册",
                 style: TextStyle(
                   fontSize: sSp(17.0),
-                  color: AppColor.primaryElement,
+                  color: AppColor.primary,
                 ),
               ),
             ),

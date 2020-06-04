@@ -63,18 +63,20 @@ class _DiaryOperationPageState extends State<DiaryOperationPage> {
       child: Consumer<DiaryOperationProvider>(
         builder: (_, provider, __) {
           if (provider.isBusy) {
-            return Center(child: CircularProgressIndicator());
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
           return LoadingOverlay(
             isLoading: provider.isBusy,
             color: Colors.transparent,
             child: Scaffold(
+              backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 brightness: Brightness.light,
                 title: Text(
                   cddFormatBirthday(_diary.createTime),
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: AppColor.dark, fontWeight: FontWeight.w500),
                 ),
                 centerTitle: true,
                 elevation: 0,
@@ -82,12 +84,15 @@ class _DiaryOperationPageState extends State<DiaryOperationPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                  icon: Icon(Icons.arrow_back, color: AppColor.dark),
                 ),
                 actions: <Widget>[
-                  textBtnFlatButtonWidget(
+                  IconButton(
+                    icon: Icon(
+                      Icons.done,
+                      color: AppColor.dark,
+                    ),
                     onPressed: () => _handleFinishButton(context, provider),
-                    title: "完成",
                   ),
                 ],
               ),
@@ -101,10 +106,7 @@ class _DiaryOperationPageState extends State<DiaryOperationPage> {
                   child: Column(
                     children: <Widget>[
                       _buildImage(context),
-                      Divider(
-                        height: sHeight(15),
-                        color: Colors.grey,
-                      ),
+                      SizedBox(height: sHeight(20)),
                       _buildContent(),
                     ],
                   ),
@@ -133,6 +135,10 @@ class _DiaryOperationPageState extends State<DiaryOperationPage> {
               ? Container(
                   height: sHeight(200),
                   width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Icon(
                     Icons.camera_alt,
                     size: sSp(50),
@@ -178,7 +184,10 @@ class _DiaryOperationPageState extends State<DiaryOperationPage> {
   Widget _buildContent() {
     return Container(
       // height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(),
+      // height: double.infinity,
+      decoration: BoxDecoration(
+          // color: Colors.white,
+          ),
       child: TextField(
         controller: _contentController,
         keyboardType: TextInputType.text,
@@ -186,12 +195,17 @@ class _DiaryOperationPageState extends State<DiaryOperationPage> {
         decoration: InputDecoration(
           hintText: '''记录你与宠物的美好生活''',
           border: InputBorder.none,
+          hintStyle: TextStyle(
+            color: AppColor.lightGrey,
+            fontWeight: FontWeight.bold,
+          ),
           contentPadding: EdgeInsets.fromLTRB(2, 10, 0, 2),
         ),
         style: TextStyle(
-          color: AppColor.primaryText,
-          fontWeight: FontWeight.w400,
-          fontSize: sSp(18.0),
+          color: AppColor.dark,
+          fontWeight: FontWeight.w500,
+          fontSize: sSp(16.0),
+          letterSpacing: 0.6,
         ),
         maxLines: null,
       ),

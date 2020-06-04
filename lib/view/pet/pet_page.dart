@@ -18,6 +18,12 @@ import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
+const List<Color> _colorList = [
+  Color(0xFFEEE0FA),
+  Color(0xFFDAF0FE),
+  Color(0xFFFDE6D1),
+];
+
 class PetPage extends StatefulWidget {
   PetPage({
     Key key,
@@ -59,6 +65,7 @@ class _PetPageState extends State<PetPage> {
                   "确认删除宠物吗?",
                   () async {
                     await petDeleteProvider.deletePet(widget.id);
+                    userProvider.changePetNumber(-1);
                     Navigator.of(context).popUntil(
                       ModalRoute.withName("/application"),
                     );
@@ -78,20 +85,26 @@ class _PetPageState extends State<PetPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         brightness: Brightness.light,
-        elevation: 0.0,
+        elevation: 0.6,
+        centerTitle: true,
+        title: Text(
+          "宠物概览",
+          style: TextStyle(color: AppColor.dark, fontWeight: FontWeight.w500),
+        ),
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: AppColor.dark),
         ),
         actions: <Widget>[
           // 更多按钮
           Consumer<PetProvider>(
             builder: (_, petProvider, __) {
               return IconButton(
-                icon: Icon(Icons.more_horiz, color: Colors.black),
+                icon: Icon(Icons.more_horiz, color: AppColor.dark),
                 onPressed: () {
                   // 打开底部弹框
                   showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
                     context: context,
                     builder: (context) {
                       return commonBottomSheetWidget(
@@ -126,9 +139,10 @@ class _PetPageState extends State<PetPage> {
           }
           var _pet = petProvider.pet;
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: sWidth(30)),
+            padding: EdgeInsets.symmetric(horizontal: sWidth(20)),
             child: Column(
               children: <Widget>[
+                SizedBox(height: sHeight(10)),
                 // 页面头部
                 _buildHeader(_pet),
                 SizedBox(height: sHeight(20)),
@@ -153,29 +167,35 @@ class _PetPageState extends State<PetPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Container(
-          width: sWidth(46),
-          height: sWidth(46),
-          child: ClipOval(
-            child: pet.avatar == ""
-                ? pet.species == 'cat'
-                    ? Image.asset(
-                        "assets/images/cat_avatar.jpg",
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        "assets/images/dog_avatar.jpg",
-                        fit: BoxFit.cover,
-                      )
-                : Image.network(pet.avatar, fit: BoxFit.cover),
+        Hero(
+          tag: pet.nickname,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: sWidth(2),
+              ),
+            ),
+            child: CircleAvatar(
+              maxRadius: sWidth(50) / 2,
+              backgroundColor: Colors.white,
+              backgroundImage: pet.avatar == ""
+                  ? pet.species == 'cat'
+                      ? AssetImage("assets/images/cat_avatar.jpg")
+                      : AssetImage("assets/images/dog_avatar.jpg")
+                  : NetworkImage(pet.avatar),
+            ),
           ),
         ),
-        SizedBox(width: sWidth(21)),
+        SizedBox(width: sWidth(20)),
         Text(
           pet.nickname,
           style: TextStyle(
-            fontSize: sSp(20),
-            fontWeight: FontWeight.bold,
+            fontSize: sSp(18),
+            fontWeight: FontWeight.w600,
+            color: AppColor.dark,
           ),
         ),
         SizedBox(width: sWidth(16)),
@@ -189,42 +209,42 @@ class _PetPageState extends State<PetPage> {
   // 宠物信息看板：饲养天数，生日，品种，介绍
   Widget _buildPetBoard(PetEntity pet) {
     return Container(
-      height: sHeight(158),
+      padding:
+          EdgeInsets.symmetric(horizontal: sWidth(20), vertical: sHeight(18)),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: Radii.k10pxRadius,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey,
+            color: Colors.grey.withOpacity(.1),
             offset: Offset(0, 0),
-            blurRadius: 7,
+            blurRadius: 6,
           ),
         ],
       ),
-      child: Padding(
-        padding: EdgeInsets.only(left: sWidth(20)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _buildPetBoardItem(
-              Iconfont.rili,
-              cddGetDifferenceInDay(pet.birthday),
-            ),
-            _buildPetBoardItem(
-              Iconfont.shengri,
-              cddGetBirthdayWithoutYear(pet.birthday),
-            ),
-            _buildPetBoardItem(
-              Iconfont.pinzhong,
-              pet.species.toUpperCase(),
-            ),
-            _buildPetBoardItem(
-              Iconfont.jieshao,
-              pet.introduction,
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildPetBoardItem(
+            Iconfont.rili,
+            cddGetDifferenceInDay(pet.birthday),
+          ),
+          SizedBox(height: sHeight(14)),
+          _buildPetBoardItem(
+            Iconfont.shengri,
+            cddGetBirthdayWithoutYear(pet.birthday),
+          ),
+          SizedBox(height: sHeight(14)),
+          _buildPetBoardItem(
+            Iconfont.pinzhong,
+            pet.species.toUpperCase(),
+          ),
+          SizedBox(height: sHeight(14)),
+          _buildPetBoardItem(
+            Iconfont.jieshao,
+            pet.introduction,
+          ),
+        ],
       ),
     );
   }
@@ -233,11 +253,11 @@ class _PetPageState extends State<PetPage> {
   Widget _buildPetBoardItem(IconData icon, String value) {
     return Row(
       children: <Widget>[
-        Icon(icon, color: Color.fromARGB(255, 25, 61, 201)),
-        SizedBox(width: sWidth(25)),
+        Icon(icon, color: AppColor.primary.withOpacity(.8)),
+        SizedBox(width: sWidth(20)),
         Text(
           value,
-          style: TextStyle(fontSize: sSp(13), color: Colors.black),
+          style: TextStyle(fontSize: sSp(14), color: AppColor.dark),
         ),
       ],
     );
@@ -300,7 +320,7 @@ class _PetPageState extends State<PetPage> {
             _buildPetValueItem(
               AppColor.costColor,
               Iconfont.zhangdan,
-              "账单",
+              "消费",
               "￥${pet.totalCost}",
               () async {
                 await Navigator.of(context).push(
@@ -347,26 +367,32 @@ class _PetPageState extends State<PetPage> {
   ) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: sWidth(141),
-        height: sHeight(125),
-        decoration: BoxDecoration(
-          borderRadius: Radii.k10pxRadius,
-          color: bgColor,
-          boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 6)],
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(left: sWidth(10), top: sHeight(13)),
+      child: ClipRRect(
+        borderRadius: Radii.k10pxRadius,
+        child: Container(
+          width: sWidth(150),
+          padding: EdgeInsets.symmetric(
+              vertical: sHeight(20), horizontal: sWidth(20)),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(.1),
+                blurRadius: 6,
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Icon(icon, size: sSp(34), color: Colors.white),
+                  Icon(icon,
+                      size: sSp(30), color: AppColor.primary.withOpacity(.7)),
                   SizedBox(width: sWidth(14)),
                   Text(
                     title,
-                    style: TextStyle(fontSize: sSp(17), color: Colors.white),
+                    style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
                   ),
                 ],
               ),
@@ -375,8 +401,8 @@ class _PetPageState extends State<PetPage> {
                 child: Text(
                   value,
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: sSp(17.0),
+                    color: AppColor.dark,
+                    fontSize: sSp(16.0),
                   ),
                 ),
               ),
@@ -384,31 +410,43 @@ class _PetPageState extends State<PetPage> {
           ),
         ),
       ),
-    );
-  }
-
-  // 铲屎官布局
-  Widget _buildOtherPeople() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "铲屎官",
-          style: TextStyle(
-            fontSize: sSp(20),
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        IconButton(
-          icon: Icon(
-            Iconfont.tianjia,
-            size: sSp(28),
-            color: Colors.black,
-          ),
-          onPressed: () {},
-        ),
-      ],
+      // child: Container(
+      //   width: sWidth(141),
+      //   height: sHeight(125),
+      //   decoration: BoxDecoration(
+      //     borderRadius: Radii.k10pxRadius,
+      //     color: bgColor,
+      //     boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 6)],
+      //   ),
+      //   child: Padding(
+      //     padding: EdgeInsets.only(left: sWidth(10), top: sHeight(13)),
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.start,
+      //       children: <Widget>[
+      //         Row(
+      //           children: <Widget>[
+      //             Icon(icon, size: sSp(34), color: Colors.white),
+      //             SizedBox(width: sWidth(14)),
+      //             Text(
+      //               title,
+      //               style: TextStyle(fontSize: sSp(17), color: Colors.white),
+      //             ),
+      //           ],
+      //         ),
+      //         SizedBox(height: sHeight(26)),
+      //         Center(
+      //           child: Text(
+      //             value,
+      //             style: TextStyle(
+      //               color: Colors.white,
+      //               fontSize: sSp(17.0),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

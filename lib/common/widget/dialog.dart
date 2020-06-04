@@ -4,7 +4,6 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/button.dart';
 import 'package:flutter/material.dart';
 
-
 class DeleteConfirmDialog extends Dialog {
   final title;
   final handleDelete;
@@ -18,7 +17,7 @@ class DeleteConfirmDialog extends Dialog {
       child: Center(
         child: Container(
           width: sWidth(250),
-          height: sHeight(350),
+          height: sHeight(320),
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
               borderRadius: Radii.k10pxRadius,
@@ -42,11 +41,12 @@ class DeleteConfirmDialog extends Dialog {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: sSp(17),
-                  fontWeight: FontWeight.bold,
+                  fontSize: sSp(16),
+                  color: AppColor.dark,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: sHeight(26)),
+              SizedBox(height: sHeight(20)),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: sWidth(19)),
                 child: Row(
@@ -54,19 +54,21 @@ class DeleteConfirmDialog extends Dialog {
                   children: <Widget>[
                     primaryBtn(
                       onPressed: () => Navigator.of(context).pop(),
-                      bgColor: AppColor.secondaryElement,
+                      bgColor: AppColor.lightGrey,
                       width: 84,
                       height: 40,
                       title: "取消",
-                      fontSize: 13,
+                      fontSize: 14,
+                      radii: Radii.k10pxRadius,
                     ),
                     primaryBtn(
                       onPressed: handleDelete,
-                      bgColor: AppColor.primaryElementRed,
+                      bgColor: Colors.redAccent,
                       width: 84,
                       height: 40,
                       title: "删除",
-                      fontSize: 13,
+                      fontSize: 14,
+                      radii: Radii.k10pxRadius,
                     ),
                   ],
                 ),
@@ -81,14 +83,13 @@ class DeleteConfirmDialog extends Dialog {
 
 /// 自定义dialog的模板
 class BaseDialog extends StatelessWidget {
-
-  const BaseDialog({
-    Key key,
-    this.title,
-    this.onPressed,
-    this.hiddenTitle = false,
-    @required this.child
-  }) : super(key : key);
+  const BaseDialog(
+      {Key key,
+      this.title,
+      this.onPressed,
+      this.hiddenTitle = false,
+      @required this.child})
+      : super(key: key);
 
   final String title;
   final VoidCallback onPressed;
@@ -97,7 +98,6 @@ class BaseDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var dialogTitle = Visibility(
       visible: !hiddenTitle,
       child: Padding(
@@ -147,7 +147,8 @@ class BaseDialog extends StatelessWidget {
     );
 
     return AnimatedPadding(
-      padding: MediaQuery.of(context).viewInsets + const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+      padding: MediaQuery.of(context).viewInsets +
+          const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
       duration: const Duration(milliseconds: 120),
       curve: Curves.easeInCubic,
       child: MediaQuery.removeViewInsets(
@@ -168,13 +169,12 @@ class BaseDialog extends StatelessWidget {
 }
 
 class _DialogButton extends StatelessWidget {
-
   const _DialogButton({
     Key key,
     this.text,
     this.textColor,
     this.onPressed,
-  }): super(key: key);
+  }) : super(key: key);
 
   final String text;
   final Color textColor;

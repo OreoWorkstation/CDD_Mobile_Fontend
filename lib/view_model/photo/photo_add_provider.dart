@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 class PhotoAddProvider extends ViewStateModel {
   /// 添加相片
   Future<bool> addPhoto({@required PhotoEntity photo}) async {
+    setBusy();
     await PhotoAPI.insertPhoto(photo: photo);
+    setIdle();
     return true;
     /*
     // setBusy();

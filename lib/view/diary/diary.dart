@@ -128,24 +128,26 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? Center(child: CircularProgressIndicator())
+        ? Scaffold(body: Center(child: CircularProgressIndicator()))
         : Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,
               brightness: Brightness.light,
-              elevation: 0.0,
+              elevation: 0.6,
               title: Text(
                 "日记",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                    color: AppColor.dark, fontWeight: FontWeight.w500),
               ),
               centerTitle: true,
               leading: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                icon: Icon(Icons.arrow_back, color: AppColor.dark),
               ),
               actions: <Widget>[
                 _selectedEvents.length == 0
-                    ? Spacer()
+                    ? SizedBox.shrink()
                     : IconButton(
                         onPressed: () => _handleDeleteButton(context),
                         icon: Icon(
@@ -176,7 +178,7 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
                   },
                   icon: Icon(
                     Iconfont.rili,
-                    color: Colors.black,
+                    color: AppColor.dark,
                     size: sSp(25),
                   ),
                 ),
@@ -198,7 +200,7 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
 
   Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: sHeight(30)),
+      padding: EdgeInsets.symmetric(vertical: sHeight(20)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -210,7 +212,7 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
                 "${_currentSelectedDay.day}",
                 style: TextStyle(
                     fontSize: sSp(46),
-                    color: Colors.black,
+                    color: AppColor.dark,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(width: sWidth(14)),
@@ -220,18 +222,18 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
                   Text(
                     cddGetChineseMonth(_currentSelectedDay),
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColor.dark,
                       fontWeight: FontWeight.bold,
-                      fontSize: sSp(17),
+                      fontSize: sSp(16),
                     ),
                   ),
-                  SizedBox(height: sHeight(17)),
+                  SizedBox(height: sHeight(16)),
                   Text(
                     "${_currentSelectedDay.year}",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColor.dark,
                       fontWeight: FontWeight.bold,
-                      fontSize: sSp(17),
+                      fontSize: sSp(16),
                     ),
                   ),
                 ],
@@ -241,15 +243,15 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
           Text(
             cddGetChineseWeekday(_currentSelectedDay),
             style: TextStyle(
-                color: Colors.black,
+                color: AppColor.dark,
                 fontWeight: FontWeight.bold,
-                fontSize: sSp(20)),
+                fontSize: sSp(18)),
           ),
           IconButton(
             onPressed: () => _handleDiaryOperation(context),
             icon: Icon(
               Iconfont.bianji,
-              color: Colors.black,
+              color: AppColor.dark,
               size: sSp(30),
             ),
           ),
@@ -291,8 +293,11 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
               SizedBox(height: sHeight(10)),
               Text(
                 _selectedEvents[3],
-                style:
-                    TextStyle(fontSize: sSp(17), letterSpacing: 2),
+                style: TextStyle(
+                  fontSize: sSp(16),
+                  letterSpacing: 0.6,
+                  color: AppColor.dark,
+                ),
               ),
             ],
     );
@@ -302,15 +307,7 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        SizedBox(height: sHeight(30)),
-        Text(
-          "今天还没有记录日记哦，赶快记录今天你与宠物的快乐时光吧",
-          style: TextStyle(
-              fontSize: sSp(20),
-              fontWeight: FontWeight.bold,
-              color: AppColor.secondaryElement),
-        ),
-        SizedBox(height: sHeight(100)),
+        SizedBox(height: sHeight(50)),
         Container(
           height: sHeight(250),
           decoration: BoxDecoration(
@@ -319,6 +316,15 @@ class _DiaryPageState extends State<DiaryPage> with TickerProviderStateMixin {
               fit: BoxFit.cover,
             ),
           ),
+        ),
+        SizedBox(height: sHeight(30)),
+        Text(
+          "记录你与宠物的快乐时光吧",
+          style: TextStyle(
+              fontSize: sSp(20),
+              fontWeight: FontWeight.bold,
+              color: AppColor.lightGrey,
+              letterSpacing: 0.6),
         ),
       ],
     );
