@@ -78,6 +78,7 @@ class _WikiPageState extends State<WikiPage> {
             ),
             SizedBox(height: sHeight(10)),
             _buildRecommendList(),
+            // WikiRecommend(),
           ],
         ),
       ),
@@ -124,7 +125,6 @@ class _WikiPageState extends State<WikiPage> {
           borderRadius: Radii.k6pxRadius,
         ),
         GestureDetector(
-          // TODO
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => ArticleDetailPage(
@@ -156,7 +156,7 @@ class _WikiPageState extends State<WikiPage> {
                 right: sWidth(12),
               ),
               child: Text(
-                article.content,
+                article.title,
                 style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white.withOpacity(.8),
                     ),
@@ -222,6 +222,45 @@ class _WikiPageState extends State<WikiPage> {
           child: ArticleListPage(
             articleList: provider.recommendArticleList,
           ),
+        );
+      },
+    );
+  }
+}
+
+class WikiRecommend extends StatefulWidget {
+  WikiRecommend({Key key}) : super(key: key);
+
+  @override
+  _WikiRecommendState createState() => _WikiRecommendState();
+}
+
+class _WikiRecommendState extends State<WikiRecommend> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ArticleProvider>(context, listen: false).fetchRecommend();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ArticleProvider>(
+      builder: (_, provider, __) {
+        return Builder(
+          builder: (_) {
+            if (provider.isBusy ||
+                provider.recommendArticleList == null ||
+                provider.recommendArticleList.isEmpty) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ArticleListPage(
+              articleList: provider.recommendArticleList,
+            );
+          },
         );
       },
     );

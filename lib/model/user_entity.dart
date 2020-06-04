@@ -72,13 +72,13 @@ class UserInfoEntity {
         "email": email,
         "phone": phone,
         "address": address,
-        "birthday": birthday,
+        "birthday": birthday == null ? "" : birthday.toIso8601String(),
         "petNumber": petNumber,
         "instantNumber": instantNumber,
         "followNumber": followNumber,
         "fansNumber": fansNumber,
-        "createTime": createTime,
-        "updateTime": updateTime,
+        "createTime": createTime == null ? "" : createTime.toIso8601String(),
+        "updateTime": updateTime == null ? "" : updateTime.toIso8601String(),
       };
 }
 

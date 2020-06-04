@@ -41,12 +41,20 @@ class _UserEditPageState extends State<UserEditPage> {
   }
 
   // 处理保存用户信息按钮
-  _handleSaveUserInfoButton() {
+  _handleSaveUserInfoButton() async {
     print(_avatar);
     print(_nicknameController.text);
     print(_introductionController.text);
     print(_gender);
     print(_address);
+    await Provider.of<UserProvider>(context, listen: false).updateUserInfo(
+      _avatar,
+      _nicknameController.text,
+      _introductionController.text,
+      _gender,
+      _address,
+    );
+    Navigator.of(context).pop();
   }
 
   @override
@@ -60,7 +68,7 @@ class _UserEditPageState extends State<UserEditPage> {
           _avatar = chooseImageProvider.imageNetworkPath;
           return LoadingOverlay(
             color: Colors.transparent,
-            isLoading: chooseImageProvider.isBusy,
+            isLoading: chooseImageProvider.isBusy || userProvider.isBusy,
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,

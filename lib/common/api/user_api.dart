@@ -83,7 +83,9 @@ class UserAPI {
   /// 更新用户信息
   static Future<APIResponse<bool>> updateUserInfo(
       UserInfoEntity userInfoEntity) {
-    return HttpUtil().put("/user").then((response) {
+    return HttpUtil()
+        .put("/user", params: userInfoEntity.toJson())
+        .then((response) {
       if (response.statusCode == 200) {
         if (response.data['code'] == 0)
           return APIResponse<bool>(data: response.data['data']);

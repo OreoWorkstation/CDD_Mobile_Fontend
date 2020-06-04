@@ -32,6 +32,7 @@ class ArticleAPI {
     }).then((response) {
       if (response.statusCode == 200) {
         var data = response.data['data'] as List;
+
         return APIResponse<List<ArticleResponseEntity>>(
           data:
               data.map((item) => ArticleResponseEntity.fromJson(item)).toList(),
@@ -96,6 +97,31 @@ class ArticleAPI {
       return APIResponse<bool>(error: true, errorMessage: "An error occurred");
     }).catchError((_) {
       return APIResponse<bool>(error: true, errorMessage: "An error occurred");
+    });
+  }
+
+  /// 获取相似文章列表
+  static Future<APIResponse<List<ArticleResponseEntity>>>
+      getSimilarArticleList({
+    @required int articleId,
+    @required int userId,
+  }) {
+    return HttpUtil().get("/similar", params: {
+      "article_id": articleId,
+      "user_id": userId,
+    }).then((response) {
+      if (response.statusCode == 200) {
+        var data = response.data['data'] as List;
+        return APIResponse<List<ArticleResponseEntity>>(
+          data:
+              data.map((item) => ArticleResponseEntity.fromJson(item)).toList(),
+        );
+      }
+      return APIResponse<List<ArticleResponseEntity>>(
+          error: true, errorMessage: "An error occurred");
+    }).catchError((_) {
+      return APIResponse<List<ArticleResponseEntity>>(
+          error: true, errorMessage: "An error occurred");
     });
   }
 }

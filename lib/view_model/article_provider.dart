@@ -7,12 +7,14 @@ import 'package:cdd_mobile_frontend/model/entity.dart';
 class ArticleProvider extends ViewStateModel {
   List<ArticleResponseEntity> _recommendArticleList;
   List<ArticleResponseEntity> _hotArticleList;
+  List<ArticleResponseEntity> _similarArticleList;
   List<ArticleResponseEntity> _categoryArticleList;
   ArticleResponseEntity _article;
 
   List<ArticleResponseEntity> get recommendArticleList => _recommendArticleList;
   List<ArticleResponseEntity> get hotArticleList => _hotArticleList;
   List<ArticleResponseEntity> get categoryArticleList => _categoryArticleList;
+  List<ArticleResponseEntity> get similarArticleList => _similarArticleList;
   ArticleResponseEntity get article => _article;
 
   setArticle(ArticleResponseEntity article) {
@@ -46,9 +48,19 @@ class ArticleProvider extends ViewStateModel {
     return true;
   }
 
+  Future<bool> fetchSimilar(int articleId) async {
+    setBusy();
+    var res = await ArticleAPI.getSimilarArticleList(
+        userId: int.parse(Global.accessToken), articleId: articleId);
+    _similarArticleList = res.data;
+    setIdle();
+    return true;
+  }
+
   postBrowse(int articleId, int starValue) async {
     print("文章ID: $articleId");
     print("传给provider的分数: $starValue");
+    print("Token: ${Global.accessToken}");
     int value = starValue + 2;
     if (_hotArticleList != null) {
       _hotArticleList.forEach((item) {

@@ -95,9 +95,16 @@ class UserProvider extends ViewStateModel {
     }
   }
 
-  Future<bool> updateUserInfo(UserInfoEntity userInfoEntity) async {
+  Future<bool> updateUserInfo(String avatar, String nickname,
+      String introduction, int gender, String address) async {
+    _userInfo.avatar = avatar;
+    _userInfo.nickname = nickname;
+    _userInfo.introduction = introduction;
+    _userInfo.gender = gender;
+    _userInfo.address = address;
+    print(_userInfo.introduction);
     setBusy();
-    await UserAPI.updateUserInfo(userInfoEntity);
+    await UserAPI.updateUserInfo(_userInfo);
     setIdle();
     return true;
   }
