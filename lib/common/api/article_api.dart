@@ -46,8 +46,12 @@ class ArticleAPI {
   }
 
   /// 获取热门文章列表
-  static Future<APIResponse<List<ArticleResponseEntity>>> getHotArticleList() {
-    return HttpUtil().get("/article/hot").then((response) {
+  static Future<APIResponse<List<ArticleResponseEntity>>> getHotArticleList({
+    @required int userId,
+  }) {
+    return HttpUtil().get("/article/hot", params: {
+      "user_id": userId,
+    }).then((response) {
       if (response.statusCode == 200) {
         var data = response.data['data'] as List;
         return APIResponse<List<ArticleResponseEntity>>(

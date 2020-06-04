@@ -25,7 +25,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   @override
   void initState() {
     _article = widget.article;
-    _starValue = _article.browseValue;
+    _starValue = cddGetStarValue(_article.browseValue).toInt();
     super.initState();
   }
 
@@ -33,7 +33,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print(cddGetStarValue(_article.browseValue));
+    print("上次打分： ${cddGetStarValue(_article.browseValue)}");
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -89,11 +89,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   Icons.arrow_back,
                   color: Colors.white,
                 ),
-                onPressed: () {
-                  print(_starValue);
+                onPressed: () async {
+                  print("退出页面时: _starValue");
                   final provider =
                       Provider.of<ArticleProvider>(context, listen: false);
-                  provider.postBrowse(_article.id, _starValue);
+                  await provider.postBrowse(_article.id, _starValue);
                   Navigator.of(context).pop();
                 },
               ),
@@ -183,7 +183,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                             ),
                             onRating: (value) {
                               _starValue = value.toInt();
-                              print(_starValue);
+                              print("打分：$_starValue");
                             },
                           ),
                           SizedBox(height: sHeight(30)),

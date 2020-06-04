@@ -31,7 +31,8 @@ class ArticleProvider extends ViewStateModel {
 
   Future<bool> fetchHot() async {
     setBusy();
-    var res = await ArticleAPI.getHotArticleList();
+    var res = await ArticleAPI.getHotArticleList(
+        userId: int.parse(Global.accessToken));
     _hotArticleList = res.data;
     setIdle();
     return true;
@@ -46,15 +47,17 @@ class ArticleProvider extends ViewStateModel {
   }
 
   postBrowse(int articleId, int starValue) async {
+    print("文章ID: $articleId");
+    print("传给provider的分数: $starValue");
     int value = starValue + 2;
     if (_hotArticleList != null) {
       _hotArticleList.forEach((item) {
-        if (item.id == articleId) item.browseValue = starValue;
+        if (item.id == articleId) item.browseValue = value;
       });
     }
     if (_recommendArticleList != null) {
       _recommendArticleList.forEach((item) {
-        if (item.id == articleId) item.browseValue = starValue;
+        if (item.id == articleId) item.browseValue = value;
       });
     }
     await ArticleAPI.postBrowse(
