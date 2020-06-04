@@ -1,5 +1,6 @@
 import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/provider/view_state_model.dart';
+import 'package:cdd_mobile_frontend/common/util/util.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,37 @@ class UserProvider extends ViewStateModel {
       setError(e, s, message: "内部错误");
       return false;
     }
+  }
+
+  /// 注册
+  Future<bool> register(String account, String password) async {
+    setBusy();
+    try {
+      var res = await UserAPI.register(params: {
+        "account": account,
+        "password": password,
+        "nickname": generateRandomNickname().toString(),
+        "avatar":
+            "https://images.unsplash.com/photo-1588636196535-5d60ffae6aef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+      });
+      if (res.error == true) {
+        setError(null, null, message: res.errorMessage);
+        return false;
+      } else {
+        setIdle();
+        return true;
+      }
+    } catch (e, s) {
+      setError(e, s, message: "内部错误");
+      return false;
+    }
+  }
+
+  Future<bool> updateUserInfo(UserInfoEntity userInfoEntity) async {
+    setBusy();
+    await UserAPI.updateUserInfo(userInfoEntity);
+    setIdle();
+    return true;
   }
 
   /// 获取用户信息

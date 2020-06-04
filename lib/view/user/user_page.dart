@@ -4,6 +4,7 @@ import 'package:cdd_mobile_frontend/common/value/value.dart';
 import 'package:cdd_mobile_frontend/common/widget/widget.dart';
 import 'package:cdd_mobile_frontend/global.dart';
 import 'package:cdd_mobile_frontend/model/entity.dart';
+import 'package:cdd_mobile_frontend/view/home/home_page.dart';
 import 'package:cdd_mobile_frontend/view/user/user_edit.dart';
 import 'package:cdd_mobile_frontend/view/user/user_list_page.dart';
 import 'package:cdd_mobile_frontend/view/user/user_zone.dart';
@@ -26,11 +27,11 @@ class _UserPageState extends State<UserPage> {
   }
 
   // 处理编辑用户信息
-  // _handleEditUserInfo() async {
-  //   await Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => UserEditPage(apiResponse: _apiResponse),
-  //   ));
-  // }
+  _handleEditUserInfo() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => UserEditPage(),
+    ));
+  }
 
   // 处理退出登录按钮
   _handleLogout() {
@@ -55,6 +56,15 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  _routeToPetList() {
+    return null;
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (_) => HomePage(type: 1),
+    //   ),
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
@@ -68,7 +78,7 @@ class _UserPageState extends State<UserPage> {
             slivers: <Widget>[
               SliverAppBar(
                 brightness: Brightness.light,
-                expandedHeight: 360,
+                expandedHeight: sHeight(350),
                 backgroundColor: AppColor.background,
                 floating: true,
                 pinned: false,
@@ -88,30 +98,11 @@ class _UserPageState extends State<UserPage> {
   _buildUserHeader(UserProvider provider) {
     final UserInfoEntity user = provider.userInfo;
     return ClipRRect(
-      // borderRadius: BorderRadius.vertical(bottom: Radius.circular(40)),
       child: Container(
-        decoration: BoxDecoration(
-            // color: Colors.white,
-            // gradient: LinearGradient(
-            //   colors: [Color(0xFF4a00e0), Color(0xFF8e2de2)],
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            // ),
-            ),
+        decoration: BoxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Container(
-            //   height: sWidth(80),
-            //   width: sWidth(80),
-            //   decoration: BoxDecoration(
-            //     shape: BoxShape.circle,
-            //     image: DecorationImage(
-            //       image: NetworkImage(user.avatar),
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            // ),
             AnimatedContainer(
               duration: Duration(milliseconds: 500),
               decoration: BoxDecoration(
@@ -159,8 +150,9 @@ class _UserPageState extends State<UserPage> {
   // 用户界面Body
   List<Widget> _buildSliverList() {
     return [
-      _buildSliverListItem(Icons.edit, "编辑个人资料", () {}),
-      _buildSliverListItem(Icons.settings, "系统设置", () {}),
+      _buildSliverListItem(
+          Iconfont.bianji1, "编辑个人信息", () => _handleEditUserInfo()),
+      // _buildSliverListItem(Icons.settings, "系统设置", () {}),
       _buildSliverListItem(Icons.help, "帮助", () {}),
       _buildSliverListItem(Icons.info_outline, "关于我们", () {}),
       _buildSliverListItem(Icons.exit_to_app, "注销登录", () {}),
@@ -174,7 +166,7 @@ class _UserPageState extends State<UserPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        _buildUserStateItem("宠物", user.petNumber, () {}),
+        _buildUserStateItem("宠物", user.petNumber, () => _routeToPetList()),
         _buildUserStateItem(
             "动态", user.instantNumber, () => _routeToUserZone(user.id)),
         _buildUserStateItem("关注", user.followNumber, () => _routeToUserList(0)),

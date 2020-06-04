@@ -42,7 +42,7 @@ Widget inputTextEditWidget({
 Widget buildFormListItem({@required String title, @required Widget operation}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: <Widget>[
       Text(
         title,
@@ -52,7 +52,8 @@ Widget buildFormListItem({@required String title, @required Widget operation}) {
           fontWeight: FontWeight.w500,
         ),
       ),
-      SizedBox(width: sWidth(20)),
+      // SizedBox(width: sWidth(20)),
+      Spacer(),
       Expanded(child: operation),
       // operation,
     ],

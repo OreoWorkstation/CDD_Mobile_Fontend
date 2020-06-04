@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  city_pickers: ^0.1.30
   
   flutter_star: ^0.1.2
 

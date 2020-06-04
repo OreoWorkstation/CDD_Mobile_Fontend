@@ -24,7 +24,9 @@ class _UserListPageState extends State<UserListPage> {
     });
   }
 
-  _routeToUserZone(int userId) {
+  _routeToUserZone(int userId) async {
+    await Provider.of<UserProvider>(context, listen: false)
+        .fetchUserZone(userId);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => UserZonePage(userId: userId),
@@ -40,19 +42,21 @@ class _UserListPageState extends State<UserListPage> {
         title: widget.type == 0
             ? Text(
                 "关注列表",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                    color: AppColor.dark, fontWeight: FontWeight.w400),
               )
             : Text(
                 "粉丝列表",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                    color: AppColor.dark, fontWeight: FontWeight.w400),
               ),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0.4,
+        elevation: 0.6,
         brightness: Brightness.light,
         leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.arrow_back_ios),
+          color: AppColor.dark,
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -65,7 +69,8 @@ class _UserListPageState extends State<UserListPage> {
               provider.fansList == null) {
             return Center(child: CircularProgressIndicator());
           }
-          if (provider.followList.isEmpty || provider.fansList.isEmpty) {
+          if ((widget.type == 0 && provider.followList.isEmpty) ||
+              (widget.type == 1 && provider.fansList.isEmpty)) {
             return Center(
                 child: widget.type == 0
                     ? Text("暂时还没有关注任何人哦！")
@@ -73,7 +78,7 @@ class _UserListPageState extends State<UserListPage> {
           }
           return Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: sWidth(5), vertical: sHeight(20)),
+                horizontal: sWidth(10), vertical: sHeight(10)),
             child: ListView.builder(
                 itemCount: widget.type == 0
                     ? provider.followList.length
@@ -93,7 +98,13 @@ class _UserListPageState extends State<UserListPage> {
     return InkWell(
       onTap: () => _routeToUserZone(user.userId),
       child: Container(
-        margin: EdgeInsets.only(bottom: sHeight(20)),
+        margin: EdgeInsets.only(bottom: sHeight(10)),
+        padding:
+            EdgeInsets.symmetric(vertical: sHeight(10), horizontal: sWidth(2)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+        ),
         child: ListTile(
           leading: Container(
             height: sWidth(50),
@@ -105,8 +116,20 @@ class _UserListPageState extends State<UserListPage> {
               ),
             ),
           ),
-          title: Text(user.nickname),
-          subtitle: Text(user.introduction),
+          title: Text(
+            user.nickname,
+            style: TextStyle(
+                color: AppColor.dark,
+                fontWeight: FontWeight.w500,
+                fontSize: sSp(16)),
+          ),
+          subtitle: Text(
+            user.introduction,
+            style: TextStyle(
+                color: AppColor.dark,
+                fontWeight: FontWeight.w400,
+                fontSize: sSp(14)),
+          ),
         ),
       ),
     );

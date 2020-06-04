@@ -76,21 +76,51 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: sWidth(40),
-                    right: sWidth(40),
+                    left: sWidth(20),
+                    right: sWidth(20),
                     top: sHeight(40),
                   ),
                   child: Column(
                     children: <Widget>[
                       _buildAvatar(context),
-                      Divider(),
-                      _buildNickname(),
-                      Divider(),
-                      _buildGender(),
-                      Divider(),
-                      _buildBirthday(),
-                      Divider(),
-                      _buildIntroduction(),
+                      SizedBox(height: sHeight(15)),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: sHeight(5), horizontal: sWidth(10)),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: _buildNickname(),
+                      ),
+                      SizedBox(height: sHeight(15)),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: sHeight(5), horizontal: sWidth(10)),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: _buildGender(),
+                      ),
+                      SizedBox(height: sHeight(15)),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: sHeight(15), horizontal: sWidth(10)),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: _buildBirthday()),
+                      SizedBox(height: sHeight(15)),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: sHeight(5), horizontal: sWidth(10)),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: _buildIntroduction()),
                     ],
                   ),
                 ),
@@ -277,7 +307,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
           border: InputBorder.none,
         ),
         style: TextStyle(
-          color: AppColor.primaryText,
+          color: AppColor.dark,
           fontWeight: FontWeight.w400,
           fontSize: sSp(16),
         ),
@@ -293,9 +323,9 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
         Text(
           title,
           style: TextStyle(
-            color: AppColor.secondaryTextColor.withOpacity(0.6),
-            fontSize: sSp(17),
-          ),
+              color: AppColor.dark.withOpacity(.7),
+              fontSize: sSp(16),
+              fontWeight: FontWeight.w400),
         ),
         SizedBox(width: sWidth(60)),
         Expanded(child: operation),

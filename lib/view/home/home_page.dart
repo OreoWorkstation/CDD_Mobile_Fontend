@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
+  final int type;
+
+  const HomePage({Key key, this.type = 0}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -22,7 +26,7 @@ class _HomePageState extends State<HomePage> {
               elevation: 0.6,
               centerTitle: true,
               title: Text(
-                "首页",
+                widget.type == 0 ? "首页" : "宠物列表",
                 style: TextStyle(
                     color: AppColor.dark, fontWeight: FontWeight.w500),
               ),
@@ -42,6 +46,17 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ],
+              leading: widget.type == 1
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: AppColor.dark,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  : null,
               backgroundColor: Colors.white,
               brightness: Brightness.light,
             ),
@@ -70,30 +85,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: <Widget>[
-//         Container(
-//           width: MediaQuery.of(context).size.width,
-//           height: sHeight(250.0),
-//           child: Image.asset(
-//             "assets/images/pet_header.png",
-//             fit: BoxFit.cover,
-//           ),
-//         ),
-//         ChangeNotifierProvider(
-//           create: (_) => PetListProvider(),
-//           child: HomeBody(),
-//         ),
-//       ],
-//     );
-//   }
-// }

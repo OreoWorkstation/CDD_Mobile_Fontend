@@ -10,3 +10,4 @@ export 'list.dart';
 export 'screen.dart';
 export 'storage.dart';
 export 'star.dart';
+export 'random.dart';

@@ -49,7 +49,6 @@ class _PetPageState extends State<PetPage> {
   }
 
   // 处理删除宠物
-  // TODO: 需要通知用户界面更改宠物数量
   _handleDeletePet() {
     showDialog(
       context: context,

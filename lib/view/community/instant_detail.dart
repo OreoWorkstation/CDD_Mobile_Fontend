@@ -60,7 +60,9 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
     );
   }
 
-  _routeToUserZone(int userId) {
+  _routeToUserZone(int userId) async {
+    await Provider.of<UserProvider>(context, listen: false)
+        .fetchUserZone(userId);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => UserZonePage(userId: userId),

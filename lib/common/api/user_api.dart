@@ -24,7 +24,7 @@ class UserAPI {
   }
 
   /// 注册
-  static Future<Response> register({
+  static Future<APIResponse<bool>> register({
     Map<String, dynamic> params,
   }) async {
     var response = await HttpUtil().post(
@@ -69,6 +69,23 @@ class UserAPI {
     }).catchError((_) {
       return APIResponse<UserZoneEntity>(
           error: true, errorMessage: "An error occured");
+    });
+  }
+
+  /// 更新用户信息
+  static Future<APIResponse<bool>> updateUserInfo(
+      UserInfoEntity userInfoEntity) {
+    return HttpUtil().put("/user").then((response) {
+      if (response.statusCode == 200) {
+        if (response.data['code'] == 0)
+          return APIResponse<bool>(data: response.data['data']);
+        else
+          return APIResponse<bool>(
+              error: true, errorMessage: "An error occured");
+      }
+      return APIResponse<bool>(error: true, errorMessage: "An error occured");
+    }).catchError((_) {
+      return APIResponse<bool>(error: true, errorMessage: "An error occurred");
     });
   }
 
