@@ -151,6 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
               // 输入账号
               inputTextEditWidget(
                 controller: _accountController,
+                keyboardType: TextInputType.visiblePassword,
                 hintText: "账号",
               ),
               // 输入密码
