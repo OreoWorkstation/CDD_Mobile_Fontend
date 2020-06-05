@@ -235,7 +235,9 @@ class _WeightPageState extends State<WeightPage> {
           );
           weightListProvider.fetchWeightListWithoutPetId();
         },
-        background: Container(color: AppColor.listItemColors[index]),
+        background: Container(
+            color: AppColor
+                .listItemColors[index % AppColor.listItemColors.length]),
         child: Container(
           width: double.infinity,
           height: sHeight(60),

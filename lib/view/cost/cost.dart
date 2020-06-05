@@ -233,7 +233,9 @@ class _CostPageState extends State<CostPage> {
           );
           costListProvider.fetchCostListWithoutPetId();
         },
-        background: Container(color: AppColor.listItemColors[index]),
+        background: Container(
+            color: AppColor
+                .listItemColors[index % AppColor.listItemColors.length]),
         child: Container(
           width: double.infinity,
           height: sHeight(60),
