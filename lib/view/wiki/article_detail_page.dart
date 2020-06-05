@@ -118,14 +118,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                         _article.content,
                         style: TextStyle(
                           color: AppColor.dark,
-                          height: 1.2,
+                          height: 1.6,
                           fontSize: sSp(16),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                       Divider(
                         height: sHeight(40),
-                        color: AppColor.grey,
+                        color: AppColor.grey.withOpacity(.6),
                       ),
                       Align(
                         alignment: Alignment.center,

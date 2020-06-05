@@ -48,10 +48,10 @@ class _InstantAddPageState extends State<InstantAddPage> {
           create: (_) => ChooseImageProvider(""),
         ),
       ],
-      child: Consumer<FeedProvider>(
-        builder: (_, provider, __) {
+      child: Consumer2<FeedProvider, ChooseImageProvider>(
+        builder: (_, provider, chooseImageProvider, __) {
           return LoadingOverlay(
-            isLoading: provider.isBusy,
+            isLoading: provider.isBusy || chooseImageProvider.isBusy,
             color: Colors.transparent,
             child: Scaffold(
               appBar: AppBar(

@@ -69,10 +69,10 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
             _buildFinishButton(context),
           ],
         ),
-        body: Consumer<PetAddProvider>(
-          builder: (_, petAddProvider, __) {
+        body: Consumer2<PetAddProvider, ChooseImageProvider>(
+          builder: (_, petAddProvider, chooseImageProvider, __) {
             return LoadingOverlay(
-              isLoading: petAddProvider.isBusy,
+              isLoading: petAddProvider.isBusy || chooseImageProvider.isBusy,
               color: Colors.transparent,
               child: SingleChildScrollView(
                 child: Padding(
@@ -300,7 +300,7 @@ class _PetAddSecondPageState extends State<PetAddSecondPage> {
       "介绍",
       TextField(
         controller: _introductionController,
-        maxLength: 20,
+        maxLength: 10,
         decoration: InputDecoration(
           counterText: "",
           hintText: "介绍一下你的宠物吧",

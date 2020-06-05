@@ -52,14 +52,14 @@ Widget _bottomSheetRow(
           children: <Widget>[
             Icon(
               iconData,
-              color: AppColor.dark,
+              color: AppColor.dark.withOpacity(.9),
             ),
             SizedBox(width: sWidth(20)),
             Text(
               text,
               style: TextStyle(
-                color: AppColor.dark,
-                fontSize: sSp(18),
+                color: AppColor.dark.withOpacity(.9),
+                fontSize: sSp(17),
                 fontWeight: FontWeight.w400,
               ),
             ),

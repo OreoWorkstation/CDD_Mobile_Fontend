@@ -62,7 +62,7 @@ class _CalendarPageState extends State<CalendarPage> {
       child: Center(
         child: Container(
           width: MediaQuery.of(context).size.width - sWidth(20),
-          height: sHeight(520),
+          // height: sHeight(450),
           decoration: ShapeDecoration(
             color: Colors.white,
             shape: RoundedRectangleBorder(
@@ -75,6 +75,7 @@ class _CalendarPageState extends State<CalendarPage> {
               vertical: sHeight(20),
             ),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,8 +88,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     ),
                     Text(
                       "选择日期",
-                      style: TextStyle(
-                          fontSize: sSp(17), color: Colors.black),
+                      style: TextStyle(fontSize: sSp(17), color: Colors.black),
                     ),
                     textBtnFlatButtonWidget(
                       onPressed: () {
@@ -128,22 +128,22 @@ class _CalendarPageState extends State<CalendarPage> {
       },
       calendarStyle: CalendarStyle(
         outsideDaysVisible: false,
-        weekendStyle: TextStyle().copyWith(
-            color: AppColor.secondaryElement, fontSize: sSp(16)),
-        weekdayStyle: TextStyle().copyWith(
-            color: AppColor.primaryText, fontSize: sSp(16)),
+        weekendStyle: TextStyle()
+            .copyWith(color: AppColor.secondaryElement, fontSize: sSp(16)),
+        weekdayStyle: TextStyle()
+            .copyWith(color: AppColor.primaryText, fontSize: sSp(16)),
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekendStyle: TextStyle().copyWith(
-            color: AppColor.secondaryElement, fontSize: sSp(15)),
-        weekdayStyle: TextStyle().copyWith(
-            color: AppColor.primaryText, fontSize: sSp(15)),
+        weekendStyle: TextStyle()
+            .copyWith(color: AppColor.secondaryElement, fontSize: sSp(15)),
+        weekdayStyle: TextStyle()
+            .copyWith(color: AppColor.primaryText, fontSize: sSp(15)),
       ),
       headerStyle: HeaderStyle(
         centerHeaderTitle: true,
         formatButtonVisible: false,
-        titleTextStyle: TextStyle()
-            .copyWith(color: Colors.black, fontSize: sSp(16)),
+        titleTextStyle:
+            TextStyle().copyWith(color: Colors.black, fontSize: sSp(16)),
       ),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {

@@ -27,11 +27,12 @@ class _UserListPageState extends State<UserListPage> {
   _routeToUserZone(int userId) async {
     await Provider.of<UserProvider>(context, listen: false)
         .fetchUserZone(userId);
-    Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => UserZonePage(userId: userId),
       ),
     );
+    await Provider.of<UserProvider>(context, listen: false).fetchFollowList();
   }
 
   @override

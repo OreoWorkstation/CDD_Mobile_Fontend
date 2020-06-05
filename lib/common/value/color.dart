@@ -64,16 +64,17 @@ class AppColor {
   static const List<LinearGradient> petCardColors = [
     LinearGradient(
       colors: [
-        Color.fromARGB(255, 236, 111, 102),
-        Color.fromARGB(255, 243, 161, 131),
+        // Color.fromARGB(255, 243, 161, 131),
+        Color.fromARGB(235, 236, 111, 102),
+        Color.fromARGB(230, 236, 111, 102),
       ],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     ),
     LinearGradient(
       colors: [
-        Color.fromARGB(255, 142, 45, 226),
-        Color.fromARGB(255, 74, 0, 224),
+        Color.fromARGB(200, 74, 0, 224),
+        Color.fromARGB(220, 74, 0, 224),
       ],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,

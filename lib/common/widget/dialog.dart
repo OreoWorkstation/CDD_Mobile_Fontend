@@ -17,10 +17,10 @@ class DeleteConfirmDialog extends Dialog {
       child: Center(
         child: Container(
           width: sWidth(250),
-          height: sHeight(320),
+          height: sHeight(300),
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
-              borderRadius: Radii.k10pxRadius,
+              borderRadius: Radii.k6pxRadius,
             ),
             color: Colors.white,
           ),
@@ -28,7 +28,7 @@ class DeleteConfirmDialog extends Dialog {
             children: <Widget>[
               Container(
                 width: double.infinity,
-                height: sHeight(200),
+                height: sHeight(180),
                 margin: EdgeInsets.only(top: sHeight(10)),
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -43,7 +43,7 @@ class DeleteConfirmDialog extends Dialog {
                 style: TextStyle(
                   fontSize: sSp(16),
                   color: AppColor.dark,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: sHeight(20)),
@@ -55,20 +55,20 @@ class DeleteConfirmDialog extends Dialog {
                     primaryBtn(
                       onPressed: () => Navigator.of(context).pop(),
                       bgColor: AppColor.lightGrey,
-                      width: 84,
-                      height: 40,
+                      width: 80,
+                      height: 38,
                       title: "取消",
                       fontSize: 14,
-                      radii: Radii.k10pxRadius,
+                      radii: Radii.k6pxRadius,
                     ),
                     primaryBtn(
                       onPressed: handleDelete,
-                      bgColor: Colors.redAccent,
-                      width: 84,
-                      height: 40,
+                      bgColor: Colors.red,
+                      width: 80,
+                      height: 38,
                       title: "删除",
                       fontSize: 14,
-                      radii: Radii.k10pxRadius,
+                      radii: Radii.k6pxRadius,
                     ),
                   ],
                 ),

@@ -7,8 +7,10 @@ import 'package:image_picker/image_picker.dart';
 
 class ChooseImageProvider extends ViewStateModel {
   String _imageNetworkPath = "";
+  String _oldImageNetworkPath = "";
 
   String get imageNetworkPath => _imageNetworkPath;
+  String get oldImageNetworkPath => _oldImageNetworkPath;
 
   ChooseImageProvider(this._imageNetworkPath);
 
@@ -18,11 +20,18 @@ class ChooseImageProvider extends ViewStateModel {
     notifyListeners();
   }
 
+  clearImagePath() {
+    _imageNetworkPath = "";
+    notifyListeners();
+  }
+
   // 相机拍照
   Future getImageFromCamera() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
       await getNetworkPath(image);
+    } else {
+      _imageNetworkPath = "";
     }
   }
 
@@ -31,6 +40,8 @@ class ChooseImageProvider extends ViewStateModel {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       await getNetworkPath(image);
+    } else {
+      _imageNetworkPath = "";
     }
   }
 
@@ -45,6 +56,7 @@ class ChooseImageProvider extends ViewStateModel {
         setError(null, null, message: response.errorMessage);
         return false;
       }
+      _oldImageNetworkPath = _imageNetworkPath;
       _imageNetworkPath = response.data;
       setIdle();
       return true;

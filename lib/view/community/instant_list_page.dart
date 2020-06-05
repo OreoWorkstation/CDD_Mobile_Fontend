@@ -79,17 +79,17 @@ class _InstantListPageState extends State<InstantListPage> {
     return GestureDetector(
       onTap: () => _routeToDetailPage(instantVO),
       child: Container(
-        margin: EdgeInsets.only(bottom: sHeight(8)),
+        margin: EdgeInsets.only(bottom: sHeight(15)),
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white70,
-          // boxShadow: [
-          // BoxShadow(
-          //   offset: Offset(0, 0),
-          //   blurRadius: 1,
-          //   color: Colors.grey.withOpacity(.6),
-          // ),
-          // ],
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 2),
+              blurRadius: 2,
+              color: Colors.grey.withOpacity(.1),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(17, 20, 17, 5),

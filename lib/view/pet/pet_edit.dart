@@ -235,7 +235,7 @@ class _PetEditPageState extends State<PetEditPage> {
       "昵称",
       TextField(
         controller: _nicknameController,
-        maxLength: 11,
+        maxLength: 8,
         decoration: InputDecoration(
           counterText: "",
           hintText: "请输入宠物昵称",
@@ -307,7 +307,7 @@ class _PetEditPageState extends State<PetEditPage> {
       "介绍",
       TextField(
         controller: _introductionController,
-        maxLength: 20,
+        maxLength: 10,
         decoration: InputDecoration(
           counterText: "",
           hintText: "介绍一下你的宠物吧",

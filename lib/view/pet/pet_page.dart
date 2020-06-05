@@ -46,6 +46,7 @@ class _PetPageState extends State<PetPage> {
         ),
       ),
     );
+    Provider.of<PetProvider>(context, listen: false).fetchPet();
   }
 
   // 处理删除宠物
@@ -220,7 +221,7 @@ class _PetPageState extends State<PetPage> {
           BoxShadow(
             color: Colors.grey.withOpacity(.1),
             offset: Offset(0, 0),
-            blurRadius: 6,
+            blurRadius: 3,
           ),
         ],
       ),
@@ -369,47 +370,45 @@ class _PetPageState extends State<PetPage> {
   ) {
     return GestureDetector(
       onTap: onTap,
-      child: ClipRRect(
-        borderRadius: Radii.k10pxRadius,
-        child: Container(
-          width: sWidth(150),
-          padding: EdgeInsets.symmetric(
-              vertical: sHeight(20), horizontal: sWidth(20)),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(.1),
-                blurRadius: 6,
-                offset: Offset(0, 0),
-              ),
-            ],
-          ),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(icon,
-                      size: sSp(30), color: AppColor.primary.withOpacity(.7)),
-                  SizedBox(width: sWidth(14)),
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
-                  ),
-                ],
-              ),
-              SizedBox(height: sHeight(26)),
-              Center(
-                child: Text(
-                  value,
-                  style: TextStyle(
-                    color: AppColor.dark,
-                    fontSize: sSp(16.0),
-                  ),
+      child: Container(
+        width: sWidth(150),
+        padding:
+            EdgeInsets.symmetric(vertical: sHeight(20), horizontal: sWidth(20)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(.1),
+              blurRadius: 2,
+              offset: Offset(3, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Icon(icon,
+                    size: sSp(30), color: AppColor.primary.withOpacity(.7)),
+                SizedBox(width: sWidth(14)),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
+                ),
+              ],
+            ),
+            SizedBox(height: sHeight(26)),
+            Center(
+              child: Text(
+                value,
+                style: TextStyle(
+                  color: AppColor.dark,
+                  fontSize: sSp(16.0),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       // child: Container(

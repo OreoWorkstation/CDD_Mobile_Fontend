@@ -98,52 +98,50 @@ class _UserPageState extends State<UserPage> {
   // 用户界面头部
   _buildUserHeader(UserProvider provider) {
     final UserInfoEntity user = provider.userInfo;
-    return ClipRRect(
-      child: Container(
-        decoration: BoxDecoration(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            AnimatedContainer(
-              duration: Duration(milliseconds: 500),
+    return Container(
+      decoration: BoxDecoration(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white, width: sWidth(5)),
+              shape: BoxShape.circle,
+            ),
+            child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: sWidth(5)),
                 shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey, width: 0),
               ),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey, width: 0),
-                ),
-                child: CircleAvatar(
-                  maxRadius: sWidth(80) / 2,
-                  backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(user.avatar),
-                ),
+              child: CircleAvatar(
+                maxRadius: sWidth(80) / 2,
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(user.avatar),
               ),
             ),
-            SizedBox(height: sHeight(10)),
-            Text(
-              user.nickname,
-              style: TextStyle(
-                // color: AppColor.testTextBlackColor2,
-                color: Colors.black,
-                fontSize: sSp(16),
-                fontWeight: FontWeight.w800,
-              ),
+          ),
+          SizedBox(height: sHeight(10)),
+          Text(
+            user.nickname,
+            style: TextStyle(
+              // color: AppColor.testTextBlackColor2,
+              color: Colors.black,
+              fontSize: sSp(16),
+              fontWeight: FontWeight.w800,
             ),
-            SizedBox(height: sHeight(14)),
-            Text(
-              user.introduction == "" ? "Nothing to say" : user.introduction,
-              style: TextStyle(
-                color: AppColor.dark,
-                fontSize: sSp(14),
-              ),
+          ),
+          SizedBox(height: sHeight(14)),
+          Text(
+            user.introduction == "" ? "Nothing to say" : user.introduction,
+            style: TextStyle(
+              color: AppColor.dark,
+              fontSize: sSp(14),
             ),
-            SizedBox(height: sHeight(34)),
-            _buildUserState(provider),
-          ],
-        ),
+          ),
+          SizedBox(height: sHeight(34)),
+          _buildUserState(provider),
+        ],
       ),
     );
   }
@@ -182,43 +180,40 @@ class _UserPageState extends State<UserPage> {
   Widget _buildUserStateItem(String title, int value, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(sWidth(10))),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white,
-                blurRadius: 40,
-                offset: Offset(0, 0),
-              )
-            ],
-          ),
-          padding: EdgeInsets.fromLTRB(
-              sWidth(25), sHeight(15), sWidth(25), sHeight(15)),
-          child: Column(
-            children: <Widget>[
-              Text(
-                title,
-                style: GoogleFonts.muli(
-                    fontSize: sSp(15),
-                    color: AppColor.dark,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: sHeight(10),
-              ),
-              Text(
-                "$value",
-                style: GoogleFonts.muli(
-                    fontSize: sSp(14),
-                    color: AppColor.grey,
-                    fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(.1),
+              blurRadius: 3,
+              offset: Offset(2, 2),
+            )
+          ],
+        ),
+        padding: EdgeInsets.fromLTRB(
+            sWidth(25), sHeight(15), sWidth(25), sHeight(15)),
+        child: Column(
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                  fontSize: sSp(15),
+                  color: AppColor.dark,
+                  fontWeight: FontWeight.w500),
+            ),
+            SizedBox(
+              height: sHeight(10),
+            ),
+            Text(
+              "$value",
+              style: TextStyle(
+                  fontSize: sSp(14),
+                  color: AppColor.grey,
+                  fontWeight: FontWeight.w500),
+            ),
+          ],
         ),
       ),
     );
@@ -234,13 +229,20 @@ class _UserPageState extends State<UserPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(sWidth(10))),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white,
+            offset: Offset(0, 0),
+            blurRadius: 1,
+          )
+        ],
       ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: sWidth(20)),
         onTap: onTap,
         title: Text(
           title,
-          style: GoogleFonts.muli(fontSize: sSp(16), color: AppColor.dark),
+          style: TextStyle(fontSize: sSp(16), color: AppColor.dark),
         ),
         leading: Icon(prefixIcon, color: AppColor.grey),
         trailing: Icon(Icons.navigate_next, color: AppColor.lightGrey),

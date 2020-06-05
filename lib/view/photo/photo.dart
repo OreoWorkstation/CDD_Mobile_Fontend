@@ -67,13 +67,18 @@ class _PhotoPageState extends State<PhotoPage> {
                             builder: (context) =>
                                 _buildBottomSheet(context, chooseImageProvider),
                           );
-                          if (chooseImageProvider.imageNetworkPath != "") {
+                          print(chooseImageProvider.imageNetworkPath);
+                          print(chooseImageProvider.oldImageNetworkPath);
+                          if (chooseImageProvider.imageNetworkPath != "" &&
+                              chooseImageProvider.imageNetworkPath !=
+                                  chooseImageProvider.oldImageNetworkPath) {
                             await photoAddProvider.addPhoto(
                               photo: PhotoEntity(
                                 petId: photoListProvider.petId,
                                 photoPath: chooseImageProvider.imageNetworkPath,
                               ),
                             );
+                            chooseImageProvider.clearImagePath();
                             await photoListProvider
                                 .fetchPhotoListWithoutPetId();
                           }

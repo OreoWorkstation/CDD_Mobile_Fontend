@@ -26,7 +26,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
     return ListView.separated(
         padding: EdgeInsets.zero,
         separatorBuilder: (context, index) {
-          return Divider();
+          return Divider(
+            color: AppColor.grey.withOpacity(.6),
+            height: sHeight(20),
+          );
         },
         itemCount: _articleList.length,
         itemBuilder: (context, index) {

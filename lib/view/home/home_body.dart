@@ -12,9 +12,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
 
 const List<Color> _colorList = [
-  Color(0xFFEEE0FA),
-  Color(0xFFDAF0FE),
-  Color(0xFFFDE6D1),
+  Color(0xFFF5B041),
+  Color(0xFFBB68E1),
 ];
 
 // class HomeBody extends StatefulWidget {
@@ -165,9 +164,10 @@ class _HomeBodyState extends State<HomeBody> {
       appBar: appBarWidget(bgColor: Colors.transparent),
       body: Column(
         children: <Widget>[
+          SizedBox(height: sHeight(10)),
           // 添加宠物布局
           _buildAddPet(context),
-          SizedBox(height: sHeight(20)),
+          SizedBox(height: sHeight(30)),
           // 宠物列表布局
           _buildPetList(context),
         ],
@@ -244,7 +244,7 @@ class _HomeBodyState extends State<HomeBody> {
             ));
           }
           return SizedBox(
-            height: sHeight(320),
+            height: sHeight(280),
             child: Swiper(
               onTap: (index) async {
                 await Navigator.of(context).push(
@@ -268,10 +268,11 @@ class _HomeBodyState extends State<HomeBody> {
               scale: 0.6,
               loop: false,
               pagination: SwiperPagination(
-                margin: EdgeInsets.only(bottom: sHeight(5)),
+                alignment: Alignment.bottomCenter,
+                // margin: EdgeInsets.only(bottom: sHeight(5)),
                 builder: DotSwiperPaginationBuilder(
                   activeColor: AppColor.primary,
-                  color: Colors.white,
+                  color: Colors.grey,
                 ),
               ),
             ),
@@ -286,9 +287,17 @@ class _HomeBodyState extends State<HomeBody> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: Radii.k10pxRadius,
-        gradient: AppColor.petCardColors[pet.species == 'cat' ? 0 : 1],
+        // gradient: AppColor.petCardColors[pet.species == 'cat' ? 0 : 1],
         // color: _colorList[pet.species == 'cat' ? 0 : 1],
-        // color: Colors.white54,
+        // color: Color(0xFFF7F9F9),
+        color: AppColor.background,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 6,
+            color: Colors.grey.withOpacity(.1),
+            offset: Offset(0, 0),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,15 +306,15 @@ class _HomeBodyState extends State<HomeBody> {
           _buildPetIcon(pet.species),
           // 宠物头像
           _buildPetAvatar(pet.avatar, pet.species),
-          SizedBox(height: sHeight(15)),
+          SizedBox(height: sHeight(30)),
           // 宠物姓名
           _buildPetNickname(pet.nickname),
-          SizedBox(height: sHeight(15)),
-          // // 宠物年龄
-          // _buildPetAge(pet.birthday),
-          // SizedBox(height: sHeight(10)),
+          SizedBox(height: sHeight(10)),
+          // 宠物年龄
+          _buildPetAge(pet.birthday),
+          SizedBox(height: sHeight(10)),
           // 宠物介绍
-          _buildPetIntroduction(pet.introduction),
+          // _buildPetIntroduction(pet.introduction),
         ],
       ),
     );
@@ -321,13 +330,13 @@ class _HomeBodyState extends State<HomeBody> {
       child: species == "cat"
           ? Icon(
               Iconfont.cat,
-              size: sSp(40.0),
-              color: Colors.white,
+              size: sSp(30.0),
+              color: _colorList[0],
             )
           : Icon(
               Iconfont.dog4,
-              size: sSp(40.0),
-              color: Colors.white,
+              size: sSp(30.0),
+              color: _colorList[1],
             ),
     );
   }
@@ -337,40 +346,50 @@ class _HomeBodyState extends State<HomeBody> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        AnimatedContainer(
-          margin: EdgeInsets.only(top: sHeight(15.0)),
-          duration: Duration(milliseconds: 500),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.white70,
-              width: sWidth(2),
-            ),
-            shape: BoxShape.circle,
-          ),
-          child: CircleAvatar(
-            maxRadius: sWidth(100) / 2,
-            backgroundColor: Colors.white,
-            backgroundImage: avatar == ""
-                ? species == "cat"
-                    ? AssetImage("assets/images/cat_avatar.jpg")
-                    : AssetImage("assets/images/dog_avatar.jpg")
-                : NetworkImage(avatar),
-          ),
-        ),
-        // Container(
+        // AnimatedContainer(
         //   margin: EdgeInsets.only(top: sHeight(15.0)),
-        //   height: sWidth(100),
-        //   width: sWidth(100),
-        //   child: ClipOval(
-        //     child: avatar == ""
+        //   duration: Duration(milliseconds: 500),
+        //   decoration: BoxDecoration(
+        //     border: Border.all(
+        //       color: Colors.white70,
+        //       width: sWidth(2),
+        //     ),
+        //     shape: BoxShape.circle,
+        //   ),
+        //   child: CircleAvatar(
+        //     maxRadius: sWidth(100) / 2,
+        //     backgroundColor: Colors.white,
+        //     backgroundImage: avatar == ""
         //         ? species == "cat"
-        //             ? Image.asset("assets/images/cat_avatar.jpg",
-        //                 fit: BoxFit.cover)
-        //             : Image.asset("assets/images/dog_avatar.jpg",
-        //                 fit: BoxFit.cover)
-        //         : Image.network(avatar, fit: BoxFit.cover),
+        //             ? AssetImage("assets/images/cat_avatar.jpg")
+        //             : AssetImage("assets/images/dog_avatar.jpg")
+        //         : NetworkImage(avatar),
         //   ),
         // ),
+        Container(
+          margin: EdgeInsets.only(top: sHeight(15.0)),
+          height: sWidth(90),
+          width: sWidth(90),
+          decoration: BoxDecoration(
+              // borderRadius: BorderRadius.circular(10),
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: avatar == ""
+                      ? species == 'cat'
+                          ? AssetImage("assets/images/cat_avatar.jpg")
+                          : AssetImage("assets/images/dog_avatar.jpg")
+                      : NetworkImage(avatar),
+                  fit: BoxFit.cover)),
+          // child: ClipOval(
+          //   child: avatar == ""
+          //       ? species == "cat"
+          //           ? Image.asset("assets/images/cat_avatar.jpg",
+          //               fit: BoxFit.cover)
+          //           : Image.asset("assets/images/dog_avatar.jpg",
+          //               fit: BoxFit.cover)
+          //       : Image.network(avatar, fit: BoxFit.cover),
+          // ),
+        ),
       ],
     );
   }
@@ -383,9 +402,9 @@ class _HomeBodyState extends State<HomeBody> {
         Text(
           nickname,
           style: TextStyle(
-            fontSize: sSp(16),
-            color: Colors.black,
-          ),
+              fontSize: sSp(16),
+              color: AppColor.dark,
+              fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -396,13 +415,21 @@ class _HomeBodyState extends State<HomeBody> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          "${cddGetAge(birthday)} 岁",
-          style: TextStyle(
-            fontSize: sSp(14),
-            color: Colors.black,
-          ),
-        ),
+        cddGetAge(birthday) == 0
+            ? Text(
+                "${cddGetDifferenceInDay(birthday)}",
+                style: TextStyle(
+                  fontSize: sSp(14),
+                  color: AppColor.grey,
+                ),
+              )
+            : Text(
+                "${cddGetAge(birthday)} 岁",
+                style: TextStyle(
+                  fontSize: sSp(14),
+                  color: AppColor.grey,
+                ),
+              ),
       ],
     );
   }
@@ -413,14 +440,11 @@ class _HomeBodyState extends State<HomeBody> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: sWidth(100),
+          width: sWidth(150),
           child: Center(
             child: Text(
               introduction,
-              style: TextStyle(
-                fontSize: sSp(14),
-                color: Colors.black.withOpacity(0.7),
-              ),
+              style: TextStyle(fontSize: sSp(14), color: Colors.white),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),

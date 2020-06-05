@@ -85,18 +85,21 @@ class _HomePageState extends State<HomePage> {
     //     },
     //   ),
     // );
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: sHeight(250),
-          child: Image.asset(
-            "assets/images/pet_header.png",
-            fit: BoxFit.cover,
+    return Container(
+      color: Colors.white,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: sHeight(250),
+            child: Image.asset(
+              "assets/images/pet_header.png",
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        HomeBody(),
-      ],
+          HomeBody(),
+        ],
+      ),
     );
   }
 }
