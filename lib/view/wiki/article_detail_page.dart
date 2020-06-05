@@ -219,60 +219,60 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(bottom: sHeight(10)),
+        margin: EdgeInsets.only(bottom: sHeight(17)),
         padding: EdgeInsets.symmetric(horizontal: sWidth(12)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
-              child: SizedBox(
-                height: sHeight(72),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: sWidth(200),
+                  child: Text(
+                    article.title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: TextStyle(
+                      fontSize: sSp(16),
+                      color: AppColor.dark,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                SizedBox(height: sHeight(8)),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    Text(
-                      article.title,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      style: TextStyle(
-                        fontSize: sSp(16),
-                        color: AppColor.dark,
-                        fontWeight: FontWeight.w400,
+                    Container(
+                      width: sWidth(22),
+                      height: sWidth(22),
+                      child: ClipOval(
+                        child: Image.network(
+                          article.expertAvatar,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: sWidth(22),
-                          height: sWidth(22),
-                          child: ClipOval(
-                            child: Image.network(
-                              article.expertAvatar,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: sWidth(5)),
-                        Text(
-                          article.expertName,
-                          style: TextStyle(
-                            color: AppColor.grey,
-                            fontSize: sSp(14),
-                          ),
-                        ),
-                        SizedBox(width: sWidth(5)),
-                        Icon(
-                          Icons.launch,
-                          size: sSp(12),
-                          color: AppColor.grey,
-                        ),
-                      ],
+                    SizedBox(width: sWidth(5)),
+                    Text(
+                      article.expertName,
+                      style: TextStyle(
+                        color: AppColor.grey,
+                        fontSize: sSp(14),
+                      ),
+                    ),
+                    SizedBox(width: sWidth(5)),
+                    Icon(
+                      Icons.launch,
+                      size: sSp(12),
+                      color: AppColor.grey,
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
             Padding(
               padding: EdgeInsets.only(left: sWidth(16)),

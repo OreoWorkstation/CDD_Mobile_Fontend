@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:cdd_mobile_frontend/common/api/api.dart';
 import 'package:cdd_mobile_frontend/common/provider/view_state_model.dart';
+import 'package:cdd_mobile_frontend/common/util/random.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChooseImageProvider extends ViewStateModel {
@@ -49,8 +52,17 @@ class ChooseImageProvider extends ViewStateModel {
   Future<bool> getNetworkPath(File file) async {
     setBusy();
     try {
+      print(file.lengthSync().toString());
+      var result = await FlutterImageCompress.compressAndGetFile(
+          file.absolute.path,
+          Directory.systemTemp.path +
+              '/userava' +
+              generateRandomNickname() +
+              '.jpg',
+          quality: 10);
+      print(result.lengthSync().toString());
       var response = await FileAPI.uploadImage(
-        imagePath: await MultipartFile.fromFile(file.path),
+        imagePath: await MultipartFile.fromFile(result.path),
       );
       if (response.error == true) {
         setError(null, null, message: response.errorMessage);

@@ -41,7 +41,7 @@ class InputBottomSheet extends StatelessWidget {
                 fontSize: sSp(16),
               ),
               textInputAction: TextInputAction.send,
-              keyboardType: TextInputType.multiline,
+              keyboardType: TextInputType.text,
               onEditingComplete: () {
                 //点击发送调用
                 print('onEditingComplete');
