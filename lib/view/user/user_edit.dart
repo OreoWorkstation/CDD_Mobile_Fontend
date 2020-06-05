@@ -245,21 +245,25 @@ class _UserEditPageState extends State<UserEditPage> {
   }
 
   Widget _buildGender() {
-    return buildFormListItem(
-      title: "性别",
-      operation: Row(
-        children: <Widget>[
-          Flexible(
-            child: RadioListTile(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Text(
+          "性别",
+          style: TextStyle(
+            color: AppColor.dark.withOpacity(.7),
+            fontSize: sSp(16),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        // SizedBox(width: sWidth(20)),
+        Spacer(),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Radio(
               value: 0,
-              title: Text(
-                "男",
-                style: TextStyle(
-                  color: AppColor.dark,
-                  fontSize: sSp(16),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
               groupValue: _gender,
               onChanged: (value) {
                 setState(() {
@@ -267,18 +271,21 @@ class _UserEditPageState extends State<UserEditPage> {
                 });
               },
             ),
-          ),
-          Flexible(
-            child: RadioListTile(
+            Text(
+              "男",
+              style: TextStyle(
+                color: AppColor.dark,
+                fontSize: sSp(14),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Radio(
               value: 1,
-              title: Text(
-                "女",
-                style: TextStyle(
-                  color: AppColor.dark,
-                  fontSize: sSp(16),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
               groupValue: _gender,
               onChanged: (value) {
                 setState(() {
@@ -286,10 +293,64 @@ class _UserEditPageState extends State<UserEditPage> {
                 });
               },
             ),
-          ),
-        ],
-      ),
+            Text(
+              "女",
+              style: TextStyle(
+                color: AppColor.dark,
+                fontSize: sSp(14),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        // operation,
+      ],
     );
+    // return buildFormListItem(
+    //   title: "性别",
+    //   operation: Row(
+    //     children: <Widget>[
+    //       Flexible(
+    //         child: RadioListTile(
+    //           value: 0,
+    //           title: Text(
+    //             "男",
+    //             style: TextStyle(
+    //               color: AppColor.dark,
+    //               fontSize: sSp(14),
+    //               fontWeight: FontWeight.w500,
+    //             ),
+    //           ),
+    //           groupValue: _gender,
+    //           onChanged: (value) {
+    //             setState(() {
+    //               _gender = value;
+    //             });
+    //           },
+    //         ),
+    //       ),
+    //       Flexible(
+    //         child: RadioListTile(
+    //           value: 1,
+    //           title: Text(
+    //             "女",
+    //             style: TextStyle(
+    //               color: AppColor.dark,
+    //               fontSize: sSp(14),
+    //               fontWeight: FontWeight.w500,
+    //             ),
+    //           ),
+    //           groupValue: _gender,
+    //           onChanged: (value) {
+    //             setState(() {
+    //               _gender = value;
+    //             });
+    //           },
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   Widget _buildCityPicker() {
