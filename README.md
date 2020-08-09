@@ -1,17 +1,12 @@
-# cdd_mobile_frontend
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 # CDD_Mobile_Frontend
+
+猫狗日记 (Cat & Dog Diary) 移动前端项目
+
+> 猫狗日记是一个可以记录宠物日记的平台，并且可以记录宠物的体重生长曲线、消费曲线, 同时还有社区分享、宠物百科功能。
+
+## 版本更新历史
+
+## 开发规范
+
+> 详细参考官方提供的 [dart 语言规范](https://dart.dev/guides/language/effective-dart)
+> 或者参考 [Flutter_Go 代码开发规范](https://github.com/alibaba/flutter-go/blob/develop/Flutter_Go%20%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)
