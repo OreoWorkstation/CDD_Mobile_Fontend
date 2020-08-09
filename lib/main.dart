@@ -1,40 +1,65 @@
-import 'dart:io';
-
-import 'package:cdd_mobile_frontend/config/provider_manager.dart';
-import 'package:cdd_mobile_frontend/view/page/tab_navigator.dart';
-import 'package:cdd_mobile_frontend/view/page/welcome/splash_page.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cdd_mobile_frontend/common/provider/provider_manage.dart';
+import 'package:cdd_mobile_frontend/common/value/value.dart';
+import 'package:cdd_mobile_frontend/global.dart';
+import 'package:cdd_mobile_frontend/view/index.dart';
+import 'package:cdd_mobile_frontend/view/sign/sign_in_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
-main() {
-  runApp(MyApp());
-  if (Platform.isAndroid) {
-    // 以下两行 设置android状态栏为透明的沉浸。
-    // 写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
+void main() {
+  Global.init().then((e) => runApp(MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: providers,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Cat Dog Diary",
-        routes: {
-          "/": (context) => SplashPage(),
-          "homePage": (context) => TabNavigator(),
-        },
-        initialRoute: "/",
-      ),
-    );
+    return OKToast(
+        child: MultiProvider(
+          providers: providers,
+          child: MaterialApp(
+            title: "Cat & Dog Diary",
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: AppColor.testBgColor3,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              // primaryColor: AppColor.testBgColor3,
+            ),
+            home: IndexPage(),
+            routes: {
+              "/signin": (_) => SignInPage(),
+            },
+//            onGenerateRoute: Application.router.generator,
+//            localizationsDelegates: const [
+//              GlobalMaterialLocalizations.delegate,
+//              GlobalWidgetsLocalizations.delegate,
+//              GlobalCupertinoLocalizations.delegate,
+//            ],
+//            supportedLocales: const [Locale('zh', 'CH'), Locale('en', 'US')],
+            builder: (context, child) {
+              /// 保证文字大小不受手机系统设置影响 https://www.kikt.top/posts/flutter/layout/dynamic-text/
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaleFactor: 1.0,
+                ), // 或者 MediaQueryData.fromWindow(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1.0),
+                child: child,
+              );
+            },
+          ),
+        ),
+
+        /// Toast 配置
+        backgroundColor: Colors.black54,
+        textPadding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        radius: 20.0,
+        position: ToastPosition.bottom);
   }
 }
